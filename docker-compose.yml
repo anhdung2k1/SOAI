@@ -10,8 +10,6 @@ services:
     restart: always
     networks:
       - soai-net
-    ports:
-      - 8000:8000
     volumes:
       - ./backend/services/chatbot/app:/app
 
