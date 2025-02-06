@@ -1,12 +1,29 @@
 version: "3"
 
 services:
+  consul:
+    image: soai_consul:latest
+    container_name: soai_consul
+    build:
+      context: ./backend/services/consul
+      dockerfile: ./Dockerfile
+    ports:
+      - "8500:8500"  # Consul Web UI
+      - "8600:8600/udp"
+    command: "agent -server -bootstrap -ui -client=0.0.0.0"
+    restart: always
+    networks:
+      - soai-net
   chatbot:
     container_name: soai_chatbot
     image: soai_chatbot:latest
     build:
       context: ./backend/services/chatbot
       dockerfile: ./Dockerfile
+    environment:
+      - CONSUL_HOST=consul
+      - SERVICE_NAME=chatbot-service
+      - SERVICE_PORT=8000
     restart: always
     networks:
       - soai-net

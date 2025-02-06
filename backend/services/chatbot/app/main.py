@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from routers import router
 from fastapi.middleware.cors import CORSMiddleware
-
+from config.service_registration import ServiceRegistration
 app = FastAPI(
     title="Endava Chatbot API",
     version="1.0.0",
@@ -9,6 +9,7 @@ app = FastAPI(
     redoc_url="/api/v1/chat/redoc",
     openapi_url="/api/v1/chat/openapi.json"
 )
+
 
 # Enable CORS
 app.add_middleware(
@@ -21,3 +22,9 @@ app.add_middleware(
 
 # Include all routers
 app.include_router(router, prefix="/api/v1/chat", tags=["chat"])
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
+
+ServiceRegistration.register_service()
