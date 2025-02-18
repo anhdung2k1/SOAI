@@ -10,7 +10,7 @@ services:
       - "6333:6333" # API port
       - "8080:8080" # Web UI (optional)
     volumes:
-      - qdrant_data:/qdrant/data
+      - qdrant_data:/qdrant/storage
     environment:
       QDRANT__LIMITS__HNSW_MAX_POINTS_PER_INDEX: 1000000
       QDRANT__LIMITS__UPSERT_MAX_POINTS: 1000000
@@ -95,10 +95,12 @@ services:
     image: soai_ollama:latest
     build:
       context: ./backend/services/ollama
+    environment:
+      - OLLAMA_MODEL_PATH=/home/soai-ollama/.ollama/models
     networks:
       - soai-net
     volumes:
-      - ollama:/root/.ollama
+      - ollama:/home/soai-ollama/.ollama:rw
 
 volumes:
   nginx_conf:
