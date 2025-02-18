@@ -23,6 +23,4 @@ class ChatBotService:
                 collection_name=collection_name, model_name=model
             )
             async for chunk in qdrant_service.query(messages[0]["content"]):
-                logger.debug(chunk)
                 yield chunk
-            # yield await qdrant_service.ask_question(messages)

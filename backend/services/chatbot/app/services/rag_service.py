@@ -20,9 +20,11 @@ class RAGService:
         host: str = "qdrant",
         port: int = 6333,
         embedding_model_name: str = "hkunlp/instructor-large",
+        temperature: float = 0.7,
     ):
         self.collection_name = collection_name
         self.model_name = model_name
+        self.temperature = temperature
 
         # Default to HuggingFace if no model is provided
         self.embedding_model = embedding_model or HuggingFaceEmbeddings(
@@ -65,18 +67,15 @@ class RAGService:
         """Retrieves relevant documents and generates an answer using the Ollama API."""
         retrieved_docs = self.retrieve_documents(query)
         context = " ".join([doc for doc in retrieved_docs])
-        logger.debug(f"Context: {context}")
-        payload = {
-            "model": self.model_name,
-            "messages": [
-                {"role": "system", "content": f"Context: {context}"},
-                {"role": "user", "content": query},
-            ],
-            "temperature": 0.7,
-        }
-        logger.debug(f"payload: {payload}")
+        messages = [
+            {"role": "system", "content": f"Context: {context}"},
+            {"role": "user", "content": query},
+        ]
+        logger.debug(f"payload: {messages}")
         ollama_service = OllamaService()
         async for chunk in ollama_service.query(
-            messages=payload["messages"], model=payload["model"]
+            messages=messages,
+            model=self.model_name,
+            temperature=self.temperature,
         ):
             yield chunk
