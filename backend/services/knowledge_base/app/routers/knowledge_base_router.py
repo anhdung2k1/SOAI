@@ -1,13 +1,14 @@
 from fastapi import HTTPException, Query
 from fastapi import APIRouter
+from fastapi.responses import JSONResponse
 
 router = APIRouter()
 from services.knowledge_base_service import KnowledgeBaseService
-from models.response_models import QueryRequest, AddDocumentRequest
-from config.constants import DEFAULT_COLLECTION_NAME
+from models.response_models import QueryRequest, AddDocumentRequest, StandardResponse
+from config.constants import *
 
 
-@router.post("/documents/add/", status_code=201)
+@router.post("/documents/add/")
 async def add_document(
     request: AddDocumentRequest,
 ):
@@ -17,21 +18,34 @@ async def add_document(
         embedding_model=request.embedding_model,
     )
     if not result:
-        raise HTTPException(status_code=404, detail="Can't add document.")
-
-    return {"message": "Document added successfully"}
+        return JSONResponse(
+            content=StandardResponse(
+                status="error", message=MESSAGE_ADD_DOCUMENT_FAILED
+            ).dict(),
+            status_code=404,
+        )
+    return JSONResponse(
+        content=StandardResponse(
+            status="success", message=MESSAGE_ADD_DOCUMENT_SUCCESS
+        ).dict(),
+        status_code=200,
+    )
 
 
 @router.post("/documents/search/")
 async def search_knowledge_base(request: QueryRequest):
     """Searches for the most relevant knowledge based on user input."""
-    return {
-        "results": KnowledgeBaseService.search(
-            query=request.query,
-            collection_name=request.collection_name,
-            embedding_model=request.embedding_model,
-        )
-    }
+    return JSONResponse(
+        content=StandardResponse(
+            status="success",
+            data=KnowledgeBaseService.search(
+                query=request.query,
+                collection_name=request.collection_name,
+                embedding_model=request.embedding_model,
+            ),
+        ).dict(),
+        status_code=200,
+    )
 
 
 @router.get("/documents")
@@ -40,4 +54,10 @@ async def list_documents(
     limit: int = Query(100, alias="page_size"),
     collection_name: str = DEFAULT_COLLECTION_NAME,
 ):
-    return KnowledgeBaseService.retrieve(collection_name)
+    return JSONResponse(
+        content=StandardResponse(
+            status="success",
+            data=KnowledgeBaseService.retrieve(collection_name),
+        ).dict(),
+        status_code=200,
+    )

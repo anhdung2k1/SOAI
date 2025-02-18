@@ -24,5 +24,10 @@ docker compose build
 # Run
 docker compose up -d
 
+# Pull models
+docker exec -it soai_ollama  ollama pull deepseek-r1:1.5b
+docker exec -it soai_ollama  ollama pull llama3.2
+docker exec -it soai_ollama  ollama pull llama3.2:1b
+
 # Access to API docs
 https://127.0.0.1/api/v1/chat/docs

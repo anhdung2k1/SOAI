@@ -24,6 +24,8 @@ ARG COMMIT
 ARG APP_VERSION
 ARG BUILD_TIME
 
+RUN mkdir -p /.cache/huggingface && chmod -R 777 /.cache/huggingface
+
 LABEL \
     soai.app.commit=$COMMIT \
     soai.app.version=$APP_VERSION \
@@ -36,4 +38,4 @@ EXPOSE 8000
 USER ${USER_ID}
 
 # Command to run the FastAPI app using uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--log-level", "debug"]

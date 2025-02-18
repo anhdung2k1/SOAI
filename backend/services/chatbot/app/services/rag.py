@@ -1,6 +1,7 @@
 import os
 import uuid
 from typing import List
+import aiohttp
 from qdrant_client import QdrantClient
 from qdrant_client.http.models import Distance, VectorParams, PointStruct
 from langchain_community.embeddings import HuggingFaceEmbeddings
@@ -19,44 +20,6 @@ class QdrantDB:
     def __init__(self, collection_name: str = COLLECTION_NAME):
         self.collection_name = collection_name
         self.client = QdrantClient("qdrant", port=6333)
-        self._initialize_collection()
-
-    def _initialize_collection(self):
-        """Ensures the collection exists, or creates it if needed."""
-        if not self.client.collection_exists(self.collection_name):
-            self.client.create_collection(
-                collection_name=self.collection_name,
-                vectors_config=VectorParams(size=VECTOR_DIM, distance=Distance.COSINE),
-            )
-
-    def insert_documents(self, texts: List[str], embeddings: List[List[float]]):
-        """Inserts multiple documents into Qdrant."""
-        points = [
-            PointStruct(
-                id=str(uuid.uuid4()),
-                vector=embedding,
-                payload={"text": text},
-            )
-            for text, embedding in zip(texts, embeddings)
-        ]
-        self.client.upsert(collection_name=self.collection_name, points=points)
-
-    def retrieve_documents(self, query: str, retriever):
-        """Retrieves relevant documents for a query."""
-        return retriever.get_relevant_documents(query)
-
-
-class EmbeddingModel:
-    """Handles text embedding generation using Hugging Face models."""
-
-    def __init__(self):
-        self.model = HuggingFaceEmbeddings(
-            model_name="sentence-transformers/all-MiniLM-L6-v2"
-        )
-
-    def generate_embeddings(self, texts: List[str]) -> List[List[float]]:
-        """Generates embeddings for multiple texts."""
-        return self.model.embed_documents(texts)
 
 
 class RAGPipeline:
@@ -77,25 +40,41 @@ class RAGPipeline:
             embeddings=self.embedding_model.model,
         )
         self.retriever = self.vector_store.as_retriever()
-        self.qa_chain = self._initialize_qa_chain()
+    #     self.qa_chain = self._initialize_qa_chain()
 
-    def _initialize_qa_chain(self):
-        """Creates a custom prompt and initializes the QA retrieval chain."""
-        prompt_template = PromptTemplate(
-            input_variables=["context", "question"],
-            template="Context: {context}\n\nQuestion: {question}\n\nAnswer:",
-        )
-        return load_qa_chain(self.llm, chain_type="stuff", prompt=prompt_template)
+    # def _initialize_qa_chain(self):
+    #     """Creates a custom prompt and initializes the QA retrieval chain."""
+    #     prompt_template = PromptTemplate(
+    #         input_variables=["context", "question"],
+    #         template="Context: {context}\n\nQuestion: {question}\n\nAnswer:",
+    #     )
+    #     return load_qa_chain(self.llm, chain_type="stuff", prompt=prompt_template)
 
-    def add_documents(self, texts: List[str]):
-        """Embeds and stores documents in Qdrant."""
-        embeddings = self.embedding_model.generate_embeddings(texts)
-        self.vector_db.insert_documents(texts, embeddings)
+    # def add_documents(self, texts: List[str]):
+    #     """Embeds and stores documents in Qdrant."""
+    #     embeddings = self.embedding_model.generate_embeddings(texts)
+    #     self.vector_db.insert_documents(texts, embeddings)
 
-    def ask_question(self, query: str):
-        """Retrieves relevant documents and generates an answer using the LLM."""
+    async def ask_question(self, query: str):
+        """Retrieves relevant documents and generates an answer using the Ollama API."""
         retrieved_docs = self.vector_db.retrieve_documents(query, self.retriever)
-        return self.qa_chain.run(input_documents=retrieved_docs, question=query)
+        context = " ".join([doc["text"] for doc in retrieved_docs])
+
+        payload = {
+            "model": "gpt-4o-mini",  # Replace with your model name
+            "messages": [
+                {"role": "system", "content": f"Context: {context}"},
+                {"role": "user", "content": query}
+            ],
+            "temperature": 0.7
+        }
+
+        async with aiohttp.ClientSession() as session:
+            async with session.post(f"{self.ollama_url}/api/chat", json=payload) as response:
+                if response.status != 200:
+                    return "Failed to retrieve answer from Ollama API"
+                data = await response.json()
+                return data.get("message", {}).get("content", "No answer found")
 
 
 # # ✅ Step 1: Initialize Components

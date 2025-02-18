@@ -1,4 +1,4 @@
-from typing import List
+from typing import List,Any, Optional
 from pydantic import BaseModel, validator
 from config.constants import DEFAULT_COLLECTION_NAME, DEFAULT_EMBEDDING_MODEL
 
@@ -20,3 +20,9 @@ class AddDocumentRequest(BaseModel):
     texts: List[str]
     collection_name: str = DEFAULT_COLLECTION_NAME
     embedding_model: str = DEFAULT_EMBEDDING_MODEL
+
+class StandardResponse(BaseModel):
+    status: str
+    message: Optional[str] = None
+    data: Optional[Any] = None
+    error: Optional[Any] = None

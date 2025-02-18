@@ -1,15 +1,17 @@
 import logging
-from services.ollama_llm import OllamaLLM
+from services.ollama_service import OllamaService
 
 logger = logging.getLogger(__file__)
 
 
 class ChatBotService:
-    def __init__(self):
-        pass
+    @staticmethod
+    def list_models():
+        ollama_service = OllamaService()
+        return ollama_service.list_models()
 
-    def query(message: str, model: str = "llama3.2"):
-        ollama_llm = OllamaLLM()
-        response = ollama_llm.invoke(message, model)
-        logger.info(response)
-        return response
+    @staticmethod
+    async def query(messages, model, temperature):
+        ollama_service = OllamaService()
+        async for chunk in ollama_service.query(messages, model, temperature):
+            yield chunk

@@ -2,6 +2,10 @@ from fastapi import FastAPI
 from routers import router
 from fastapi.middleware.cors import CORSMiddleware
 from config.service_registration import ServiceRegistration
+from config.logging import LoggingConfig
+
+LoggingConfig.setup_logging()
+
 app = FastAPI(
     title="Endava Chatbot API",
     version="1.0.0",

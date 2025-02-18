@@ -2,10 +2,11 @@ from io import BytesIO
 import os
 import shutil
 import logging
-from fastapi import APIRouter, File, UploadFile, HTTPException, BackgroundTasks
+from fastapi import APIRouter, File, UploadFile, BackgroundTasks
 from fastapi.responses import JSONResponse
 from config.constants import *
 from services.process_file import ProcessFile
+from models.response_models import StandardResponse
 
 router = APIRouter()
 
@@ -20,7 +21,10 @@ async def upload_file(
         file_extension = file.filename.split(".")[-1].lower()
         if file_extension not in SUPPORT_FILE_EXTENSIONS:
             return JSONResponse(
-                {"message": f"Don't support {file_extension}"}, status_code=400
+                content=StandardResponse(
+                    status="error", message=f"Don't support {file_extension}"
+                ).dict(),
+                status_code=400,
             )
         file_path = os.path.join(UPLOAD_FOLDER, file.filename)
 
@@ -30,9 +34,19 @@ async def upload_file(
 
         # Run processing in the background
         background_tasks.add_task(ProcessFile.process_file, file_path, file_extension)
-        return {
-            "message": f"File {file.filename} is uploaded successfully",
-        }
+        return JSONResponse(
+            content=StandardResponse(
+                status="success",
+                message=f"File {file.filename} is uploaded successfully",
+            ).dict(),
+            status_code=400,
+        )
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error uploading file: {str(e)}")
+        return JSONResponse(
+            content=StandardResponse(
+                status="error", message="Failed to upload", data={str(e)}
+            ).dict(),
+            status_code=500,
+        )
