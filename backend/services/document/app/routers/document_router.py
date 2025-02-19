@@ -39,7 +39,7 @@ async def upload_file(
                 status="success",
                 message=f"File {file.filename} is uploaded successfully",
             ).dict(),
-            status_code=400,
+            status_code=200,
         )
 
     except Exception as e:
