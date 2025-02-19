@@ -46,7 +46,7 @@ class RAGService:
     def retrieve_documents(self, query: str):
         """Retrieves relevant documents from Qdrant."""
         try:
-            retrieved_docs = self.retriever.invoke(query)
+            retrieved_docs = self.retriever.invoke(query) or []
 
             # Debug: Print retrieved documents
             logger.debug(f"Retrieved {retrieved_docs} documents.")

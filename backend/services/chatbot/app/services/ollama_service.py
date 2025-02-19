@@ -22,7 +22,7 @@ class OllamaService:
         """
         Generator function to stream responses from Ollama API
         """
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(timeout=900.0) as client:
             async with client.stream(
                 "POST",
                 self.OLLAMA_URL + "/api/chat",

@@ -2,6 +2,7 @@ version: "3"
 
 services:
   qdrant:
+    image: soai_qdrant:latest
     container_name: soai_qdrant
     build:
       context: ./backend/services/qdrant
@@ -18,6 +19,8 @@ services:
     networks:
       - soai-net
   document:
+    image: soai_document:latest
+    container_name: soai_document
     build:
       context: ./backend/services/document
       dockerfile: ./Dockerfile
@@ -25,7 +28,7 @@ services:
       - CONSUL_HOST=consul
       - SERVICE_NAME=document-service
       - SERVICE_PORT=8002
-    container_name: soai_document
+    
     restart: always
     networks:
       - soai-net
@@ -33,6 +36,8 @@ services:
       - ./backend/services/document/app:/app
       - uploads:/uploads
   knowledge_base:
+    image: soai_knowledge_base:latest
+    container_name: soai_knowledge_base
     build:
       context: ./backend/services/knowledge_base
       dockerfile: ./Dockerfile
@@ -40,7 +45,6 @@ services:
       - CONSUL_HOST=consul
       - SERVICE_NAME=knowledge-base-service
       - SERVICE_PORT=8001
-    container_name: soai_knowledge_base
     restart: always
     networks:
       - soai-net
@@ -91,8 +95,8 @@ services:
       - nginx_conf:/etc/nginx/ssl/certs
 
   ollama:
-    container_name: soai_ollama
     image: soai_ollama:latest
+    container_name: soai_ollama
     build:
       context: ./backend/services/ollama
     environment:
@@ -108,7 +112,6 @@ volumes:
   qdrant_data:
   uploads:
   huggingface:
-
 
 networks:
   soai-net:
