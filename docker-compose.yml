@@ -28,7 +28,7 @@ services:
       - CONSUL_HOST=consul
       - SERVICE_NAME=document-service
       - SERVICE_PORT=8002
-    
+
     restart: always
     networks:
       - soai-net
@@ -105,13 +105,29 @@ services:
       - soai-net
     volumes:
       - ollama:/home/soai-ollama/.ollama:rw
-
+  frontend:
+    container_name: soai_frontend
+    image: soai_frontend:latest
+    build:
+      context: ./web
+      dockerfile: ./Dockerfile
+    environment:
+      - WDS_SOCKET_PORT=0
+    stdin_open: true
+    networks:
+      - soai-net
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./web:/frontend
+    command: sh -c "/frontend/loader.sh"
 volumes:
   nginx_conf:
   ollama:
   qdrant_data:
   uploads:
   huggingface:
+
 
 networks:
   soai-net:

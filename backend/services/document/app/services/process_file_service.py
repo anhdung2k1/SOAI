@@ -1,14 +1,14 @@
 import logging
 import requests
 from io import BytesIO
-from services.parser import get_parser
+from services.document_parser_service import get_parser
 
 logger = logging.getLogger(__file__)
 
 KNOWLEDGE_BASE_URL = "http://knowledge_base:8001/api/v1/knowledge-base/documents"
 
 
-class ProcessFile:
+class ProcessFileService:
     @staticmethod
     def process_file(file_path: str, file_extension: str):
         """Process the file in the background."""
@@ -26,7 +26,7 @@ class ProcessFile:
             response = requests.post(
                 KNOWLEDGE_BASE_URL + "/add", json={"texts": list_extracted_texts}
             )
-            if response.status_code == 201:
+            if response.status_code == 200:
                 logger.info("Data sent to knowledge base successfully.")
             else:
                 logger.error(

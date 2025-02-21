@@ -72,13 +72,13 @@ class QdrantDB:
 
     def add(self, texts: list[str], embedding_model: str):
         """Adds multiple documents into Qdrant with embeddings."""
-        if not texts or not all(text.strip() for text in texts):
+        if not texts or not any(text.strip() for text in texts):
+            logger.error("No text found in the request.")
             return False
 
         try:
             embedding = Embedding(embedding_model).get_embedding_model()
             embeddings = embedding.embed_documents(texts)
-
             points = [
                 PointStruct(
                     id=str(uuid.uuid4()),

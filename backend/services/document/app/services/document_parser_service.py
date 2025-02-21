@@ -1,8 +1,15 @@
+import logging
 from typing import List
 from io import BytesIO
 import pdfplumber
 from docx import Document
 import pandas as pd
+import nltk
+from nltk.tokenize import sent_tokenize
+
+nltk.download("punkt")
+
+logger = logging.getLogger(__file__)
 
 
 class DocumentParser:
@@ -11,12 +18,22 @@ class DocumentParser:
     def extract_text(self, file: BytesIO) -> List[str]:
         raise NotImplementedError("Subclasses must implement extract_text method")
 
-    def split_into_chunks(self, text: str, lines_per_chunk: int = 50) -> List[str]:
-        lines = text.split("\n")
-        return [
-            "\n".join(lines[i : i + lines_per_chunk])
-            for i in range(0, len(lines), lines_per_chunk)
-        ]
+    def split_into_chunks(self, text: str, max_chunk_size: int = 1000) -> List[str]:
+        sentences = sent_tokenize(text)
+        chunks = []
+        current_chunk = []
+
+        for sentence in sentences:
+            if len(" ".join(current_chunk + [sentence])) <= max_chunk_size:
+                current_chunk.append(sentence)
+            else:
+                chunks.append(" ".join(current_chunk))
+                current_chunk = [sentence]
+
+        if current_chunk:
+            chunks.append(" ".join(current_chunk))
+        logger.debug(f"Split text into {chunks} chunks")
+        return chunks
 
 
 class PDFParser(DocumentParser):
