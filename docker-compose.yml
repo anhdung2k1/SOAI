@@ -120,7 +120,6 @@ services:
       - "3000:3000"
     volumes:
       - ./web:/frontend
-    command: sh -c "/frontend/loader.sh"
   flowise:
     container_name: soai_flowise
     image: soai_flowise:latest

@@ -160,6 +160,8 @@ build_image() {
     test -n "$VAS_GIT" || die "Not set [VAS_GIT]"
     test -n "$__name" || die "Module name required"
     image_name=soai-$__name
+    # default target_dir
+    target_dir="$VAS_GIT/backend/services/$__name"
 
     version=$(get_version)
 
@@ -169,9 +171,12 @@ build_image() {
         $vas generate_certificates --target=$WEBSERVER_SSL_DIR
     fi
 
-    #remove the docker images before create new ones
-    docker build $VAS_GIT/backend/services/$__name \
-            --file $VAS_GIT/backend/services/$__name/Dockerfile \
+    if [ $__name == "web" ]; then
+        target_dir="$VAS_GIT/$__name"
+    fi
+
+    docker build $target_dir \
+            --file $target_dir/Dockerfile \
             --tag "$DOCKER_REGISTRY/$image_name:$version" \
             --build-arg COMMIT=$git_commit \
             --build-arg APP_VERSION=$version \
