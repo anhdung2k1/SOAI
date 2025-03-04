@@ -44,10 +44,13 @@ package-helm:
 
 image: 	image-chatbot \
 		image-consul \
-		image-ollama \
-		image-webserver \
+		image-document \
+		image-flowise \
 		image-knowledge_base \
-		image-qdrant
+		image-ollama \
+		image-qdrant \
+		image-webserver \
+		image-web
 
 image-chatbot:
 	@echo "build chatbot Image"
@@ -55,26 +58,37 @@ image-chatbot:
 image-consul:
 	@echo "build consul Image"
 	$(TOP_DIR)/vas.sh build_image --name=consul
-image-ollama:
-	@echo "build ollama Image"
-	$(TOP_DIR)/vas.sh build_image --name=ollama
-image-webserver:
-	@echo "build webserver Image"
-	$(TOP_DIR)/vas.sh build_image --name=webserver
+image-document:
+	@echo "build document Image"
+	$(TOP_DIR)/vas.sh build_image --name=document
+image-flowise:
+	@echo "build flowise Image"
+	$(TOP_DIR)/vas.sh build_image --name=flowise
 image-knowledge_base:
 	@echo "build knowledge_base Image"
 	$(TOP_DIR)/vas.sh build_image --name=knowledge_base
+image-ollama:
+	@echo "build ollama Image"
+	$(TOP_DIR)/vas.sh build_image --name=ollama
 image-qdrant:
 	@echo "build qdrant Image"
 	$(TOP_DIR)/vas.sh build_image --name=qdrant
+image-webserver:
+	@echo "build webserver Image"
+	$(TOP_DIR)/vas.sh build_image --name=webserver
+image-web:
+	@echo "build web frontend Image"
+	$(TOP_DIR)/vas.sh build_image --name=web
 
 push: 	push-chatbot \
 		push-consul \
-		push-ollama \
-		push-webserver \
+		push-document \
+		push-flowise \
 		push-knowledge_base \
+		push-ollama \
 		push-qdrant \
-		push-helm
+		push-webserver \
+		push-web
 
 push-chatbot:
 	@echo "push image-chatbot"
@@ -82,18 +96,27 @@ push-chatbot:
 push-consul:
 	@echo "push image-consul"
 	$(TOP_DIR)/vas.sh push_image --name=consul
-push-ollama:
-	@echo "push image-ollama"
-	$(TOP_DIR)/vas.sh push_image --name=ollama
-push-webserver:
-	@echo "push image-webserver"
-	$(TOP_DIR)/vas.sh push_image --name=webserver
+push-document:
+	@echo "push image-document"
+	$(TOP_DIR)/vas.sh push_image --name=document
+push-flowise:
+	@echo "push image-flowise"
+	$(TOP_DIR)/vas.sh push_image --name=flowise
 push-knowledge_base:
 	@echo "push image-knowledge_base"
 	$(TOP_DIR)/vas.sh push_image --name=knowledge_base
+push-ollama:
+	@echo "push image-ollama"
+	$(TOP_DIR)/vas.sh push_image --name=ollama
 push-qdrant:
 	@echo "push image-qdrant"
 	$(TOP_DIR)/vas.sh push_image --name=qdrant
+push-webserver:
+	@echo "push image-webserver"
+	$(TOP_DIR)/vas.sh push_image --name=webserver
+push-web:
+	@echo "push image-web"
+	$(TOP_DIR)/vas.sh push_image --name=web
 push-helm:
 	@echo "push helm chart"
 	$(TOP_DIR)/vas.sh push_helm

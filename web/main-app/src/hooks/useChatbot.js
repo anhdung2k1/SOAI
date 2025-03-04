@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { sendMessageToAPI, getSupportedModels } from "../api/chatbotApi";
-import { runModel } from "../api/runModelApi";
+
 const useChatbot = () => {
   const [messages, setMessages] = useState([
     { type: "bot", text: "Hello! How can I assist you today?" }

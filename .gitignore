@@ -19,7 +19,7 @@ backend/services/chatbot/app/models/__pycache__
 backend/services/chatbot/app/routers/__pycache__
 backend/services/chatbot/app/services/__pycache__
 
-
+build/
 # Compiled Dynamic libraries
 *.so
 *.dylib
