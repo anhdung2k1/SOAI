@@ -31,3 +31,6 @@ docker exec -it soai_ollama  ollama pull llama3.2:1b
 
 # Access to API docs
 https://127.0.0.1/api/v1/chat/docs
+
+# Access to FrontEnd
+https://127.0.0.1
