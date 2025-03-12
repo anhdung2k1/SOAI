@@ -58,24 +58,24 @@ $ curl -X DELETE http://localhost:90908/api/user/1
 ## User APIs
 | Path               | Method |
 |--------------------|--------|
-| `/api/users`      | GET    |
-| `/api/users/:id`  | GET    |
-| `/api/users/search` | GET  |
-| `/api/users/find`   | GET  |
-| `/api/users`      | POST   |
-| `/api/users/:id`  | PATCH  |
-| `/api/users/:id`  | DELETE |
+| `/api/v1/users`      | GET    |
+| `/api/v1/users/:id`  | GET    |
+| `/api/v1/users/search` | GET  |
+| `/api/v1/users/find`   | GET  |
+| `/api/v1/users`      | POST   |
+| `/api/v1/users/:id`  | PATCH  |
+| `/api/v1/users/:id`  | DELETE |
 
 ## Account APIs
 | Path                   | Method |
 |------------------------|--------|
-| `/api/account/signin`  | POST   |
-| `/api/account/signup`  | POST   |
-| `/api/accounts`        | GET    |
-| `/api/account/:id`     | GET    |
-| `/api/account/:userName` | GET  |
-| `/api/accounts/:id`    | PUT    |
-| `/api/accounts/:id`    | DELETE |
+| `/api/v1/account/signin`  | POST   |
+| `/api/v1/account/signup`  | POST   |
+| `/api/v1/accounts`        | GET    |
+| `/api/v1/account/:id`     | GET    |
+| `/api/v1/account/:userName` | GET  |
+| `/api/v1/accounts/:id`    | PUT    |
+| `/api/v1/accounts/:id`    | DELETE |
 
 ## Swagger docs
 All the API docs visible in
