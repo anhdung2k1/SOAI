@@ -58,13 +58,13 @@ $ curl -X DELETE http://localhost:90908/api/user/1
 ## User APIs
 | Path               | Method |
 |--------------------|--------|
-| `/api/v1/users`      | GET    |
-| `/api/v1/users/:id`  | GET    |
-| `/api/v1/users/search` | GET  |
-| `/api/v1/users/find`   | GET  |
-| `/api/v1/users`      | POST   |
-| `/api/v1/users/:id`  | PATCH  |
-| `/api/v1/users/:id`  | DELETE |
+| `/api/v1/authentications/users`      | GET    |
+| `/api/v1/authentications/users/:id`  | GET    |
+| `/api/v1/authentications/users/search` | GET  |
+| `/api/v1/authentications/users/find`   | GET  |
+| `/api/v1/authentications/users`      | POST   |
+| `/api/v1/authentications/users/:id`  | PATCH  |
+| `/api/v1/authentications/users/:id`  | DELETE |
 
 ## Account APIs
 | Path                   | Method |
