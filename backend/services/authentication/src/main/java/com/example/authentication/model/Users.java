@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Users {
-    private Long user_id;
+    private Long userId;
     private String userName;
-    private Date birth_day;
+    private Date birthDate;
     private String address;
     private String gender;
     private LocalDateTime createAt;

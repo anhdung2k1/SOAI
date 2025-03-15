@@ -2,6 +2,7 @@ package com.example.authentication.model;
 
 import java.time.LocalDateTime;
 
+import com.example.authentication.entity.Role;
 import com.example.authentication.entity.UserEntity;
 
 import lombok.Data;
@@ -12,11 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Accounts {
-    private Long acc_id;
+    private Long accId;
     private String userName;
     private String password;
     private Long phoneNumber;
     private UserEntity users;
+    private Role role = Role.USER;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
 }

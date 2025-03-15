@@ -56,17 +56,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Map<String, String>> getAllUsers() {
+    public List<Users> getAllUsers() {
         logger.info("Fetching all users");
-        List<Map<String, String>> users = userRepository.findAll().stream()
-                .map(userEntity -> Map.of("name", userEntity.getUserName()))
+        List<Users> users = userRepository.findAll().stream()
+                .map(userMapper::toDTO)
                 .collect(Collectors.toList());
         logger.info("Retrieved {} users", users.size());
         return users;
     }
 
     @Override
-    public Map<String, String> getUserById(Long id) {
+    public Users getUserById(Long id) {
         logger.info("Fetching user with ID: {}", id);
         var userEntity = userRepository.findById(id)
                 .orElseThrow(() -> {
@@ -75,23 +75,14 @@ public class UserServiceImpl implements UserService {
                 });
 
         logger.info("User found: {}", userEntity);
-        return Map.of(
-                "userName", userEntity.getUserName(),
-                "address", userEntity.getAddress(),
-                "gender", userEntity.getGender()
-        );
+        return userMapper.toDTO(userEntity);
     }
 
     @Override
-    public List<Map<String, Object>> getUserByName(String userName) {
+    public List<Users> getUserByName(String userName) {
         logger.info("Fetching users with name containing: {}", userName);
-        List<Map<String, Object>> users = userRepository.findByUserNameContains(userName).stream()
-                .map(userEntity -> {
-                    Map<String, Object> userMap = new HashMap<>();
-                    userMap.put("userId", userEntity.getUser_id());
-                    userMap.put("userName", userEntity.getUserName());
-                    return userMap;
-                })
+        List<Users> users = userRepository.findByUserNameContains(userName).stream()
+                .map(userMapper::toDTO)
                 .collect(Collectors.toList());
         logger.info("Found {} users with name containing: {}", users.size(), userName);
         return users;
@@ -106,7 +97,7 @@ public class UserServiceImpl implements UserService {
                     return new RuntimeException("User not found with username: " + userName);
                 });
         logger.info("User found: {}", userEntity);
-        return Map.of("user_id", userEntity.getUser_id());
+        return Map.of("userId", userEntity.getUserId());
     }
 
     @Override
@@ -119,7 +110,7 @@ public class UserServiceImpl implements UserService {
                 });
         
         userEntity.setAddress(user.getAddress());
-        userEntity.setBirth_day(user.getBirth_day());
+        userEntity.setBirthDate(user.getBirthDate());
         userEntity.setGender(user.getGender());
         userEntity.setUpdateAt(LocalDateTime.now());
 

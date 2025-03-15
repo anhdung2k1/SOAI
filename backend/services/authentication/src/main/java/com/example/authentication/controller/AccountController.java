@@ -1,7 +1,9 @@
 package com.example.authentication.controller;
 
 import java.util.List;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.authentication.entity.AuthenticationResponse;
@@ -17,44 +19,49 @@ public class AccountController {
 
     private final AccountService accountService;
 
-    // Sign Up new account
+    // ✅ Public: Sign Up (Anyone can create an account)
     @PostMapping("/signup")
     public ResponseEntity<AuthenticationResponse> createAccount(@RequestBody Accounts account) throws Exception { 
         return ResponseEntity.ok(accountService.createAccount(account));
     }
 
-    // Sign In account
+    // ✅ Public: Sign In (Anyone can log in)
     @PostMapping("/signin")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody Accounts account) {
         return ResponseEntity.ok(accountService.authenticate(account));
     }
 
-    // Get all accounts
+    // Admin Only: Get All Accounts
     @GetMapping("/accounts")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<Accounts>> getAllAccounts() {
         return ResponseEntity.ok(accountService.getAllAccounts());
     }
 
-    // Get account by ID
+    // Admin Only: Get Account by ID
     @GetMapping("/accounts/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Accounts> getAccountById(@PathVariable Long id) {
         return ResponseEntity.ok(accountService.getAccountsById(id));
     }
 
-    // Get account ID by username
+    // Admin Only: Get Account ID by Username
     @GetMapping("/accounts/search")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Long> getAccIdByUserName(@RequestParam String userName) {
         return ResponseEntity.ok(accountService.getAccIdByUserName(userName));
     }
 
-    // Update account password
+    // Users Can Update Their Own Password, Admins Can Update Any
     @PutMapping("/accounts/{id}")
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public ResponseEntity<Accounts> updateAccountPassword(@PathVariable Long id, @RequestBody Accounts account) {
         return ResponseEntity.ok(accountService.updatePasswordAccount(id, account));
     }
 
-    // Delete account
+    // Admin Only: Delete an Account
     @DeleteMapping("/accounts/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Boolean> deleteAccount(@PathVariable Long id) {
         return ResponseEntity.ok(accountService.deleteAccount(id));
     }

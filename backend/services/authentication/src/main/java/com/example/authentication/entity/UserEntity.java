@@ -31,14 +31,14 @@ public class UserEntity implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID", nullable = false)
-    private Long user_id;
+    private Long userId;
 
     @Column(name = "USER_NAME", nullable = false)
     private String userName;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "BIRTH_DAY")
-    private Date birth_day;
+    @Column(name = "BIRTH_DATE")
+    private Date birthDate;
 
     @Column(name = "ADDRESS")
     private String address;

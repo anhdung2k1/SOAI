@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.example.authentication.config.JwtService;
 import com.example.authentication.entity.AccountEntity;
 import com.example.authentication.entity.AuthenticationResponse;
+import com.example.authentication.entity.Role;
 import com.example.authentication.entity.UserEntity;
 import com.example.authentication.model.Accounts;
 import com.example.authentication.model.mapper.AccountMapper;
@@ -54,38 +55,61 @@ public class AccountServiceImpl implements AccountService {
                 });
 
         String jwtToken = jwtService.generateToken(account);
+        String role = account.getRole().name();
         logger.info("Authentication successful for user: {}", accounts.getUserName());
-        return AuthenticationResponse.builder().token(jwtToken).build();
+        return AuthenticationResponse.builder()
+            .token(jwtToken)
+            .expiresAt(jwtService.getTokenExpirationTime())
+            .tokenType("Bearer")
+            .role(role)
+            .build();
     }
 
     @Override
     public AuthenticationResponse createAccount(Accounts accounts) {
         logger.info("Creating account for user: {}", accounts.getUserName());
+    
         if (accountRepository.findByUserName(accounts.getUserName()).isPresent()) {
             logger.error("User already exists: {}", accounts.getUserName());
             throw new RuntimeException("User already exists");
         }
 
+        if (accounts.getRole() == null || (accounts.getRole() != Role.ADMIN && accounts.getRole() != Role.USER)) {
+            logger.warn("Invalid role [ADMIN, USER] provided for user {}. Defaulting to USER.", accounts.getUserName());
+            accounts.setRole(Role.USER);
+        }
+    
+        // Encrypt password
         String encodedPassword = passwordEncoder.encode(accounts.getPassword());
         accounts.setPassword(encodedPassword);
         accounts.setCreateAt(LocalDateTime.now());
         accounts.setUpdateAt(LocalDateTime.now());
-
-        // Create new User when adding a new account
-        UserEntity user = new UserEntity(accounts.getUserName());
+    
+        // 1. Create and Save `UserEntity` First
+        UserEntity user = new UserEntity();
+        user.setUserName(accounts.getUserName());
         user.setAddress("UNKNOWN");
         user.setGender("UNKNOWN");
-        userRepository.save(user);
+        user = userRepository.save(user); // Save the user and assign it back
+    
+        // 2. Set the saved `UserEntity` in `Accounts`
         accounts.setUsers(user);
-
-        // Convert DTO to Entity
+    
+        // 3. Convert DTO to Entity & Save AccountEntity
         AccountEntity accountEntity = accountMapper.toEntity(accounts);
-        accountRepository.save(accountEntity);
-
+        accountEntity = accountRepository.save(accountEntity);
+    
+        // 4. Generate JWT Token
         String jwtToken = jwtService.generateToken(accountEntity);
+        String role = accountEntity.getRole().name();
         logger.info("Account created successfully for user: {}", accounts.getUserName());
-
-        return AuthenticationResponse.builder().token(jwtToken).build();
+    
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .expiresAt(jwtService.getTokenExpirationTime())
+                .tokenType("Bearer")
+                .role(role)
+                .build();
     }
 
     @Override
@@ -136,8 +160,8 @@ public class AccountServiceImpl implements AccountService {
                     return new RuntimeException("Account not found");
                 });
 
-        logger.info("Account ID found for username {}: {}", userName, accountEntity.getAcc_id());
-        return accountEntity.getAcc_id();
+        logger.info("Account ID found for username {}: {}", userName, accountEntity.getAccId());
+        return accountEntity.getAccId();
     }
 
     @Override
