@@ -10,9 +10,5 @@ class BaseAIService(ABC):
         pass
 
     @abstractmethod
-    def summarize_history(self):
-        pass
-
-    @abstractmethod
     def get_available_models(self):
         pass

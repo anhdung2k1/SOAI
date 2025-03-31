@@ -38,13 +38,6 @@ class GeminiAIService(BaseAIService):
             logger.error(f"Error in Gemini chat: {e}")
             return "Error querying Gemini AI."
 
-    def summarize_history(self):
-        """
-        Summarizes old chat history to reduce token usage while maintaining context.
-        """
-        logger.info("Don't support summarizing history for Gemini AI")
-        return None
-
     def get_available_models(self):
         """
         Returns a list of available Gemini models.
@@ -61,11 +54,3 @@ class GeminiAIService(BaseAIService):
         except Exception as e:
             logger.exception(e)
         return []
-
-    def speech_to_text(self, file_path):
-        logger.error("Speech to text not supported by Gemini.")
-        return None
-
-    def text_to_speech(self, text, voice):
-        logger.error("Text to speech not supported by Gemini")
-        return None

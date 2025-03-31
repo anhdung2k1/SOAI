@@ -98,16 +98,3 @@ class OllamaService(BaseAIService):
             logger.exception(e)
         return []
 
-    def summarize_history(self):
-        """
-        Summarizes old chat history to reduce token usage while maintaining context.
-        """
-        logger.error("Summarization not implemented for Ollama service.")
-        return None
-    def speech_to_text(self, file_path):
-        logger.error("Speech to text not implemented for Ollama service.")
-        return None
-
-    def text_to_speech(self, text, voice):
-        logger.error("Text to speech not implemented for Ollama service.")
-        return None

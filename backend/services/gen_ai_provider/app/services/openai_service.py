@@ -34,13 +34,6 @@ class OpenAIService(BaseAIService):
 
         return response.choices[0].message.content
 
-    def summarize_history(self):
-        """
-        Summarizes old chat history to reduce token usage while maintaining context.
-        """
-        logger.info("Don't support summarizing history for OpenAI API")
-        return None
-
     def get_available_models(self):
         """
         Returns a list of available OpenAI models.

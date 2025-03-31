@@ -35,13 +35,6 @@ class DeepSeekAIService(BaseAIService):
             logger.error(f"DeepSeek chat error: {e}")
             return "Error querying DeepSeek model."
 
-    def summarize_history(self):
-        """
-        Summarizes conversation history using the model.
-        """
-        logger.info("Don't support summarizing history for DeepSeek API")
-        return None
-
     def get_available_models(self):
         """
         Returns a list of DeepSeek models (manually defined since listing is not supported).

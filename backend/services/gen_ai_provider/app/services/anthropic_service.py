@@ -26,10 +26,6 @@ class AnthropicAIService(BaseAIService):
             logger.error(f"Anthropic chat error: {e}")
             return "Error querying Claude."
 
-    def summarize_history(self):
-        logger.info("Don't support summarizing history for Anthropic API")
-        return None
-
     def get_available_models(self):
         return [
             {"name": "claude-3-opus", "model": "claude-3-opus-20240229"},
