@@ -161,8 +161,8 @@ services:
       - OLLAMA_MODEL_PATH=/home/soai-ollama/.ollama/models
     networks:
       - soai-net
-    # ports:
-    #   - "11434:11434"
+    ports:
+      - "11434:11434"
     volumes:
       - ollama:/home/soai-ollama/.ollama:rw
   frontend:
