@@ -51,54 +51,6 @@ services:
     depends_on:
       - mysql
 
-  qdrant:
-    image: soai_qdrant:latest
-    container_name: soai_qdrant
-    build:
-      context: ./backend/services/qdrant
-      dockerfile: ./Dockerfile
-    ports:
-      - "6333:6333" # API port
-      - "8080:8080" # Web UI (optional)
-    volumes:
-      - qdrant_data:/qdrant/storage
-    environment:
-      QDRANT__LIMITS__HNSW_MAX_POINTS_PER_INDEX: 1000000
-      QDRANT__LIMITS__UPSERT_MAX_POINTS: 1000000
-    restart: always
-    networks:
-      - soai-net
-  document:
-    image: soai_document:latest
-    container_name: soai_document
-    build:
-      context: ./backend/services/document
-      dockerfile: ./Dockerfile
-    environment:
-      - CONSUL_HOST=consul
-      - SERVICE_NAME=document-service
-      - SERVICE_PORT=8002
-    restart: always
-    networks:
-      - soai-net
-    volumes:
-      - ./backend/services/document/app:/app
-      - uploads:/uploads
-  knowledge_base:
-    image: soai_knowledge_base:latest
-    container_name: soai_knowledge_base
-    build:
-      context: ./backend/services/knowledge_base
-      dockerfile: ./Dockerfile
-    environment:
-      - CONSUL_HOST=consul
-      - SERVICE_NAME=knowledge-base-service
-      - SERVICE_PORT=8001
-    restart: always
-    networks:
-      - soai-net
-    volumes:
-      - ./backend/services/knowledge_base/app:/app
   consul:
     image: soai_consul:latest
     container_name: soai_consul
@@ -112,31 +64,6 @@ services:
     restart: always
     networks:
       - soai-net
-  chatbot:
-    container_name: soai_chatbot
-    image: soai_chatbot:latest
-    build:
-      context: ./backend/services/chatbot
-      dockerfile: ./Dockerfile
-    environment:
-      - CONSUL_HOST=consul
-      - OLLAMA_HOST=ollama
-      - OLLAMA_PORT=11434
-      - QDRANT_HOST=qdrant
-      - QDRANT_PORT=6333
-      - SERVICE_NAME=chatbot-service
-      - SERVICE_HOST=chatbot
-      - SERVICE_PORT=8000
-    restart: always
-    networks:
-      - soai-net
-    volumes:
-      - ./backend/services/chatbot/app:/app
-      - huggingface:/.cache/huggingface
-    depends_on:
-      - authentication # For JWT validation
-      - consul # For health check
-      - ollama # For pulling ollama model
 
   nginx:
     container_name: soai_nginx
@@ -149,20 +76,6 @@ services:
       - soai-net
     ports:
       - "80:80"
-
-  ollama:
-    image: soai_ollama:latest
-    container_name: soai_ollama
-    build:
-      context: ./backend/services/ollama
-    environment:
-      - OLLAMA_MODEL_PATH=/home/soai-ollama/.ollama/models
-    networks:
-      - soai-net
-    ports:
-      - "11434:11434"
-    volumes:
-      - ollama:/home/soai-ollama/.ollama:rw
   frontend:
     container_name: soai_frontend
     image: soai_frontend:latest
@@ -174,24 +87,9 @@ services:
     stdin_open: true
     networks:
       - soai-net
-    ports:
-      - "3000:3000"
     volumes:
       - ./web:/frontend
     command: sh -c "/frontend/loader.sh"
-  flowise:
-    container_name: soai_flowise
-    image: soai_flowise:latest
-    build:
-      context: ./backend/services/flowise
-      dockerfile: ./Dockerfile
-    environment:
-      - FLOWISE_USERNAME=soai
-      - FLOWISE_PASSWORD=soai
-    ports:
-      - "3003:3000"
-    networks:
-      - soai-net
   recruitment:
     container_name: soai_recruitment
     image: soai_recruitment:latest
@@ -207,25 +105,6 @@ services:
       - soai-net
     volumes:
       - ./backend/services/recruitment_agent/app:/app
-  n8n:
-    container_name: soai_n8n
-    image: soai_n8n:latest
-    build:
-      context: ./backend/services/n8n
-      dockerfile: ./Dockerfile
-    restart: always
-    ports:
-      - 5678:5678
-    networks:
-      - soai-net
-    volumes:
-      - n8n_data:/home/node/.n8n
-volumes:
-  ollama:
-  qdrant_data:
-  uploads:
-  huggingface:
-  n8n_data:
 networks:
   soai-net:
     driver: bridge

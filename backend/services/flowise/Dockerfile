@@ -1,1 +1,0 @@
-from flowiseai/flowise:latest
