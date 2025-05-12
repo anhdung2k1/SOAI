@@ -13,9 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Accounts {
-    public Accounts(String userName, String password) {
+    public Accounts(String userName, String password, Role role) {
         this.userName = userName;
         this.password = password;
+        this.role = role;
     }
     private Long accId;
     private String userName;

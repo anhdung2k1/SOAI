@@ -75,7 +75,7 @@ $ show tables;
 | `/jd-list`              | GET    | Get list of job descriptions               | Query: `position` (optional)                                                               | Yes            | All authenticated   |
 5. If you want to test APIs, run the test files in [Test Recruitment]("https://gitlab.endava.com/cuong.quang.nguyen/soai/-/tree/main/backend/services/recruitment_agent/tests?ref_type=heads") (Updating)
 ```
-$ python3 backend/services/recruitment_agent/tests/test_api_recruitment.py
+$ ./backend/services/recruitment_agent/tests/test_api_recruitment.py
 ```
 
 ### License

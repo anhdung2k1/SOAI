@@ -64,6 +64,10 @@ class RecruitmentService:
             logger.error(f"Error during CV processing: {e}")
             raise RuntimeError(f"Error during CV processing: {str(e)}")
 
+        if not final_state.matched_jd:
+            logger.error("No matching JD found for this CV.")
+            return CVUploadResponseSchema(message="No suitable JD match found for this CV.")
+
         email_to_check = final_state.override_email or final_state.parsed_cv.get("email")
 
         # Check duplicate
@@ -106,7 +110,6 @@ class RecruitmentService:
         logger.info(f"New CVApplication created for candidate: {final_state.parsed_cv.get('name')}")
 
         return CVUploadResponseSchema(message="CV uploaded and matched successfully. Pending approval.")
-
 
     def dev_approve_cv(self, candidate_id: int, db: Session):
         """Approve a pending CV based on skills and experience."""
