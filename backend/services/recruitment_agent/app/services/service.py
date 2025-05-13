@@ -111,7 +111,7 @@ class RecruitmentService:
 
         return CVUploadResponseSchema(message="CV uploaded and matched successfully. Pending approval.")
 
-    def dev_approve_cv(self, candidate_id: int, db: Session):
+    def approve_cv(self, candidate_id: int, db: Session):
         """Approve a pending CV based on skills and experience."""
         logger.info(f"Starting approval for candidate_id={candidate_id}.")
 
@@ -142,7 +142,7 @@ class RecruitmentService:
         try:
             updated_state = pipeline.invoke(state.model_dump())
             final_state = RecruitmentState(**updated_state)
-            logger.info(f"[dev_approve_cv] final_state: {final_state}")
+            logger.info(f"[approve_cv] final_state: {final_state}")
             logger.info("Approval graph execution completed.")
         except Exception as e:
             logger.error(f"Error during approval process: {e}")
