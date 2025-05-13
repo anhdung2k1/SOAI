@@ -11,28 +11,33 @@ class TestRecruitmentAPI(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        ''' Setup tokens for ADMIN and USER before tests run.'''
         log_debug("Setting up tokens for ADMIN and USER")
         cls.admin_token = extract_token("admin", "Admin@123", role="ADMIN")
         cls.user_token = extract_token("user1", "User@123", role="USER")
 
     @classmethod
     def tearDownClass(cls):
+        ''' Cleanup data created during tests.'''
         log_info("Running post-test cleanup...")
         tester = cls()
         tester.admin_token = cls.admin_token
         tester.postclean_candidate_and_jd("Bui Thanh Tra", "Frontend Developer")
 
     def preclean_candidate_and_jd(self, candidate_name, position):
+        ''' Clean up test data before each test.'''
         log_info("Pre-cleaning old test data...")
         self.clean_cv(candidate_name, position)
         self.clean_jd(position)
 
     def postclean_candidate_and_jd(self, candidate_name, position):
+        ''' Clean up test data after each test if needed.'''
         log_info("Post-cleaning test data...")
         self.clean_cv(candidate_name, position)
         self.clean_jd(position)
 
     def clean_cv(self, candidate_name, position):
+        ''' Delete CVs that match test candidate name and position.'''
         log_debug(f"Cleaning CVs for candidate '{candidate_name}' and position '{position}'")
         try:
             response = api_request("GET", f"{BASE_URL}/cv/list", params={"position": position}, headers=get_headers(self.admin_token))
@@ -45,6 +50,7 @@ class TestRecruitmentAPI(unittest.TestCase):
             log_error(f"Error while cleaning CVs: {e}")
 
     def clean_jd(self, position):
+        ''' Delete JDs that match test position.'''
         log_debug(f"Cleaning JDs for position '{position}'")
         try:
             response = api_request("GET", f"{BASE_URL}/jd-list", params={"position": position}, headers=get_headers(self.admin_token))
@@ -57,6 +63,7 @@ class TestRecruitmentAPI(unittest.TestCase):
             log_error(f"Error while cleaning JDs: {e}")
 
     def test_full_flow_and_all_routes(self):
+        ''' Main working-path test: upload JD, upload CV, approve, schedule and complete interview.'''
         log_info("TEST: " + inspect.currentframe().f_code.co_name)
 
         name = "Bui Thanh Tra"
@@ -172,6 +179,7 @@ class TestRecruitmentAPI(unittest.TestCase):
         log_info("TEST: " + inspect.currentframe().f_code.co_name + ": OK")
 
     def test_permission_denied_for_user_approving_cv(self):
+        ''' Ensure USER role is not allowed to upload JD or approve CV.'''
         log_info("TEST: " + inspect.currentframe().f_code.co_name)
 
         name = "Bui Thanh Tra"
