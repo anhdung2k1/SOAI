@@ -100,7 +100,7 @@ async def accept_interview(
 
 # Only administrator can approve cv
 @router.post("/approve-cv", response_model=CVUploadResponseSchema)
-async def dev_approve_cv(
+async def approve_cv(
     candidate_id: int = Form(...),
     db: Session = Depends(get_db),
     get_current_user: dict = JWTService.require_role("ADMIN")
@@ -110,7 +110,7 @@ async def dev_approve_cv(
     logger.debug(f"USER '{username}' [{role}] is calling /approve-cv endpoint.")
 
     try:
-        return recruitment_service.dev_approve_cv(candidate_id, db)
+        return recruitment_service.approve_cv(candidate_id, db)
     except ValueError as e:
         return CVUploadResponseSchema(message="Value error.")
     except Exception as e:
