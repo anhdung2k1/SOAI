@@ -26,7 +26,7 @@ def get_db():
         db.close()
 
 
-@router.post("/upload-cv", response_model=CVUploadResponseSchema)
+@router.post("/cvs/upload", response_model=CVUploadResponseSchema)
 async def upload_cv(
     file: UploadFile = File(...),
     override_email: Optional[str] = Form(None),
@@ -36,7 +36,7 @@ async def upload_cv(
 ):
     username = get_current_user.get("sub")
     role = get_current_user.get("role")
-    logger.debug(f"USER '{username}' [{role}] is calling /upload-cv endpoint.")
+    logger.debug(f"USER '{username}' [{role}] is calling /cv/upload endpoint.")
     return recruitment_service.upload_and_process_cv(
         file,
         db,
@@ -45,7 +45,7 @@ async def upload_cv(
     )
 
 
-@router.post("/upload-jd", response_model=CVUploadResponseSchema)
+@router.post("/jds/upload", response_model=CVUploadResponseSchema)
 async def upload_jd(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
@@ -53,14 +53,14 @@ async def upload_jd(
 ):
     username = get_current_user.get("sub")
     role = get_current_user.get("role")
-    logger.debug(f"USER '{username}' [{role}] is calling /upload-jd endpoint.")
+    logger.debug(f"USER '{username}' [{role}] is calling /jd/upload endpoint.")
     content = await file.read()
     jd_list = json.loads(content)
     return recruitment_service.upload_jd(jd_list, db)
 
 
 # Only administrator can schedule interview
-@router.post("/schedule-interview")
+@router.post("/interviews/schedule")
 async def schedule_interview(
     interview_data: InterviewScheduleCreateSchema,
     db: Session = Depends(get_db),
@@ -68,12 +68,14 @@ async def schedule_interview(
 ):
     username = get_current_user.get("sub")
     role = get_current_user.get("role")
-    logger.debug(f"USER '{username}' [{role}] is calling /schedule-interview endpoint.")
+    logger.debug(
+        f"USER '{username}' [{role}] is calling POST /interviews/schedule endpoint."
+    )
     return recruitment_service.schedule_interview(interview_data, db)
 
 
 # Only administrator can get interview list
-@router.get("/interview-list")
+@router.get("/interviews")
 async def get_interviews(
     interview_date: Optional[str] = Query(
         None, description="Optional interview date filter in format YYYY-MM-DD"
@@ -87,7 +89,7 @@ async def get_interviews(
     try:
         username = get_current_user.get("sub")
         role = get_current_user.get("role")
-        logger.debug(f"USER '{username}' [{role}] is calling /interview-list endpoint.")
+        logger.debug(f"USER '{username}' [{role}] is calling GET /interviews endpoint.")
         return recruitment_service.get_all_interviews(
             db, interview_date=interview_date, candidate_name=candidate_name
         )
@@ -96,7 +98,7 @@ async def get_interviews(
 
 
 # Only administrator can get JD list
-@router.get("/jd-list")
+@router.get("/jds")
 async def get_jds(
     position: Optional[str] = Query(None, description="Optional position filter"),
     db: Session = Depends(get_db),
@@ -104,12 +106,12 @@ async def get_jds(
 ):
     username = get_current_user.get("sub")
     role = get_current_user.get("role")
-    logger.debug(f"USER '{username}' [{role}] is calling /jd-list endpoint.")
+    logger.debug(f"USER '{username}' [{role}] is calling GET /jds endpoint.")
     return recruitment_service.get_all_jds(db, position=position)
 
 
 # Candidate will accept interview
-@router.put("/accept-interview", response_model=CVUploadResponseSchema)
+@router.post("/interviews/accept", response_model=CVUploadResponseSchema)
 async def accept_interview(
     interview_accept_data: InterviewAcceptSchema,
     db: Session = Depends(get_db),
@@ -117,20 +119,22 @@ async def accept_interview(
 ):
     username = get_current_user.get("sub")
     role = get_current_user.get("role")
-    logger.debug(f"USER '{username}' [{role}] is calling /accept-interview endpoint.")
+    logger.debug(
+        f"USER '{username}' [{role}] is calling POST /interviews/accept endpoint."
+    )
     return recruitment_service.accept_interview(interview_accept_data, db)
 
 
 # Only administrator can approve cv
-@router.post("/approve-cv", response_model=CVUploadResponseSchema)
+@router.post("/cvs/{candidate_id}/approve", response_model=CVUploadResponseSchema)
 async def approve_cv(
-    candidate_id: int = Form(...),
+    candidate_id: int,
     db: Session = Depends(get_db),
     get_current_user: dict = JWTService.require_role("ADMIN"),
 ):
     username = get_current_user.get("sub")
     role = get_current_user.get("role")
-    logger.debug(f"USER '{username}' [{role}] is calling /approve-cv endpoint.")
+    logger.debug(f"USER '{username}' [{role}] is calling /cvs/approve endpoint.")
 
     try:
         return recruitment_service.approve_cv(candidate_id, db)
@@ -142,7 +146,7 @@ async def approve_cv(
 
 
 # Only administrator can get pending list CVs
-@router.get("/pending-cv-list")
+@router.get("/cvs/pending")
 async def get_pending_cv_list(
     candidate_name: Optional[str] = Query(
         None, description="Optional candidate name filter"
@@ -152,32 +156,34 @@ async def get_pending_cv_list(
 ):
     username = get_current_user.get("sub")
     role = get_current_user.get("role")
-    logger.debug(f"USER '{username}' [{role}] is calling /pending-cv-list endpoint.")
+    logger.debug(f"USER '{username}' [{role}] is calling GET /cvs/pending endpoint.")
     return recruitment_service.get_pending_cvs(db, candidate_name=candidate_name)
 
 
-@router.put("/cv/update/{cv_id}", response_model=CVUploadResponseSchema)
+@router.put("/cvs/{cv_id}", response_model=CVUploadResponseSchema)
 async def update_cv(
     cv_id: int,
     update_data: Dict = Body(...),
     db: Session = Depends(get_db),
     get_current_user: dict = JWTService.require_role("ADMIN"),
 ):
-    logger.debug(f"USER '{get_current_user.get('sub')}' is calling /cv/update/{cv_id}")
+    logger.debug(
+        f"USER '{get_current_user.get('sub')}' is calling PUT /cv/update/{cv_id}"
+    )
     return recruitment_service.update_cv_application(cv_id, update_data, db)
 
 
-@router.delete("/cv/delete/{cv_id}", response_model=CVUploadResponseSchema)
+@router.delete("/cvs/{cv_id}", response_model=CVUploadResponseSchema)
 async def delete_cv(
     cv_id: int,
     db: Session = Depends(get_db),
     get_current_user: dict = JWTService.require_role("ADMIN"),
 ):
-    logger.debug(f"USER '{get_current_user.get('sub')}' is calling /cv/delete/{cv_id}")
+    logger.debug(f"USER '{get_current_user.get('sub')}' is calling DELETE /cvs/{cv_id}")
     return recruitment_service.delete_cv_application(cv_id, db)
 
 
-@router.get("/cv/list")
+@router.get("/cvs/position")
 async def list_all_cvs(
     position: Optional[str] = Query(
         default=None, description="Optional position filter"
@@ -186,18 +192,18 @@ async def list_all_cvs(
     get_current_user: dict = JWTService.require_role("ADMIN"),
 ):
     logger.debug(
-        f"USER '{get_current_user.get('sub')}' is calling /cv/list with position={position}"
+        f"USER '{get_current_user.get('sub')}' is calling GET /cvs/position with position={position}"
     )
     return recruitment_service.list_all_cv_applications(db, position)
 
 
-@router.get("/cv/{cv_id}")
+@router.get("/cvs/{cv_id}")
 async def get_cv_by_id(
     cv_id: int,
     db: Session = Depends(get_db),
     get_current_user: dict = JWTService.require_role("ADMIN"),
 ):
-    logger.debug(f"USER '{get_current_user.get('sub')}' is calling /cv/{cv_id}")
+    logger.debug(f"USER '{get_current_user.get('sub')}' is calling GET /cv/{cv_id}")
     try:
         return recruitment_service.get_cv_application_by_id(cv_id, db)
     except ValueError as e:
@@ -207,7 +213,7 @@ async def get_cv_by_id(
 # === Interview update/cancel ===
 
 
-@router.put("/interview/update/{interview_id}", response_model=CVUploadResponseSchema)
+@router.put("/interviews/{interview_id}", response_model=CVUploadResponseSchema)
 async def update_interview(
     interview_id: int,
     update_data: Dict = Body(...),
@@ -215,19 +221,19 @@ async def update_interview(
     get_current_user: dict = JWTService.require_role("ADMIN"),
 ):
     logger.debug(
-        f"USER '{get_current_user.get('sub')}' is calling /interview/update/{interview_id}"
+        f"USER '{get_current_user.get('sub')}' is calling PUT /interviews/{interview_id}"
     )
     return recruitment_service.update_interview(interview_id, update_data, db)
 
 
-@router.put("/interview/cancel/{interview_id}", response_model=CVUploadResponseSchema)
+@router.post("/interviews/{interview_id}/cancel", response_model=CVUploadResponseSchema)
 async def cancel_interview(
     interview_id: int,
     db: Session = Depends(get_db),
     get_current_user: dict = JWTService.require_role("ADMIN"),
 ):
     logger.debug(
-        f"USER '{get_current_user.get('sub')}' is calling /interview/cancel/{interview_id}"
+        f"USER '{get_current_user.get('sub')}' is calling POST /interviews/{interview_id}/cancel"
     )
     return recruitment_service.cancel_interview(interview_id, db)
 
@@ -235,22 +241,22 @@ async def cancel_interview(
 # === JD edit/delete ===
 
 
-@router.put("/jd/update/{jd_id}", response_model=CVUploadResponseSchema)
+@router.put("/jds/{jd_id}", response_model=CVUploadResponseSchema)
 async def edit_jd(
     jd_id: int,
     update_data: Dict = Body(...),
     db: Session = Depends(get_db),
     get_current_user: dict = JWTService.require_role("ADMIN"),
 ):
-    logger.debug(f"USER '{get_current_user.get('sub')}' is calling /jd/update/{jd_id}")
+    logger.debug(f"USER '{get_current_user.get('sub')}' is calling PUT /jds/{jd_id}")
     return recruitment_service.edit_jd(jd_id, update_data, db)
 
 
-@router.delete("/jd/delete/{jd_id}", response_model=CVUploadResponseSchema)
+@router.delete("/jds/{jd_id}", response_model=CVUploadResponseSchema)
 async def delete_jd(
     jd_id: int,
     db: Session = Depends(get_db),
     get_current_user: dict = JWTService.require_role("ADMIN"),
 ):
-    logger.debug(f"USER '{get_current_user.get('sub')}' is calling /jd/delete/{jd_id}")
+    logger.debug(f"USER '{get_current_user.get('sub')}' is calling DELETE /jds/{jd_id}")
     return recruitment_service.delete_jd(jd_id, db)
