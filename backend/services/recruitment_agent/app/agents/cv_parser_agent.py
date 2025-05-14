@@ -1,17 +1,17 @@
 import json
+from config.log_config import AppLogger
 from utils.pdf_parser import extract_text_from_pdf
-from langchain_openai import ChatOpenAI
 from agents.base_agent import BaseAgent
 from agents.state import RecruitmentState
-
+logger = AppLogger(__name__)
 class CVParserAgent(BaseAgent):
-    def __init__(self, llm: ChatOpenAI):
+    def __init__(self, llm):
         self.llm = llm
 
     def run(self, state: RecruitmentState) -> RecruitmentState:
         if state.stop_pipeline:
             return state
-        
+
         text = extract_text_from_pdf(state.cv_file_path)
 
         prompt = f"""
@@ -28,11 +28,11 @@ Respond ONLY the JSON. No explanation, no comment.
 """
 
         response = self.llm.invoke(prompt)
-
+        
         if not response.content or response.content.strip() == "":
             raise ValueError("Received empty response from LLM.")
 
-        content = response.content.strip()
+        content = response.json()["data"]
 
         # Clean up Markdown formatting if any
         if content.startswith("```json") and content.endswith("```"):

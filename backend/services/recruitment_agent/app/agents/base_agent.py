@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from agents.state import RecruitmentState
 
+
 class BaseAgent(ABC):
     @abstractmethod
     def run(self, state: RecruitmentState) -> RecruitmentState:

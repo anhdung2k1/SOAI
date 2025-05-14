@@ -1,10 +1,11 @@
 import json
 from agents.base_agent import BaseAgent
 from agents.state import RecruitmentState
-from config.logging import AppLogger
+from config.log_config import AppLogger
 from config.constants import *
 
 logger = AppLogger(__name__)
+
 
 class MatchingAgent(BaseAgent):
     def __init__(self, llm):
@@ -15,7 +16,9 @@ class MatchingAgent(BaseAgent):
             return state
 
         if not state.jd_list:
-            logger.warn("[MatchingAgent] No Job Descriptions (JDs) available for matching.")
+            logger.warn(
+                "[MatchingAgent] No Job Descriptions (JDs) available for matching."
+            )
             state.matched_jd = None
             state.stop_pipeline = True
             state.final_decision = "CV rejected: No available JDs."
@@ -48,7 +51,9 @@ class MatchingAgent(BaseAgent):
             prompt = self.build_prompt(cv_skills, jd_skills_list)
             score = self.query_llm_score(prompt)
 
-            logger.debug(f"[MatchingAgent] Checking JD: {jd.get('position', '')} - LLM Score: {score:.2f}%")
+            logger.debug(
+                f"[MatchingAgent] Checking JD: {jd.get('position', '')} - LLM Score: {score:.2f}%"
+            )
 
             if score > best_score:
                 best_score = score
@@ -58,7 +63,9 @@ class MatchingAgent(BaseAgent):
         logger.debug(f"[Matching Agent] best_match: {best_match}")
         logger.debug(f"[Matching Agent] best_jd_skills: {best_jd_skills}")
         if best_match and best_score >= MATCHING_SCORE_PERCENTAGE:
-            logger.info(f"[MatchingAgent] Best match found: {best_match['position']} (Score: {best_score:.2f}%)")
+            logger.info(
+                f"[MatchingAgent] Best match found: {best_match['position']} (Score: {best_score:.2f}%)"
+            )
             state.matched_jd = {
                 "position": best_match.get("position"),
                 "skills_required": best_jd_skills,
@@ -67,7 +74,9 @@ class MatchingAgent(BaseAgent):
             }
             logger.debug(f"[Matching Agent] state.matched_jd: {state.matched_jd}")
         else:
-            logger.error(f"[MatchingAgent] No JD matched above {MATCHING_SCORE_PERCENTAGE}%. Best score: {best_score:.2f}%")
+            logger.error(
+                f"[MatchingAgent] No JD matched above {MATCHING_SCORE_PERCENTAGE}%. Best score: {best_score:.2f}%"
+            )
             state.matched_jd = None
             state.stop_pipeline = True
             state.final_decision = "CV rejected: No matching JD found."
@@ -85,12 +94,14 @@ class MatchingAgent(BaseAgent):
     def query_llm_score(self, prompt: str) -> float:
         try:
             response = self.llm.invoke(prompt)
-            content = response.content.strip()
+            content = response.json()["data"]
 
             if content.startswith("```") and content.endswith("```"):
                 content = content.strip("```").strip()
 
             return min(max(float(content), 0.0), 100.0)  # clamp between 0 and 100
         except Exception as e:
-            logger.error(f"[MatchingAgent] LLM call failed or returned invalid score: {e}")
+            logger.error(
+                f"[MatchingAgent] LLM call failed or returned invalid score: {e}"
+            )
             return 0.0
