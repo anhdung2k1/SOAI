@@ -1,7 +1,7 @@
 from agents.base_agent import BaseAgent
 from agents.state import RecruitmentState
 from models.job_description import JobDescription
-from config.logging import AppLogger
+from config.log_config import AppLogger
 
 logger = AppLogger(__name__)
 

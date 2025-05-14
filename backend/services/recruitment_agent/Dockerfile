@@ -6,7 +6,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
 # Set the working directory in the container
-WORKDIR /recruitment
+WORKDIR /app
 
 COPY --chmod=0755 --chown=0:0 requirements.txt ./
 COPY --chmod=0755 --chown=0:0 .env ./
@@ -20,4 +20,4 @@ COPY --chmod=0755 --chown=0:0 app/ ./app/
 
 USER 0
 
-CMD ["python", "app/main.py"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8003", "--reload", "--log-level", "debug"]

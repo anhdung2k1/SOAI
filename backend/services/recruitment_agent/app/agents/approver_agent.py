@@ -1,9 +1,10 @@
 from agents.base_agent import BaseAgent
 from agents.state import RecruitmentState
-from config.logging import AppLogger
+from config.log_config import AppLogger
 from config.constants import *
 
 logger = AppLogger(__name__)
+
 
 class ApproverAgent(BaseAgent):
     def __init__(self, llm):
@@ -21,8 +22,12 @@ class ApproverAgent(BaseAgent):
         logger.debug(f"[ApproverAgent] state.parsed_cv: {state.parsed_cv}")
         logger.debug(f"[ApproverAgent] state.matched_jd: {state.matched_jd}")
 
-        candidate_skills = set(skill.lower() for skill in state.parsed_cv.get("skills", []))
-        jd_skills = set(skill.lower() for skill in state.matched_jd.get("skills_required", []))
+        candidate_skills = set(
+            skill.lower() for skill in state.parsed_cv.get("skills", [])
+        )
+        jd_skills = set(
+            skill.lower() for skill in state.matched_jd.get("skills_required", [])
+        )
 
         logger.debug(f"[ApproverAgent] candidate_skills: {candidate_skills}")
         logger.debug(f"[ApproverAgent] jd_skills: {jd_skills}")
@@ -51,17 +56,26 @@ class ApproverAgent(BaseAgent):
         else:
             skill_match_percentage = 0.0
 
-        experience_match = candidate_experience >= jd_experience or (jd_experience - candidate_experience) <= 1
+        experience_match = (
+            candidate_experience >= jd_experience
+            or (jd_experience - candidate_experience) <= 1
+        )
 
         logger.info(f"[ApproverAgent] Matching skills: {matching_skills}")
         logger.info(f"[ApproverAgent] Skill match: {skill_match_percentage:.2f}%")
-        logger.info(f"[ApproverAgent] Experience: CV {candidate_experience} yrs vs JD {jd_experience} yrs")
+        logger.info(
+            f"[ApproverAgent] Experience: CV {candidate_experience} yrs vs JD {jd_experience} yrs"
+        )
 
         if skill_match_percentage >= MATCHING_SCORE_PERCENTAGE and experience_match:
-            logger.info("[ApproverAgent] Candidate approved (skills and experience matched).")
+            logger.info(
+                "[ApproverAgent] Candidate approved (skills and experience matched)."
+            )
             state.approved_candidate = state.parsed_cv
         else:
-            logger.info("[ApproverAgent] Candidate rejected (skills or experience mismatch).")
+            logger.info(
+                "[ApproverAgent] Candidate rejected (skills or experience mismatch)."
+            )
             state.approved_candidate = None
 
         return state

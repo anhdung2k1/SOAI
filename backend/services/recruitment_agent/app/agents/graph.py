@@ -1,5 +1,4 @@
 from langgraph.graph import StateGraph, END
-from langchain_openai import ChatOpenAI
 from utils.email_sender import EmailSender
 from agents.state import RecruitmentState
 from agents.cv_parser_agent import CVParserAgent
@@ -8,10 +7,10 @@ from agents.matching_agent import MatchingAgent
 from agents.approver_agent import ApproverAgent
 from agents.final_decision_agent import FinalDecisionAgent
 from config.constants import *
-from config.logging import AppLogger
+from config.log_config import AppLogger
+from agents.genai import GenAI
 
 logger = AppLogger(__name__)
-
 # ======================================
 # Build RecruitmentGraph_Matching
 # ======================================
@@ -20,10 +19,9 @@ def build_recruitment_graph_matching(db_session):
     if not OPENAI_API_KEY:
         raise ValueError("OPENAI_API_KEY environment variable not set.")
 
-    llm = ChatOpenAI(
+    llm = GenAI(
         model=DEFAULT_MODEL,
         temperature=0,
-        api_key=OPENAI_API_KEY,
     )
 
     graph = StateGraph(RecruitmentState)
@@ -47,6 +45,7 @@ def build_recruitment_graph_matching(db_session):
     logger.info("RecruitmentGraph_Matching built and compiled.")
     return graph.compile()
 
+
 # ======================================
 # Build RecruitmentGraph_Approval
 # ======================================
@@ -55,10 +54,9 @@ def build_recruitment_graph_approval(db_session, email_sender: EmailSender):
     if not OPENAI_API_KEY:
         raise ValueError("OPENAI_API_KEY environment variable not set.")
 
-    llm = ChatOpenAI(
+    llm = GenAI(
         model=DEFAULT_MODEL,
         temperature=0,
-        api_key=OPENAI_API_KEY,
     )
 
     graph = StateGraph(RecruitmentState)
@@ -73,12 +71,14 @@ def build_recruitment_graph_approval(db_session, email_sender: EmailSender):
     graph.add_edge("final_decision_node", END)
     # TODO(): Generate list of interview questions when CV is approved
 
-    logger.info("RecruitmentGraph_Approval built and compiled.")
+    AppLogger.info("RecruitmentGraph_Approval built and compiled.")
     return graph.compile()
+
 
 # ======================================
 # Wrappers - Corrected Merge State
 # ======================================
+
 
 def cv_parser_with_log(agent: CVParserAgent):
     def wrapper(state):
@@ -93,7 +93,9 @@ def cv_parser_with_log(agent: CVParserAgent):
         merged_state = {**state_obj.model_dump(), **updated_fields}
         logger.debug(f"[cv_parser] Merged state: {merged_state}")
         return merged_state
+
     return wrapper
+
 
 def jd_fetcher_with_log(agent: JDFetcherAgent):
     def wrapper(state):
@@ -108,7 +110,9 @@ def jd_fetcher_with_log(agent: JDFetcherAgent):
         merged_state = {**state_obj.model_dump(), **updated_fields}
         logger.debug(f"[jd_fetcher] Merged state: {merged_state}")
         return merged_state
+
     return wrapper
+
 
 def matcher_with_log(agent: MatchingAgent):
     def wrapper(state):
@@ -123,7 +127,9 @@ def matcher_with_log(agent: MatchingAgent):
         merged_state = {**state_obj.model_dump(), **updated_fields}
         logger.debug(f"[matcher] Merged state: {merged_state}")
         return merged_state
+
     return wrapper
+
 
 def approver_with_log(agent: ApproverAgent):
     def wrapper(state):
@@ -138,7 +144,9 @@ def approver_with_log(agent: ApproverAgent):
         merged_state = {**state_obj.model_dump(), **updated_fields}
         logger.debug(f"[approver] Merged state: {merged_state}")
         return merged_state
+
     return wrapper
+
 
 def final_decision_with_log(agent: FinalDecisionAgent):
     def wrapper(state):
@@ -153,4 +161,5 @@ def final_decision_with_log(agent: FinalDecisionAgent):
         merged_state = {**state_obj.model_dump(), **updated_fields}
         logger.debug(f"[final_decision] Merged state: {merged_state}")
         return merged_state
+
     return wrapper

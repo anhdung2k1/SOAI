@@ -17,7 +17,8 @@ class GeminiAIService(BaseAIService):
         super().__init__(model)
         api_key = os.environ.get("GOOGLE_API_KEY")
         if not api_key:
-            raise ValueError("GOOGLE_API_KEY environment variable is not set.")
+            logger.error("GOOGLE_API_KEY environment variable is not set.")
+            return
         genai.configure(api_key=api_key)
         self.client = genai.GenerativeModel(model)
 
