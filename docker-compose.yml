@@ -111,7 +111,6 @@ services:
       - DB_PORT=3306
       - DB_NAME=soai_db
       - DB_USERNAME=soai_user
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
     restart: always
     ports:
       - "8003:8003"
