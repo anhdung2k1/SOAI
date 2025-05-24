@@ -16,9 +16,6 @@ logger = AppLogger(__name__)
 # ======================================
 def build_recruitment_graph_matching(db_session):
     """Build graph for initial CV Parsing + JD Matching."""
-    if not OPENAI_API_KEY:
-        raise ValueError("OPENAI_API_KEY environment variable not set.")
-
     llm = GenAI(
         model=DEFAULT_MODEL,
         temperature=0,
@@ -51,9 +48,6 @@ def build_recruitment_graph_matching(db_session):
 # ======================================
 def build_recruitment_graph_approval(db_session, email_sender: EmailSender):
     """Build graph for Dev Approval + Final Decision."""
-    if not OPENAI_API_KEY:
-        raise ValueError("OPENAI_API_KEY environment variable not set.")
-
     llm = GenAI(
         model=DEFAULT_MODEL,
         temperature=0,
