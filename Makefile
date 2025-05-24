@@ -27,18 +27,18 @@ init:
 	@echo "Create build dataset and model directory"
 	$(TOP_DIR)/vas.sh dir_est
 	@echo "mkdir variables folder"
-	mkdir -p build/var
+	mkdir -p $(TOP_DIR)/build/var
 	@if [ "$(RELEASE)" = "true" ]; then \
 		echo "Generate release version"; \
-		$(TOP_DIR)/vas.sh get_version > build/var/.release_version; \
+		$(TOP_DIR)/vas.sh get_version > $(TOP_DIR)/build/var/.release_version; \
 	else \
 		echo "Get version prefix"; \
-		$(TOP_DIR)/vas.sh get_version > build/var/.version; \
+		$(TOP_DIR)/vas.sh get_version > $(TOP_DIR)/build/var/.version; \
 	fi
 
 test-recruitment:
 	@echo "Automation test for Recruitment Agent"
-	$(RECRUITMENT_DIR)/tests/test_api_recruitment.py
+	$(RECRUITMENT_DIR)/tests/test_api_recruitment.py 2>&1 | tee "$(TOP_DIR)/build/test_api_recruitment.log"
 
 ## Package the helm chart
 package-helm:
