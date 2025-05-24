@@ -15,8 +15,6 @@ DB_PORT = os.getenv("DB_PORT", "3306")
 DB_NAME = os.getenv("DB_NAME", "soai_db")
 DB_USERNAME = os.getenv("DB_USERNAME", "soai_user")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "soai_password")
-# OpenAI API Key
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 # Mail Settings
 SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
 SMTP_PORT = os.getenv("SMTP_PORT", 587)

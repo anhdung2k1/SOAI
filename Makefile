@@ -5,6 +5,7 @@ USERNAME := $(USER)
 TOP_DIR := $(CURDIR)
 version := $(shell $(TOP_DIR)/vas.sh get_version)
 DOCKER_CONFIG_DIR ?= build/docker
+RECRUITMENT_DIR := $(TOP_DIR)/backend/services/recruitment_agent
 
 # Clean the repository
 clean:
@@ -26,14 +27,18 @@ init:
 	@echo "Create build dataset and model directory"
 	$(TOP_DIR)/vas.sh dir_est
 	@echo "mkdir variables folder"
-	mkdir -p build/var
+	mkdir -p $(TOP_DIR)/build/var
 	@if [ "$(RELEASE)" = "true" ]; then \
 		echo "Generate release version"; \
-		$(TOP_DIR)/vas.sh get_version > build/var/.release_version; \
+		$(TOP_DIR)/vas.sh get_version > $(TOP_DIR)/build/var/.release_version; \
 	else \
 		echo "Get version prefix"; \
-		$(TOP_DIR)/vas.sh get_version > build/var/.version; \
+		$(TOP_DIR)/vas.sh get_version > $(TOP_DIR)/build/var/.version; \
 	fi
+
+test-recruitment:
+	@echo "Automation test for Recruitment Agent"
+	$(RECRUITMENT_DIR)/tests/test_api_recruitment.py 2>&1 | tee "$(TOP_DIR)/build/test_api_recruitment.log"
 
 ## Package the helm chart
 package-helm:
@@ -42,37 +47,21 @@ package-helm:
 		--release=$(RELEASE)
 		--user=$(USERNAME)
 
-image: 	image-chatbot \
-		image-consul \
-		image-document \
-		image-flowise \
-		image-knowledge_base \
-		image-ollama \
-		image-qdrant \
+image: 	image-recruitment \
+		image-authentication \
+		image-genai \
 		image-webserver \
 		image-web
 
-image-chatbot:
-	@echo "build chatbot Image"
-	$(TOP_DIR)/vas.sh build_image --name=chatbot
-image-consul:
-	@echo "build consul Image"
-	$(TOP_DIR)/vas.sh build_image --name=consul
-image-document:
-	@echo "build document Image"
-	$(TOP_DIR)/vas.sh build_image --name=document
-image-flowise:
-	@echo "build flowise Image"
-	$(TOP_DIR)/vas.sh build_image --name=flowise
-image-knowledge_base:
-	@echo "build knowledge_base Image"
-	$(TOP_DIR)/vas.sh build_image --name=knowledge_base
-image-ollama:
-	@echo "build ollama Image"
-	$(TOP_DIR)/vas.sh build_image --name=ollama
-image-qdrant:
-	@echo "build qdrant Image"
-	$(TOP_DIR)/vas.sh build_image --name=qdrant
+image-authentication:
+	@echo "build authentication Image"
+	$(TOP_DIR)/vas.sh build_image --name=authentication
+image-recruitment:
+	@echo "build recruitment Image"
+	$(TOP_DIR)/vas.sh build_image --name=recruitment_agent
+image-genai:
+	@echo "build genAI Image"
+	$(TOP_DIR)/vas.sh build_image --name=gen_ai_provider
 image-webserver:
 	@echo "build webserver Image"
 	$(TOP_DIR)/vas.sh build_image --name=webserver
@@ -80,39 +69,23 @@ image-web:
 	@echo "build web frontend Image"
 	$(TOP_DIR)/vas.sh build_image --name=web
 
-push: 	push-chatbot \
-		push-consul \
-		push-document \
-		push-flowise \
-		push-knowledge_base \
-		push-ollama \
-		push-qdrant \
+push: 	push-recruitment \
+		push-authentication \
+		push-genai \
 		push-webserver \
 		push-web
 
-push-chatbot:
-	@echo "push image-chatbot"
-	$(TOP_DIR)/vas.sh push_image --name=chatbot
-push-consul:
-	@echo "push image-consul"
-	$(TOP_DIR)/vas.sh push_image --name=consul
-push-document:
-	@echo "push image-document"
-	$(TOP_DIR)/vas.sh push_image --name=document
-push-flowise:
-	@echo "push image-flowise"
-	$(TOP_DIR)/vas.sh push_image --name=flowise
-push-knowledge_base:
-	@echo "push image-knowledge_base"
-	$(TOP_DIR)/vas.sh push_image --name=knowledge_base
-push-ollama:
-	@echo "push image-ollama"
-	$(TOP_DIR)/vas.sh push_image --name=ollama
-push-qdrant:
-	@echo "push image-qdrant"
-	$(TOP_DIR)/vas.sh push_image --name=qdrant
+push-authentication:
+	@echo "push authentication Image"
+	$(TOP_DIR)/vas.sh push_image --name=authentication
+push-recruitment:
+	@echo "push recruitment Image"
+	$(TOP_DIR)/vas.sh push_image --name=recruitment_agent
+push-genai:
+	@echo "push genAI Image"
+	$(TOP_DIR)/vas.sh push_image --name=gen_ai_provider
 push-webserver:
-	@echo "push image-webserver"
+	@echo "push webserver Image"
 	$(TOP_DIR)/vas.sh push_image --name=webserver
 push-web:
 	@echo "push image-web"
