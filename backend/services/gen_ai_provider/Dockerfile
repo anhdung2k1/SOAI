@@ -33,6 +33,8 @@ LABEL \
 # Expose the port on which the FastAPI app runs
 EXPOSE 8004
 
+WORKDIR /app/app
+
 USER ${USER_ID}
 
 # Command to run the FastAPI app using uvicorn
