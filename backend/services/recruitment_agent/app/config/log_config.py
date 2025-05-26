@@ -6,6 +6,8 @@ from config.constants import *
 class LoggingConfig:
     @staticmethod
     def setup_logging():
+        if not os.path.exists(LOG_DIR):
+            os.makedirs(LOG_DIR, exist_ok=True)
         log_file_path = os.path.join(LOG_DIR, "recruitment_agent.log")
         level_map = {
             "DEBUG": logging.DEBUG,

@@ -24,8 +24,10 @@ prepare:
 
 # Init the repository
 init:
-	@echo "Create build dataset and model directory"
+	@echo "Create build folder"
 	$(TOP_DIR)/vas.sh dir_est
+	@echo "Create logs dir"
+	mkdir -p $(TOP_DIR)/build/soai_logs
 	@echo "mkdir variables folder"
 	mkdir -p $(TOP_DIR)/build/var
 	@if [ "$(RELEASE)" = "true" ]; then \
@@ -119,12 +121,12 @@ run-genai:
 	$(TOP_DIR)/vas.sh run_image \
 		--name=gen_ai_provider \
 		--port=8004:8004 \
+		--mount="$(TOP_DIR)/build/soai_logs:/app/app/logs" \
 		--env="CONSUL_HOST=soai_consul:8500 \
 			SERVICE_NAME=soai_gen_ai_provider \
 			SERVICE_PORT=8004 \
 			OPENAI_API_KEY=$(OPENAI_API_KEY) \
-			GOOGLE_API_KEY=$(GOOGLE_API_KEY) \
-			LOG_DIR=$(TOP_DIR)/build"
+			GOOGLE_API_KEY=$(GOOGLE_API_KEY)"
 
 wait-genai:
 	@echo "Waiting for GenAI container to start..."
@@ -136,6 +138,7 @@ run-recruitment: wait-mysql wait-authentication wait-genai
 	$(TOP_DIR)/vas.sh run_image \
 		--name=recruitment_agent \
 		--port=8003:8003 \
+		--mount="$(TOP_DIR)/build/soai_logs:/app/app/logs" \
 		--env="CONSUL_HOST=soai_consul:8500 \
 			GENAI_HOST=soai_gen_ai_provider:8004 \
 			SERVICE_NAME=soai_recruitment_agent \
@@ -143,8 +146,7 @@ run-recruitment: wait-mysql wait-authentication wait-genai
 			DB_HOST=soai_mysql \
 			DB_PORT=3306 \
 			DB_NAME=soai_db \
-			DB_USERNAME=soai_user \
-			LOG_DIR=$(TOP_DIR)/build"
+			DB_USERNAME=soai_user"
 
 run-web:
 	@echo "Run Frontend Web Container"
@@ -161,7 +163,7 @@ test-recruitment:
 	pip install httpx
 	@echo "Automation test for Recruitment Agent"
 	$(RECRUITMENT_DIR)/tests/test_api_recruitment.py 2>&1 | \
-		tee "$(TOP_DIR)/build/test_api_recruitment.log"
+		tee "$(TOP_DIR)/build/soai_logs/test_api_recruitment.log"
 
 push: 	push-recruitment \
 		push-authentication \
@@ -187,7 +189,9 @@ push-helm:
 remove:		remove-recruitment \
 			remove-authentication \
 			remove-genai \
-			remove-web
+			remove-web \
+			remove-consul \
+			remove-mysql
 
 remove-recruitment:
 	@echo "Remove the Recruitment agent docker image"
@@ -201,6 +205,12 @@ remove-genai:
 remove-web:
 	@echo "Remove the Web frontend docker image"
 	$(TOP_DIR)/vas.sh remove_image --name=web
+remove-consul:
+	@echo "Remove the Consul docker image"
+	$(TOP_DIR)/vas.sh remove_public_image --name=consul
+remove-mysql:
+	@echo "Remove the MySQL docker image"
+	$(TOP_DIR)/vas.sh remove_public_image --name=mysql
 
 generate-ca:
 	@echo "Generate CA files"
