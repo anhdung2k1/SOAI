@@ -8,9 +8,9 @@ DOCKER_CONFIG_DIR ?= build/docker
 RECRUITMENT_DIR := $(TOP_DIR)/backend/services/recruitment_agent
 
 # Health check
-RETRIES ?= 5
-INTERVAL ?= 5
-TIMEOUT ?= 3
+RETRIES ?= 10
+INTERVAL ?= 15
+TIMEOUT ?= 10
 
 # Clean the repository
 clean:
@@ -131,7 +131,8 @@ run-genai:
 			SERVICE_NAME=soai_gen_ai_provider \
 			SERVICE_PORT=8004 \
 			OPENAI_API_KEY=$(OPENAI_API_KEY) \
-			GOOGLE_API_KEY=$(GOOGLE_API_KEY)"
+			GOOGLE_API_KEY=$(GOOGLE_API_KEY) \
+			LOG_LEVEL=INFO"
 
 wait-genai:
 	@echo "Waiting for GenAI container to start..."
@@ -151,7 +152,8 @@ run-recruitment: wait-mysql wait-authentication wait-genai
 			DB_HOST=soai_mysql \
 			DB_PORT=3306 \
 			DB_NAME=soai_db \
-			DB_USERNAME=soai_user"
+			DB_USERNAME=soai_user \
+			LOG_LEVEL=INFO"
 
 run-web:
 	@echo "Run Frontend Web Container"
