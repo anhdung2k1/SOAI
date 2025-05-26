@@ -89,8 +89,6 @@ remove:
   before_script:
     - docker images
     - chmod +x ./vas.sh Makefile
-  needs:
-    - job: image-push-combined
   script:
     - make remove
     - docker images
