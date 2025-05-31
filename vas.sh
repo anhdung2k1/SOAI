@@ -9,6 +9,7 @@ test -n "$TEST_DIR" || export TEST_DIR="$VAS_GIT/test"
 test -n "$BUILD_DIR" || export BUILD_DIR="$VAS_GIT/build"
 test -n "$RELEASE" || export RELEASE=false
 test -n "$DOCKER_DIR" || export DOCKER_DIR="$VAS_GIT/docker"
+test -n "$SOAI_LOGS_DIR" || export SOAI_LOGS_DIR="$BUILD_DIR/soai_logs"
 # HELM Chart set up
 test -n "$HELM_DIR" || export HELM_DIR="$BUILD_DIR/helm-build/soai-application"
 test -n "$HELM_CHART_DIR" || export HELM_CHART_DIR="$VAS_GIT/helm/soai-application"
@@ -57,6 +58,8 @@ dir_est() {
     else
         echo "$BUILD_DIR already exists. Skipping creation."
     fi
+    echo "Creating $SOAI_LOGS_DIR..."
+    mkdir -p "$SOAI_LOGS_DIR"
 
     echo "Directory setup complete."
 }
@@ -474,6 +477,33 @@ remove_public_image() {
     fi
 }
 
+
+## Collect docker logs
+##
+## --name=<module name>
+##
+collect_docker_logs() {
+    test -n "$__name" || die "Module name required"
+    test -n "$SOAI_LOGS_DIR" || mkdir -p $SOAI_LOGS_DIR
+
+    container_name="soai_$__name"
+    log_path="$SOAI_LOGS_DIR/$container_name.log"
+    if [[ -f $log_path ]]; then
+        echo "Remove the logs dir if it exists"
+        chmod +x $log_path
+        rm -f $log_path
+    fi
+    
+    # Check if the container is exists
+    if docker ps -a --format '{{.Names}}' | grep -Eq "^${container_name}$"; then
+        echo "Collecting docker logs: $container_name to $log_path"
+        docker logs $container_name 2>&1 | \
+            tee "$log_path" \
+            || die "Failed to collect docker logs with container name: $container_name"
+    else
+        echo "Container $container_name did not run yet. Need to run container $container_name first."
+    fi
+}
 
 ## Push helm
 ## Push helm package to Docker Registry

@@ -31,8 +31,6 @@ prepare:
 init:
 	@echo "Create build folder"
 	$(TOP_DIR)/vas.sh dir_est
-	@echo "Create logs dir"
-	mkdir -p $(TOP_DIR)/build/soai_logs
 	@echo "mkdir variables folder"
 	mkdir -p $(TOP_DIR)/build/var
 	@if [ "$(RELEASE)" = "true" ]; then \
@@ -192,7 +190,10 @@ check-url-health:
 	done; \
 	echo "$$NAME health check failed after $(RETRIES) attempts"; exit 1
 
-test:	test-recruitment
+test:	test-recruitment \
+	collect-authentication-log \
+	collect-gen-ai-log \
+	collect-recruitment-log
 
 test-recruitment:
 	chmod +x $(RECRUITMENT_DIR)/tests/test_api_recruitment.py
@@ -200,10 +201,15 @@ test-recruitment:
 	@echo "Automation test for Recruitment Agent"
 	$(RECRUITMENT_DIR)/tests/test_api_recruitment.py 2>&1 | \
 		tee "$(TOP_DIR)/build/soai_logs/test_api_recruitment.log"
-	docker logs soai_gen_ai_provider 2>&1 | \
-		tee "$(TOP_DIR)/build/soai_logs/gen-ai_agent.log"
-	docker logs soai_recruitment_agent 2>&1 | \
-		tee "$(TOP_DIR)/build/soai_logs/recruitment_agent.log"
+collect-authentication-log:
+	@echo "Collect SOAI_AUTHENTICATION logs"
+	$(TOP_DIR)/vas.sh collect_docker_logs --name=authentication
+collect-gen-ai-log:
+	@echo "Collect SOAI_GEN_AI_PROVIDER logs"
+	$(TOP_DIR)/vas.sh collect_docker_logs --name=gen_ai_provider
+collect-recruitment-log:
+	@echo "Collect SOAI_RECRUITMENT logs"
+	$(TOP_DIR)/vas.sh collect_docker_logs --name=recruitment_agent
 
 push: 	push-recruitment \
 		push-authentication \
