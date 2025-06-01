@@ -102,7 +102,7 @@ async def get_interviews(
 async def get_jds(
     position: Optional[str] = Query(None, description="Optional position filter"),
     db: Session = Depends(get_db),
-    get_current_user: dict = JWTService.require_role("ADMIN"),
+    get_current_user: dict = Depends(JWTService.verify_jwt),
 ):
     username = get_current_user.get("sub")
     role = get_current_user.get("role")

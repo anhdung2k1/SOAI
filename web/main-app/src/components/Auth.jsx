@@ -1,11 +1,11 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { signin, signup } from '../api/authApi';
 import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 import '../css/Auth.css';
 
 const Auth = ({ isSignIn = true }) => {
-    const hasCheckedCookie = useRef(false);
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(true);
@@ -17,24 +17,31 @@ const Auth = ({ isSignIn = true }) => {
     const location = useLocation();
 
     useEffect(() => {
-        if (hasCheckedCookie.current) return;
-        hasCheckedCookie.current = true // Prevent reloading overtime
-        const profile = Cookies.get('profile');
-
-        if (profile) {
+        const cookie = Cookies.get('profile');
+        if (cookie) {
             try {
-                const parsed = JSON.parse(profile);
-                const isValidToken = parsed.token && parsed.expiresAt &&
-                    new Date(parsed.expiresAt).getTime() > Date.now();
-                
-                if (isValidToken && (location.pathname === '/signin' || location.pathname === '/signup')) {
-                    navigate('/', { replace: true });
+                const parsed = JSON.parse(decodeURIComponent(cookie));
+                const token = parsed?.token;
+
+                if (token) {
+                    const decoded = jwtDecode(token);
+                    const isExpired = decoded.exp * 1000 < Date.now();
+
+                    if (!isExpired) {
+                        // 🔁 Only redirect if user is on /signin or /signup
+                        if (location.pathname === '/signin' || location.pathname === '/signup') {
+                            navigate('/', { replace: true });
+                        }
+                    } else {
+                        Cookies.remove('profile');
+                    }
                 }
             } catch (err) {
-                console.error('Invalid cookie format: ', err);
+                console.error('Invalid token:', err);
+                Cookies.remove('profile');
             }
         }
-    }, [navigate, location.pathname]);
+    }, [location.pathname, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -53,7 +60,7 @@ const Auth = ({ isSignIn = true }) => {
                 sameSite: 'Strict',
             });
 
-            navigate('/');
+            navigate("/")
         } catch (err) {
             console.error(err);
             setError(isSignIn ? 'Invalid username or password.' : 'Signup failed. Please try again.');

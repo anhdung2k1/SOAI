@@ -138,6 +138,8 @@ services:
         condition: service_started
       genai:
         condition: service_healthy
+      consul:
+        condition: service_started
 
 networks:
   soai-net:

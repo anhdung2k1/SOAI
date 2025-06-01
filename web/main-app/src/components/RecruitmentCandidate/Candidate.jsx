@@ -168,7 +168,7 @@ const Candidate = () => {
             <img src={NotificationIcon} alt="Job alert" className="bell-icon" />
             <span className="alert-label">Job alert</span>
             <span className="divider">|</span>
-            <a href="#" className="referral-link">
+            <a href="#referral" className="referral-link">
               How to make a referral <span className="help-icon">?</span>
             </a>
           </div>
