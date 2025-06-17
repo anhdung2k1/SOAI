@@ -148,7 +148,8 @@ run-recruitment: wait-mysql wait-authentication wait-genai
 			DB_PORT=3306 \
 			DB_NAME=soai_db \
 			DB_USERNAME=soai_user \
-			LOG_LEVEL=INFO"
+			LOG_LEVEL=INFO" \
+		--cmd="java -jar app.jar"
 
 run-web:
 	@echo "Run Frontend Web Container"

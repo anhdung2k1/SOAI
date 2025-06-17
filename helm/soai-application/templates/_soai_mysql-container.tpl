@@ -6,8 +6,8 @@
   securityContext:
     allowPrivilegeEscalation: false
     privileged: false
-    readOnlyRootFilesystem: false
-    runAsNonRoot: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
     {{- with (index $top.Values "seccompProfile" "mysql") }}
     seccompProfile:
     {{- toYaml . | nindent 6 }}
@@ -44,13 +44,11 @@
   - name: {{ template "soai-mysql.name" $top }}-ephemeral-storage
   {{- end }}
     mountPath: /var/lib/mysql
-  - name: conf
+  - name: config-map
     mountPath: /etc/mysql/conf.d
   resources:
 {{- include "soai-application.resources" (index $top.Values "resources" "mysql") | indent 2 }}
 volumes:
-- name: conf
-  emptyDir: {}
 - name: config-map
   configMap:
     name: {{ template "soai-mysql.name" $top }}-configmap

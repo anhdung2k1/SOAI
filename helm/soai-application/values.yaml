@@ -59,8 +59,8 @@ server:
     serviceType: ClusterIP
     httpPort: "9090"
     httpsPort: "9443"
-    httpNodePort: "309003"
-    httpsNodePort: "309043"
+    httpNodePort: "30903"
+    httpsNodePort: "30943"
 
   recruitment:
     name: recruitment

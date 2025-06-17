@@ -8,8 +8,8 @@
     {{- include "soai-application.appArmorProfile.securityContext" (list $top "webserver") | indent 4 }}
     allowPrivilegeEscalation: false
     privileged: false
-    readOnlyRootFilesystem: false
-    runAsNonRoot: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
     {{- with (index $top.Values "seccompProfile" "webserver") }}
     seccompProfile:
     {{- toYaml . | nindent 6 }}

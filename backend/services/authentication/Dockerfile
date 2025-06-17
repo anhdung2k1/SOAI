@@ -12,6 +12,7 @@ RUN mvn clean package -DskipTests
 
 FROM openjdk:17-jdk-slim
 
+ARG USER_ID=1001
 ARG COMMIT
 ARG APP_VERSION
 ARG BUILD_TIME

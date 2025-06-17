@@ -41,7 +41,7 @@
         name: {{ template "soai-mysql.name" $top }}-secret
         key: {{ template "soai-mysql.name" $top }}-dbName
   - name: DB_USERNAME
-  {{- if not (eq ((include "soai-mysql.password" $top) | b64dec) "root") }}
+  {{- if not (eq ((include "soai-mysql.username" $top) | b64dec) "root") }}
     valueFrom:
       secretKeyRef:
         name: {{ template "soai-mysql.name" $top }}-secret
