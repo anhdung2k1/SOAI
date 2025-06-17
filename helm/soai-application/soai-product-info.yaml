@@ -20,3 +20,8 @@ images:
     registry: '%%REGISTRY%%'
     name: soai-web
     tag: '%%VERSION%%'
+  soai-mysql:
+    productName: SOAI MySQL
+    registry: 'bitnami'
+    name: mysql
+    tag: 8.0.32

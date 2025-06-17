@@ -28,9 +28,29 @@ spec:
         {{- include "soai-application.podSeccompProfile" . | indent 8 }}
         {{- include "soai-application.supplementalGroups" . }}
       initContainers:
-      {{- include "ck-initContainers" (list . "authentication") | indent 6 }}
+      {{- include "soai-initContainers" (list . "authentication") | indent 6 }}
+      {{- include "soai-initContainers" (list . "recruitment") | indent 6 }}
       containers:
       {{- include "soai-auth-containers" (list .) | nindent 6 }}
+      volumes:
+      - name: config-properties
+        configMap:
+          name: {{ template "soai-application.name" . }}-auth-configmap
+          items:
+            - key: application.yaml
+              path: application.yaml
+      {{- if $g.security.tls.enabled }}
+      - name: tls-secret
+        secret:
+          secretName: {{ template "soai-application.name" . }}-cert
+      - name: keystore-cert
+        {{- if .Values.storage.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ template "soai-authentication.name" . }}-pv-claim
+        {{- else }}
+        emptyDir: {}
+        {{- end }}
+      {{- end }}
     {{- if include "soai-application.pullSecrets" . }}
       imagePullSecrets:
         - name: {{ template "soai-application.pullSecrets" . }}

@@ -35,16 +35,4 @@
     mountPath: {{ $top.Values.server.secretsPath.certPath }}
     readOnly: true
   {{- end }}
-volumes:
-- name: nginx-conf
-  configMap:
-    name: {{ template "soai-application.name" $top }}-nginx-configmap
-    items:
-      - key: nginx.conf
-        path: nginx.conf
-{{- if $g.security.tls.enabled }}
-- name: tls-webserver-cert
-  secret:
-    secretName: {{ template "soai-application.name" $top }}-cert
-{{- end }}
 {{- end -}}

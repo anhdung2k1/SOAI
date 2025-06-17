@@ -1,0 +1,11 @@
+The SOAI Application can be accessed via nodePort {{ .Values.server.webserver.httpNodePort }} if TLS is enabled, else {{ .Values.server.webserver.httpsNodePort }}
+
+    export NODE_IP=$(kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}')
+    kubectl --namespace {{ .Release.Namespace }} get svc -l app=soai-application-webserver -o jsonpath='{.items[*].spec.ports[*].nodePort}'
+
+{{- if (not .Values.storage.enabled) }}
+###############################################################################
+######  WARNING: Persistence is disabled!!! You will lose your data when ######
+######           the Server pod is terminated                            ######
+###############################################################################
+{{- end }}

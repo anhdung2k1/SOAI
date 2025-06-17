@@ -12,10 +12,10 @@ kind: StorageClass
 metadata:
   name: {{ $storageClassName }}
 provisioner: {{ .Values.storage.storageClass.provisioner }}
-retainPolicy: {{ .Values.storage.retainPolicy }}
+reclaimPolicy: {{ .Values.storage.reclaimPolicy }}
 volumeBindingMode: WaitForFirstConsumer
-{{- end }}
 ---
+{{- end }}
 {{- if .Values.storage.persistentVolume.enabled }}
 # PersistentVolume for MySQL
 apiVersion: v1
@@ -70,8 +70,8 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: {{ .Values.storage.persistentVolume.hostPath.authentication }}
-{{- end }}
 ---
+{{- end }}
 # PersistentVolumeClaim for MySQL
 apiVersion: v1
 kind: PersistentVolumeClaim

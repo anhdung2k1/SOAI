@@ -1,7 +1,10 @@
 {{- $g := fromJson (include "soai-application.global" . ) -}}
+# SOAI Authentication Service
 apiVersion: v1
 kind: Service
 metadata:
+  annotations: {{- include "soai-application.annotations" . | nindent 4 }}
+  labels: {{- include "soai-authentication.labels" . | nindent 4 }}
   name: {{ template "soai-authentication.name" . }}
 spec:
   selector:
@@ -26,9 +29,12 @@ spec:
     {{- end }}
   type: {{ .Values.server.authentication.serviceType }}
 ---
+# SOAI Recruitment Service
 apiVersion: v1
 kind: Service
 metadata:
+  annotations: {{- include "soai-application.annotations" . | nindent 4 }}
+  labels: {{- include "soai-recruitment.labels" . | nindent 4 }}
   name: {{ template "soai-recruitment.name" . }}
 spec:
   selector:
@@ -41,7 +47,7 @@ spec:
       {{- if not (eq .Values.server.recruitment.serviceType "ClusterIP" ) }}
       nodePort: {{ .Values.server.recruitment.httpsNodePort }}
       {{- end }}
-      targetPort: tls-server-svc
+      targetPort: tls-recruitment-svc
     {{- else }}
     - name: {{ template "soai-recruitment.name" . }}-http
       protocol: "TCP"
@@ -49,13 +55,16 @@ spec:
       {{- if not (eq .Values.server.recruitment.serviceType "ClusterIP" ) }}
       nodePort: {{ .Values.server.recruitment.httpNodePort }}
       {{- end }}
-      targetPort: http-server-svc
+      targetPort: http-recruitment-svc
     {{- end }}
   type: {{ .Values.server.recruitment.serviceType }}
 ---
+# SOAI Webserver Service
 apiVersion: v1
 kind: Service
 metadata:
+  annotations: {{- include "soai-application.annotations" . | nindent 4 }}
+  labels: {{- include "soai-webserver.labels" . | nindent 4 }}
   name: {{ template "soai-webserver.name" . }}
 spec:
   selector:
@@ -79,3 +88,33 @@ spec:
       targetPort: http-webserver-svc
     {{- end }}
   type: {{ .Values.server.webserver.serviceType }}
+---
+# MySQL Service
+# This service is used for internal communication between MySQL pods in a StatefulSet.
+apiVersion: v1
+kind: Service
+metadata:
+  annotations: {{- include "soai-application.annotations" . | nindent 4 }}
+  labels: {{- include "soai-mysql.labels" . | nindent 4 }}
+  name: {{ template "soai-mysql.name" . }}
+spec:
+  ports:
+  - name: {{ template "soai-mysql.name" . }}
+    port: {{ .Values.server.mysqlServer.port }}
+  clusterIP: None
+  selector:
+    app: {{ template "soai-mysql.name" . }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations: {{- include "soai-application.annotations" . | nindent 4 }}
+  labels: {{- include "soai-mysql.labels" . | nindent 4 }}
+  # This service is used for read operations, allowing external access to MySQL.
+  name: {{ template "soai-mysql.name" . }}-read
+spec:
+  ports:
+  - name: {{ template "soai-mysql.name" . }}
+    port: {{ .Values.server.mysqlServer.port }}
+  selector:
+    app: {{ template "soai-mysql.name" . }}

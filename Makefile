@@ -46,7 +46,7 @@ git-tag:
 	$(TOP_DIR)/vas.sh create_git_tag
 
 ## Package the helm chart
-package-helm:
+package-helm: generate-ca
 	@echo "Package helm"
 	$(TOP_DIR)/vas.sh build_helm \
 		--release=$(RELEASE)
@@ -111,7 +111,8 @@ run-authentication: wait-mysql
 			DB_PORT=3306 \
 			DB_NAME=soai_db \
 			DB_USERNAME=soai_user \
-			DB_PASSWORD=soai_password"
+			DB_PASSWORD=soai_password" \
+		--cmd="java -jar app.jar"
 
 wait-authentication:
 	@echo "Waiting for Authentication container to start..."
@@ -148,8 +149,7 @@ run-recruitment: wait-mysql wait-authentication wait-genai
 			DB_PORT=3306 \
 			DB_NAME=soai_db \
 			DB_USERNAME=soai_user \
-			LOG_LEVEL=INFO" \
-		--cmd="java -jar app.jar"
+			LOG_LEVEL=INFO"
 
 run-web:
 	@echo "Run Frontend Web Container"

@@ -6,4 +6,3 @@ description: A Helm chart for the SOAI AI Agent Application
 maintainers:
   - name: Anh Dung
     email: kudung053@gmail.com
-engine: gotpl

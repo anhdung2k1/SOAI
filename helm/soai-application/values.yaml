@@ -202,7 +202,7 @@ appArmorProfile:
 storage:
   # Storage enabled => PV and PVC will be used
   enabled: true
-  retainPolicy: Retain
+  reclaimPolicy: Retain
   # Storage enabled & PV disabled => only PVC used
   # Storage enabled & PV enabled => Both PV and PVC are used
   persistentVolume:

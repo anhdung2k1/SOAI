@@ -1,0 +1,1199 @@
+---
+# Source: soai-application/templates/application-secret.yaml
+# TLS Server TLS SecretapiVersion: v1
+kind: Secret
+metadata:
+  name: ca-cert
+type: kubernetes.io/tls
+data:
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURlVENDQW1HZ0F3SUJBZ0lVQTVXY1ArakFtQTg0ZlVHUDRCTE15MmR6dktnd0RRWUpLb1pJaHZjTkFRRUwKQlFBd1RERUxNQWtHQTFVRUJoTUNWazR4Q3pBSkJnTlZCQWdNQWxaT01SSXdFQVlEVlFRSERBbEliME5vYVUxcApibWd4RFRBTEJnTlZCQW9NQkZOdllXa3hEVEFMQmdOVkJBTU1CRk52WVdrd0hoY05NalV3TmpFNE1EZ3pOak0zCldoY05NelV3TmpFMk1EZ3pOak0zV2pCTU1Rc3dDUVlEVlFRR0V3SldUakVMTUFrR0ExVUVDQXdDVms0eEVqQVEKQmdOVkJBY01DVWh2UTJocFRXbHVhREVOTUFzR0ExVUVDZ3dFVTI5aGFURU5NQXNHQTFVRUF3d0VVMjloYVRDQwpBU0l3RFFZSktvWklodmNOQVFFQkJRQURnZ0VQQURDQ0FRb0NnZ0VCQU5rNDdyNjNhcTJrMnVublp3VkJwT3Z1CldaQlBuRmpucHQyZ3BVendSMlZGdmJDQmZEZ2tjRzVQTGJjT1JtZzVoMXBvQUZqM3BpNUtPSVVUTEdlWkxidjkKUnZYNmNvZWdGS0k5MjFoL2ZuS0x4OHJsZXJBWlkyRy9rb0drMldlVmlNWjFWNEZFaUlYdlhoVUdlVVI3UDlrUgprYXVYOUprMlhlVFA3aVBPMjN6Ti9Nc1Z5QXpPTkgwaE01NEQ3eTJGYUI3MlpXMEg4cUhkWUF6WnUvRDJlSEtaClVhWnV2VVZsajgwcE40c3hhUlZDb2M1ZGx0bG9NOUM2VVFyY0VURWlQZ0gxanBCZ0ZjZy80N3RnVG9hZDNTb0cKUm1oR0xvYlo1TEJrZ3pVcG5YcGN1amxER2QzbDRHNHlJV2Yyc1cxMEVsZWRDL2FVaXdnUHZzS08rY2RSejBrQwpBd0VBQWFOVE1GRXdIUVlEVlIwT0JCWUVGQWF4blBrMHJQSzdWUXdzRkVBUjk3M0RaN25zTUI4R0ExVWRJd1FZCk1CYUFGQWF4blBrMHJQSzdWUXdzRkVBUjk3M0RaN25zTUE4R0ExVWRFd0VCL3dRRk1BTUJBZjh3RFFZSktvWkkKaHZjTkFRRUxCUUFEZ2dFQkFGRVhQREVpWUFrczRXVlljZUFJaXFzMUFqcjlVZTRQQUJzMjcySnprRlZQYUk2YwpueDlybjFIOXpZbWgwbll2aDFKaGZCQUNDTXhsTGxmVWUzSUhHd0IxcWVPcUZ3eFkyd2pITzV3VmYvbExDdStVCjVFUmhidVNXMEVGTVRlZ0huWmJYQ0pSUDJGUDRwcFp2cEV1K3hOemU4MkRnaDBTZkM5Z1Z0cm1xQ1lxMEdaNkQKWmYvVkhEYi9vOGo0K1VCZ2FkSFhVUzRQZ0NXd0EveFVaSEJ2WXlaSHo2N1dHZ0dGYXpCVXZ1TWVCS29YcHFJagppbmxyMGxBRmlrRENibGxaTncra2pKMXhVelhaWGtZMUdXVTBEdnNpYzAyaFByazBLcTdJZTJtSEpMa3dXYnFSClZ2c1ZpREJLV0I1WkJ6YWQwTzlGRWlQRC9XanRpREJYNTA4czg1OD0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+  tls.key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktjd2dnU2pBZ0VBQW9JQkFRRFpPTzYrdDJxdHBOcnAKNTJjRlFhVHI3bG1RVDV4WTU2YmRvS1ZNOEVkbFJiMndnWHc0SkhCdVR5MjNEa1pvT1lkYWFBQlk5Nll1U2ppRgpFeXhubVMyNy9VYjErbktIb0JTaVBkdFlmMzV5aThmSzVYcXdHV05odjVLQnBObG5sWWpHZFZlQlJJaUY3MTRWCkJubEVlei9aRVpHcmwvU1pObDNreis0anp0dDh6ZnpMRmNnTXpqUjlJVE9lQSs4dGhXZ2U5bVZ0Qi9LaDNXQU0KMmJ2dzluaHltVkdtYnIxRlpZL05LVGVMTVdrVlFxSE9YWmJaYURQUXVsRUszQkV4SWo0QjlZNlFZQlhJUCtPNwpZRTZHbmQwcUJrWm9SaTZHMmVTd1pJTTFLWjE2WExvNVF4bmQ1ZUJ1TWlGbjlyRnRkQkpYblF2MmxJc0lENzdDCmp2bkhVYzlKQWdNQkFBRUNnZ0VBUkxSaHF2ZkhhWW1wWmU3M1lpMjdsSlhzUlIweEJkdXJKeEV2QjFFK083VmQKeEd5SUZoZk1hYzlvVmF4UnI1aDJpNjAyWXUxZFplbTZ5N2hmUkpzcDRIcEJEZjc3WjVORnczVU9JZ1VkUU95ZQpNam4zM3FnQkM0TTB1d1doYjhaWG52R3hUaVVYaTBsRStDQjJqYWJ2OEYvQ3M4UFpyUFlKcDV2dXBldkE5MDE0CkgyM2hmaWpCd3JOaUhsRXllcm9IaTBmN1ZQSEhSajBnK2pGSitDd1lRbUpHNHRoVXNxS1l3dVU5Wk15VHhhWm0KWlFjM25qUG11MVZHcTZ6dmEyTFRTdFowU1U0MmsrSW4vN21rWnB4K2krV1pFNERKZ1k4TU41NUl0NzRncG9UQwpYWFRwazFBeFJTMG95eXl6VDJyaHhLYzJXOUJraWhzRmNERzd5cldWb3dLQmdRRGNLRytsNTl5NlBTdTBEV29FCkF4L01NTGsrMW5qYVFSK2Z1SGxLZE5xeGpCSVZ5bUlPOHFubk41MGRSKy85M0xCV091bFNvT3Y1RUdrdXh2TmsKTlFYSnR2THFPZWxtYktCc2lqekMwM3F2Rnc2MmNROTJpcmJyR09WYjRzaHM2dWR2YlZ0TGdzaVZoRDZlSTZxQQpOcm9KTmY5ZTFUcHlDQXBGb3NBN0xXdS9vd0tCZ1FEOGxpYUxnK2daUFc1OUhmYWFVUHFKUW5FYzBlL21MalkzCjFvYUVUUHhZdi9PK3U0ajhFVmtFNmZrTlVDZlhQckhzWTF4L0wvbk01L2tnYlBwZHV0NVVzWElRUE40eGFQQ04KUzBPTEdwUE9JSXpvSnBEZVUrMU4wdXRlRzFHRXg4ZzVqeWhxWERSQUlrR2o0U0JEVVZCdTlza3Q5ZU9BUW5vTgpRdmRpQTBpMEl3S0JnUUNyRDloQWhyb2hFMnFqeWxCM3NaM0JZSkp2V3VJb1k3V1l1eE96WUx5VWZBdUpWdWwrClI5cndSMndTMWxTSllqSzVyYWloaFZ3VStFVmlEVUFNdW80MnY2cGJpSWZzQjdkVzNzcDdieXJDWlI0UGNDWGQKcThhWlFZemxLbjhrOGhqRm9handNVHg5d0hXUEZwTmljQ041Q0xYV0Q4UUwybWR3MkJhWlpKOTJGUUtCZ0ZONAo0NEFUdFc0eDZRT2NGVlRtRWdXdVdXY20wZHNGeHBFcGFnYnEwaklhTFZrSTdMb3dtWFNRUmVmcVoyQXdyZWZxCjVqUjZERmwxQjlWNWJqdnZkMjRSdmhvem8xSTgxZEk3M3pSbk1oVmFtSFpYMkdSQTVCbGw3TGFLM0tPK3lpS0wKZHRXL1p0MFM5UkpOWWJZZGR6RlVpU09STVArLytFbk5xYWRRWW9SMUFvR0FWSVhXc0U0LzB6MWhKTWRsTXIwWApUVUxwSEV3UEdiM0s2dWtTc3U1UFRDMzFMamhjYzYrNWlmYWszc25JR3ZEUG9nbXRPUDQrdXdlbmRBc2U2czNICkxFSUN6eDRxS0hGV0xWSmF5WFRxRGYvWkNHM01zNFhMNEh6NGUzalZoOWRnRUE0OGZmcFVWNlV4a1JDUzJscisKMVhWaHdkejJ1aXlQc3ZsbFhNYzdnTDg9Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
+---
+# Source: soai-application/templates/application-secret.yaml
+# MySQL Secret Key
+apiVersion: v1
+kind: Secret
+metadata:
+  name: soai-application-mysql-secret
+type: Opaque
+data:
+  soai-application-mysql-root-password:  cm9vdA==
+  soai-application-mysql-password:  cm9vdA==
+  soai-application-mysql-host:  c29haS1hcHBsaWNhdGlvbi1teXNxbA==
+  soai-application-mysql-dbName:  c29haV9kYg==
+---
+# Source: soai-application/templates/application-secret.yaml
+# Server Opaque Secret
+apiVersion: v1
+kind: Secret
+metadata:
+  name: soai-application-authentication-secret
+type: Opaque
+data:
+  soai-application-authentication-keystore-password:  c29haV9rZXlzdG9yZV9wYXNzd29yZA==
+---
+# Source: soai-application/templates/application-secret.yaml
+# OPENAI Secret Key
+apiVersion: v1
+kind: Secret
+metadata:
+  name: openai-secret
+type: Opaque
+data:
+  openai-key:
+---
+# Source: soai-application/templates/application-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: soai-application-auth-configmap
+  labels:
+    app: "soai-application-authentication"
+    app.kubernetes.io/instance: "soai-app"
+    app.kubernetes.io/name: "soai-application-authentication"
+    app.kubernetes.io/version: "1.0.0-11922779999"
+    chart: "soai-application-1.0.0-11922779999"
+    component: "authentication"
+    heritage: "Helm"
+    release: "soai-app"
+  annotations:
+    soai-application.com/product-name: "SOAI AI Agent System"
+    soai-application.com/product-revision: "1.0.0-11922779999"
+data:
+  application.yaml: |
+    logging:
+      level:
+        org:
+          springframework:
+            web: info
+    #Get the ENV from k8s, docker env
+    spring:
+      datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:soai_db}
+        username: ${DB_USERNAME:soai_user}
+        password: ${DB_PASSWORD:soai_password}
+      jpa:
+        database-platform: org.hibernate.dialect.MySQLDialect
+        generate-ddl: true
+        show-sql: true
+        hibernate:
+          ddl-auto: update
+    
+    springdoc:
+      swagger-ui:
+        path: /api/v1/authentications/swagger-ui/index.html
+      api-docs:
+        path: /api/v1/authentications/docs
+    
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: "*"
+      endpoint:
+        health:
+          show-details: "always"
+      health:
+        db:
+          enabled: true
+    
+    server:
+      port: 9443
+      ssl:
+        enabled: true
+        key-store: ${KEYSTORE_PATH}
+        key-store-password: ${KEYSTORE_PASSWORD}
+        key-store-type: PKCS12
+        key-alias: ssl-cert
+---
+# Source: soai-application/templates/application-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: soai-application-mysql-configmap
+  labels:
+    app: "soai-application-mysql"
+    app.kubernetes.io/instance: "soai-app"
+    app.kubernetes.io/name: "soai-application-mysql"
+    app.kubernetes.io/version: "1.0.0-11922779999"
+    chart: "soai-application-1.0.0-11922779999"
+    component: "mysql-server"
+    heritage: "Helm"
+    release: "soai-app"
+  annotations:
+    soai-application.com/product-name: "SOAI AI Agent System"
+    soai-application.com/product-revision: "1.0.0-11922779999"
+data:
+  primary.cnf: |
+    [mysqld]
+    log-bin
+  replica.cnf: |
+    [mysqld]
+    super-read-only
+---
+# Source: soai-application/templates/application-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: soai-application-nginx-configmap
+  labels:
+    app: "soai-application-webserver"
+    app.kubernetes.io/instance: "soai-app"
+    app.kubernetes.io/name: "soai-application-webserver"
+    app.kubernetes.io/version: "1.0.0-11922779999"
+    chart: "soai-application-1.0.0-11922779999"
+    component: "webserver"
+    heritage: "Helm"
+    release: "soai-app"
+  annotations:
+    soai-application.com/product-name: "SOAI AI Agent System"
+    soai-application.com/product-revision: "1.0.0-11922779999"
+data:
+  nginx.conf: |
+    map $http_upgrade $connection_upgrade {
+        default upgrade;
+        '' close;
+    }
+    upstream recruitment {
+        server recruitment:;
+    }
+    upstream authentication {
+        server authentication:;
+    }
+    upstream genai {
+        server genai:;
+    }
+    upstream web {
+        server web:;
+    }
+    
+    server {
+        listen 8443 ssl;
+        ssl_certificate /run/secrets/tls/tls.crt;
+        ssl_certificate_key /run/secrets/tls/tls.key;
+        ssl_protocols TLSv1.2 TLSv1.3;
+        ssl_ciphers HIGH:!aNULL:!MD5;
+        proxy_connect_timeout 1920s;
+        proxy_read_timeout 1920s;
+        client_max_body_size 0;
+    
+        location /api/v1/recruitment/ {
+            proxy_pass http://recruitment$request_uri;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection $connection_upgrade;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_cache_bypass $http_upgrade;
+        }
+        location /api/v1/authentications/ {
+            proxy_pass http://authentication$request_uri;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection $connection_upgrade;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_cache_bypass $http_upgrade;
+        }
+        location /api/v1/gen-ai/ {
+            proxy_pass http://genai$request_uri;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection $connection_upgrade;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_cache_bypass $http_upgrade;
+        }
+        location  / {
+            proxy_pass http://web$request_uri;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection $connection_upgrade;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_cache_bypass $http_upgrade;
+        }
+    
+        error_page 502 503 504 = @custom_upstream_error;
+    
+        location @custom_upstream_error {
+            default_type application/json;
+            return 502 '{"warning": "Upstream service is unavailable, but other services are operational."}';
+        }
+    
+        gzip on;
+        gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+        gzip_proxied any;
+        gzip_vary on;
+    }
+---
+# Source: soai-application/templates/storage.yaml
+# StorageClass Definition
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: default-local-storage
+provisioner: kubernetes.io/no-provisioner
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+---
+# Source: soai-application/templates/storage.yaml
+# PersistentVolumeClaim for MySQL
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: soai-application-mysql-pv-claim
+  labels:
+    app: soai-application-mysql
+    tier: database
+spec:
+  storageClassName: default-local-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+# Source: soai-application/templates/storage.yaml
+# PersistentVolumeClaim for face-model server
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: soai-application-recruitment-pv-claim
+  labels:
+    app: soai-application-recruitment
+spec:
+  storageClassName: default-local-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+# Source: soai-application/templates/storage.yaml
+# PersistentVolumeClaim for authentication APIs
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: soai-application-authentication-pv-claim
+  labels:
+    app: soai-application-authentication
+spec:
+  storageClassName: default-local-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+# Source: soai-application/templates/application-service.yaml
+# SOAI Authentication Service
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    soai-application.com/product-name: "SOAI AI Agent System"
+    soai-application.com/product-revision: "1.0.0-11922779999"
+  labels:
+    app: "soai-application-authentication"
+    app.kubernetes.io/instance: "soai-app"
+    app.kubernetes.io/name: "soai-application-authentication"
+    app.kubernetes.io/version: "1.0.0-11922779999"
+    chart: "soai-application-1.0.0-11922779999"
+    component: "authentication"
+    heritage: "Helm"
+    release: "soai-app"
+  name: soai-application-authentication
+spec:
+  selector:
+    app: soai-application-authentication
+  ports:
+    - name: soai-application-authentication-https
+      protocol: "TCP"
+      port: 9443
+      targetPort: tls-auth-svc
+  type: ClusterIP
+---
+# Source: soai-application/templates/application-service.yaml
+# SOAI Recruitment Service
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    soai-application.com/product-name: "SOAI AI Agent System"
+    soai-application.com/product-revision: "1.0.0-11922779999"
+  labels:
+    app: "soai-application-recruitment"
+    app.kubernetes.io/instance: "soai-app"
+    app.kubernetes.io/name: "soai-application-recruitment"
+    app.kubernetes.io/version: "1.0.0-11922779999"
+    chart: "soai-application-1.0.0-11922779999"
+    component: "recruitment"
+    heritage: "Helm"
+    release: "soai-app"
+  name: soai-application-recruitment
+spec:
+  selector:
+    app: soai-application-recruitment
+  ports:
+    - name: soai-application-recruitment-https
+      protocol: "TCP"
+      port: 8443
+      targetPort: tls-recruitment-svc
+  type: ClusterIP
+---
+# Source: soai-application/templates/application-service.yaml
+# SOAI Webserver Service
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    soai-application.com/product-name: "SOAI AI Agent System"
+    soai-application.com/product-revision: "1.0.0-11922779999"
+  labels:
+    app: "soai-application-webserver"
+    app.kubernetes.io/instance: "soai-app"
+    app.kubernetes.io/name: "soai-application-webserver"
+    app.kubernetes.io/version: "1.0.0-11922779999"
+    chart: "soai-application-1.0.0-11922779999"
+    component: "webserver"
+    heritage: "Helm"
+    release: "soai-app"
+  name: soai-application-webserver
+spec:
+  selector:
+    app: soai-application-webserver
+  ports:
+    - name: soai-application-webserver-https
+      protocol: "TCP"
+      port: 8443
+      nodePort: 30443
+      targetPort: tls-webserver-svc
+  type: NodePort
+---
+# Source: soai-application/templates/application-service.yaml
+# MySQL Service
+# This service is used for internal communication between MySQL pods in a StatefulSet.
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    soai-application.com/product-name: "SOAI AI Agent System"
+    soai-application.com/product-revision: "1.0.0-11922779999"
+  labels:
+    app: "soai-application-mysql"
+    app.kubernetes.io/instance: "soai-app"
+    app.kubernetes.io/name: "soai-application-mysql"
+    app.kubernetes.io/version: "1.0.0-11922779999"
+    chart: "soai-application-1.0.0-11922779999"
+    component: "mysql-server"
+    heritage: "Helm"
+    release: "soai-app"
+  name: soai-application-mysql
+spec:
+  ports:
+  - name: soai-application-mysql
+    port: 3306
+  clusterIP: None
+  selector:
+    app: soai-application-mysql
+---
+# Source: soai-application/templates/application-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    soai-application.com/product-name: "SOAI AI Agent System"
+    soai-application.com/product-revision: "1.0.0-11922779999"
+  labels:
+    app: "soai-application-mysql"
+    app.kubernetes.io/instance: "soai-app"
+    app.kubernetes.io/name: "soai-application-mysql"
+    app.kubernetes.io/version: "1.0.0-11922779999"
+    chart: "soai-application-1.0.0-11922779999"
+    component: "mysql-server"
+    heritage: "Helm"
+    release: "soai-app"
+  # This service is used for read operations, allowing external access to MySQL.
+  name: soai-application-mysql-read
+spec:
+  ports:
+  - name: soai-application-mysql
+    port: 3306
+  selector:
+    app: soai-application-mysql
+---
+# Source: soai-application/templates/auth-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: soai-application-authentication
+  labels:
+    app: "soai-application-authentication"
+    app.kubernetes.io/instance: "soai-app"
+    app.kubernetes.io/name: "soai-application-authentication"
+    app.kubernetes.io/version: "1.0.0-11922779999"
+    chart: "soai-application-1.0.0-11922779999"
+    component: "authentication"
+    heritage: "Helm"
+    release: "soai-app"
+  annotations:
+    soai-application.com/product-name: "SOAI AI Agent System"
+    soai-application.com/product-revision: "1.0.0-11922779999"
+spec:
+  replicas: 1
+  strategy:
+        type: RollingUpdate
+  selector:
+    matchLabels:
+      component: "authentication"
+      app: soai-application-authentication
+      release: "soai-app"
+      app.kubernetes.io/instance: "soai-app"
+  template:
+    metadata:
+      annotations:
+        soai-application.com/product-name: "SOAI AI Agent System"
+        soai-application.com/product-revision: "1.0.0-11922779999"
+      labels:
+        app: "soai-application-authentication"
+        app.kubernetes.io/instance: "soai-app"
+        app.kubernetes.io/name: "soai-application-authentication"
+        app.kubernetes.io/version: "1.0.0-11922779999"
+        chart: "soai-application-1.0.0-11922779999"
+        component: "authentication"
+        heritage: "Helm"
+        release: "soai-app"
+    spec:
+      securityContext:        
+        fsGroup: 1000        
+      initContainers:      
+      - name: init-keystore
+        image: alpine:3.13
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+          capabilities:
+            drop:
+              - ALL
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          apk add --no-cache openssl;
+          rm -rf /run/secrets/keystore/keystore.p12;
+          openssl pkcs12 -export \
+            -in /run/secrets/tls/tls.crt \
+            -inkey /run/secrets/tls/tls.key \
+            -out /run/secrets/keystore/keystore.p12 \
+            -CAfile /run/secrets/tls/ca.crt \
+            -name ssl-cert \
+            -passout pass:$KEYSTORE_PASSWORD
+          if [ -f /run/secrets/keystore/keystore.p12 ]; then
+            echo "keystore.p12 is a file"
+          else
+            echo "keystore.p12 is a directory"
+          fi
+          echo "Check if keystore.p12 exists directly:"
+          if [ -f "/run/secrets/keystore/keystore.p12" ]; then
+            echo "keystore.p12 exists!";
+          else
+            echo "keystore.p12 did not exist!";
+          fi
+          echo "Waiting for keystore.p12 to be found...";
+          while ! stat "/run/secrets/keystore/keystore.p12" > /dev/null 2>&1; do
+            echo "keystore.p12 not found, waiting...";
+            sleep 5;
+          done;
+          echo "keystore.p12 found! Listing its permissions:";
+          while true; do
+            openssl pkcs12 -info -in "/run/secrets/keystore/keystore.p12" -nokeys -passin pass:$KEYSTORE_PASSWORD;
+            if [ $? -eq 0 ]; then
+              echo "Keystore verification successful!";
+              break;
+            else
+              echo "Keystore verification failed! Retrying in 5 seconds...";
+              sleep 5;
+            fi
+          done;
+        env:
+        - name: KEYSTORE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: soai-application-authentication-secret
+              key: soai-application-authentication-keystore-password
+        volumeMounts:
+        - name: keystore-cert
+          mountPath: /run/secrets/keystore
+        - name: tls-secret
+          mountPath: /run/secrets/tls      
+      - name: wait-for-mysql
+        image: bitnami/mysql:8.0.32
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: false
+          capabilities:
+            drop:
+              - ALL
+        env:
+          - name: DB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: soai-application-mysql-secret
+                key: soai-application-mysql-host
+          - name: DB_PORT
+            value: "3306"
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: soai-application-mysql-secret
+                key: soai-application-mysql-dbName
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: soai-application-mysql-secret
+                key: soai-application-mysql-root-password
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: soai-application-mysql-secret
+                key: soai-application-mysql-password
+        command:
+          - sh
+          - -c
+          - |
+            echo "Starting initContainer to wait for MySQL";
+            until mysql -h $DB_HOST -u $DB_USERNAME -p$DB_PASSWORD -e "SELECT 1"; do
+              echo "Waiting for MySQL to be ready...";
+              sleep 5;
+            done;
+            echo "MySQL is up and running";
+            echo "Init container finished successfully";
+      containers:
+      - name: authentication
+        image: anhdung12399/soai-application/soai-authentication:1.0.0-11922779999
+        imagePullPolicy: IfNotPresent
+        securityContext:    
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
+        ports:
+          - name: tls-auth-svc
+            containerPort: 9443
+        resources:  
+          limits:
+            cpu: "2"
+            memory: "2048Mi"
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+        env:
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: soai-application-mysql-secret
+              key: soai-application-mysql-host
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: soai-application-mysql-secret
+              key: soai-application-mysql-dbName
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: soai-application-mysql-secret
+              key: soai-application-mysql-root-password
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: soai-application-mysql-secret
+              key: soai-application-mysql-password
+        - name: CONFIG_PATH
+          value: /etc/config/application.yaml
+        - name: KEYSTORE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: soai-application-authentication-secret
+              key: soai-application-authentication-keystore-password
+        - name: KEYSTORE_PATH
+          value: /run/secrets/keystore/keystore.p12
+        volumeMounts:
+        - name: config-properties
+          mountPath: /etc/config
+        - name: keystore-cert
+          mountPath: /run/secrets/keystore
+        
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 9443
+            scheme: HTTPS
+          initialDelaySeconds: 60
+          periodSeconds: 60
+          timeoutSeconds: 15
+          successThreshold: 1
+          failureThreshold: 5
+        
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 9443
+            scheme: HTTPS
+          initialDelaySeconds: 60
+          periodSeconds: 60
+          timeoutSeconds: 15
+          successThreshold: 1
+          failureThreshold: 5
+      volumes:
+      - name: config-properties
+        configMap:
+          name: soai-application-auth-configmap
+          items:
+            - key: application.yaml
+              path: application.yaml
+      - name: tls-secret
+        secret:
+          secretName: soai-application-cert
+      - name: keystore-cert
+        persistentVolumeClaim:
+          claimName: soai-application-authentication-pv-claim
+---
+# Source: soai-application/templates/server-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: soai-application-recruitment
+  labels:
+    app: "soai-application-recruitment"
+    app.kubernetes.io/instance: "soai-app"
+    app.kubernetes.io/name: "soai-application-recruitment"
+    app.kubernetes.io/version: "1.0.0-11922779999"
+    chart: "soai-application-1.0.0-11922779999"
+    component: "recruitment"
+    heritage: "Helm"
+    release: "soai-app"
+  annotations:
+    soai-application.com/product-name: "SOAI AI Agent System"
+    soai-application.com/product-revision: "1.0.0-11922779999"
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      component: "recruitment"
+      app: soai-application-recruitment
+      release: "soai-app"
+      app.kubernetes.io/instance: "soai-app"
+  template:
+    metadata:
+      annotations:
+        soai-application.com/product-name: "SOAI AI Agent System"
+        soai-application.com/product-revision: "1.0.0-11922779999"
+      labels:
+        app: "soai-application-recruitment"
+        app.kubernetes.io/instance: "soai-app"
+        app.kubernetes.io/name: "soai-application-recruitment"
+        app.kubernetes.io/version: "1.0.0-11922779999"
+        chart: "soai-application-1.0.0-11922779999"
+        component: "recruitment"
+        heritage: "Helm"
+        release: "soai-app"
+    spec:
+      securityContext:        
+        fsGroup: 1000        
+      initContainers:      
+      - name: wait-for-mysql
+        image: bitnami/mysql:8.0.32
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: false
+          capabilities:
+            drop:
+              - ALL
+        env:
+          - name: DB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: soai-application-mysql-secret
+                key: soai-application-mysql-host
+          - name: DB_PORT
+            value: "3306"
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: soai-application-mysql-secret
+                key: soai-application-mysql-dbName
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: soai-application-mysql-secret
+                key: soai-application-mysql-root-password
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: soai-application-mysql-secret
+                key: soai-application-mysql-password
+        command:
+          - sh
+          - -c
+          - |
+            echo "Starting initContainer to wait for MySQL";
+            until mysql -h $DB_HOST -u $DB_USERNAME -p$DB_PASSWORD -e "SELECT 1"; do
+              echo "Waiting for MySQL to be ready...";
+              sleep 5;
+            done;
+            echo "MySQL is up and running";
+            echo "Init container finished successfully";
+      containers:
+      - name: recruitment
+        image: anhdung12399/soai-application/soai-recruitment:1.0.0-11922779999
+        imagePullPolicy: IfNotPresent
+        securityContext:    
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
+        ports:
+          - name: tls-recruitment-svc
+            containerPort: 8443
+        resources:  
+          limits:
+            cpu: "2"
+            memory: "4096Mi"
+          requests:
+            cpu: "1"
+            memory: "1024Mi"
+        env:
+        - name: LOG_LEVEL
+          value: "INFO"
+        - name: GENAI_HOST
+          value: "genai:8444"
+        - name: SERVICE_NAME
+          value: "recruitment"
+        - name: SERVICE_PORT
+          value: "8443"
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: soai-application-mysql-secret
+              key: soai-application-mysql-host
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: soai-application-mysql-secret
+              key: soai-application-mysql-dbName
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: soai-application-mysql-secret
+              key: soai-application-mysql-root-password
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: soai-application-mysql-secret
+              key: soai-application-mysql-password
+        - name: CERT_PATH
+          value: /run/secrets/tls/tls.crt
+        - name: KEY_PATH
+          value: /run/secrets/tls/tls.key
+        - name: CA_PATH
+          value: /run/secrets/tls/ca.crt
+        - name: TLS_ENABLED
+          value: "true"
+        volumeMounts:
+        - name: soai-application-recruitment-persistent-storage
+          mountPath: /app/app/cv_uploads
+        - name: tls-recruitment-cert
+          mountPath: /run/secrets/tls
+          readOnly: true
+        
+        readinessProbe:
+          httpGet:
+            path: /api/v1/recruitment/health
+            port: 8443
+            scheme: HTTPS
+          initialDelaySeconds: 60
+          periodSeconds: 60
+          timeoutSeconds: 15
+          successThreshold: 1
+          failureThreshold: 5
+        
+        livenessProbe:
+          httpGet:
+            path: /api/v1/recruitment/health
+            port: 8443
+            scheme: HTTPS
+          initialDelaySeconds: 60
+          periodSeconds: 60
+          timeoutSeconds: 15
+          successThreshold: 1
+          failureThreshold: 5
+      - name: genai
+        image: anhdung12399/soai-application/soai-genai:1.0.0-11922779999
+        imagePullPolicy: IfNotPresent
+        securityContext:    
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          capabilities:
+              drop:
+                - ALL
+        ports:
+          - name: tls-genai-svc
+            containerPort: 8444
+        resources:  
+          limits:
+            cpu: "1"
+            memory: "2048Mi"
+          requests:
+            cpu: "200m"
+            memory: "512Mi"
+        env:
+        - name: LOG_LEVEL
+          value: "INFO"
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: openai-secret
+              key: openai-key
+        - name: SERVICE_NAME
+          value: "genai"
+        - name: SERVICE_PORT
+          value: "8444"
+        - name: CERT_PATH
+          value: /run/secrets/tls/tls.crt
+        - name: KEY_PATH
+          value: /run/secrets/tls/tls.key
+        - name: CA_PATH
+          value: /run/secrets/tls/ca.crt
+        - name: TLS_ENABLED
+          value: "true"
+        volumeMounts:
+        - name: tls-cert
+          mountPath: /run/secrets/tls
+          readOnly: true
+        
+        readinessProbe:
+          httpGet:
+            path: /api/v1/gen-ai/health
+            port: 8444
+            scheme: HTTPS
+          initialDelaySeconds: 60
+          periodSeconds: 60
+          timeoutSeconds: 15
+          successThreshold: 1
+          failureThreshold: 5
+        
+        livenessProbe:
+          httpGet:
+            path: /api/v1/gen-ai/health
+            port: 8444
+            scheme: HTTPS
+          initialDelaySeconds: 60
+          periodSeconds: 60
+          timeoutSeconds: 15
+          successThreshold: 1
+          failureThreshold: 5
+      volumes:
+      - name: soai-application-recruitment-persistent-storage
+        persistentVolumeClaim:
+          claimName: soai-application-recruitment-pv-claim
+      - name: tls-cert
+        secret:
+          secretName: soai-application-cert
+---
+# Source: soai-application/templates/web-server-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: soai-application-webserver
+  labels:
+    app: "soai-application-webserver"
+    app.kubernetes.io/instance: "soai-app"
+    app.kubernetes.io/name: "soai-application-webserver"
+    app.kubernetes.io/version: "1.0.0-11922779999"
+    chart: "soai-application-1.0.0-11922779999"
+    component: "webserver"
+    heritage: "Helm"
+    release: "soai-app"
+  annotations:
+    soai-application.com/product-name: "SOAI AI Agent System"
+    soai-application.com/product-revision: "1.0.0-11922779999"
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      component: "webserver"
+      app: soai-application-webserver
+      release: "soai-app"
+      app.kubernetes.io/instance: "soai-app"
+  template:
+    metadata:
+      annotations:
+        soai-application.com/product-name: "SOAI AI Agent System"
+        soai-application.com/product-revision: "1.0.0-11922779999"
+      labels:
+        app: "soai-application-webserver"
+        app.kubernetes.io/instance: "soai-app"
+        app.kubernetes.io/name: "soai-application-webserver"
+        app.kubernetes.io/version: "1.0.0-11922779999"
+        chart: "soai-application-1.0.0-11922779999"
+        component: "webserver"
+        heritage: "Helm"
+        release: "soai-app"
+    spec:
+      securityContext:        
+        fsGroup: 1000        
+      containers:
+      - name: webserver
+        image: nginxinc/nginx-unprivileged:latest
+        imagePullPolicy: IfNotPresent
+        securityContext:    
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
+        ports:
+          - name: tls-webserver-svc
+            containerPort: 8443
+        resources:  
+          limits:
+            cpu: "100m"
+            memory: "50Mi"
+          requests:
+            cpu: "50m"
+            memory: "25Mi"
+        volumeMounts:
+        - name: nginx-conf
+          mountPath: /etc/nginx/conf.d/
+        - name: tls-webserver-cert
+          mountPath: /run/secrets/tls
+          readOnly: true
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: soai-application-nginx-configmap
+          items:
+            - key: nginx.conf
+              path: nginx.conf
+      - name: tls-webserver-cert
+        secret:
+          secretName: soai-application-cert
+---
+# Source: soai-application/templates/mysql-statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    soai-application.com/product-name: "SOAI AI Agent System"
+    soai-application.com/product-revision: "1.0.0-11922779999"
+  labels:
+    app: "soai-application-mysql"
+    app.kubernetes.io/instance: "soai-app"
+    app.kubernetes.io/name: "soai-application-mysql"
+    app.kubernetes.io/version: "1.0.0-11922779999"
+    chart: "soai-application-1.0.0-11922779999"
+    component: "mysql-server"
+    heritage: "Helm"
+    release: "soai-app"
+  name: soai-application-mysql
+spec:
+  replicas: 1
+  serviceName: "mysql-server"
+  selector:
+    matchLabels:
+      component: "mysql-server"
+      app: soai-application-mysql
+      release: "soai-app"
+      app.kubernetes.io/instance: "soai-app"
+  template:
+    metadata:
+      annotations:
+        soai-application.com/product-name: "SOAI AI Agent System"
+        soai-application.com/product-revision: "1.0.0-11922779999"
+      labels:
+        app: "soai-application-mysql"
+        app.kubernetes.io/instance: "soai-app"
+        app.kubernetes.io/name: "soai-application-mysql"
+        app.kubernetes.io/version: "1.0.0-11922779999"
+        chart: "soai-application-1.0.0-11922779999"
+        component: "mysql-server"
+        heritage: "Helm"
+        release: "soai-app"
+    spec:
+      securityContext:
+        fsGroup: 1000        
+      initContainers:      
+      - name: soai-mysql-initcontainer
+        image: bitnami/mysql:8.0.32
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1001
+          capabilities:
+            drop:
+              - ALL
+        command:
+        - /bin/bash
+        - -c
+        - |
+          set -ex
+          [[ $HOSTNAME =~ ([0-9]+)$ ]] || exit 1
+          ordinal=${BASH_REMATCH[1]}
+          echo [mysqld] > /mnt/conf.d/server-id.cnf
+          # Add an offset to avoid reserved server-id=0 value.
+          echo server-id=$((100 + $ordinal)) >> /mnt/conf.d/server-id.cnf
+          # Copy appropriate conf.d files from config-map to emptyDir.
+          if [[ $ordinal -eq 0 ]]; then
+          cp /mnt/config-map/primary.cnf /mnt/conf.d/
+          else
+          cp /mnt/config-map/replica.cnf /mnt/conf.d/
+          fi
+        resources:  
+          limits:
+            cpu: "1"
+            memory: "200Mi"
+          requests:
+            cpu: "50m"
+            memory: "50Mi"
+        volumeMounts:
+        - name: conf
+          mountPath: /mnt/conf.d
+        - name: config-map
+          mountPath: /mnt/config-map
+      containers:
+      - name: mysql-server
+        image: bitnami/mysql:8.0.32
+        imagePullPolicy: IfNotPresent
+        # MySQL container run in internal system user with UID 999 => But some process need to run as root
+        # Drop the ALL capability and add only the required capabilities
+        # This is a workaround for the issue with MySQL 8.0.32 and UID 999
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1001
+          capabilities:
+            drop:
+              - ALL
+        env:
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: soai-application-mysql-secret
+              key: soai-application-mysql-password
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: soai-application-mysql-secret
+              key: soai-application-mysql-root-password
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: soai-application-mysql-secret
+              key: soai-application-mysql-dbName
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: soai-application-mysql-persistent-storage
+          mountPath: /var/lib/mysql
+        - name: conf
+          value: 
+        - name: config-map
+          mountPath: /etc/mysql/conf.d
+        resources:  
+          limits:
+            cpu: "2"
+            memory: "2048Mi"
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+      volumes:
+      - name: config-map
+        configMap:
+          name: soai-application-mysql-configmap
+      - name: soai-application-mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: soai-application-mysql-pv-claim
+---
+# Source: soai-application/templates/application-secret.yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: soai-application-tls
+  namespace: default
+spec:
+  secretName: soai-application-cert
+  duration: 
+  renewBefore: 
+  commonName: soai-application
+  dnsNames:
+  - soai-application-genai
+  - soai-application-genai.default
+  - soai-application-genai.default.svc
+  - soai-application-genai.default.svc.cluster.local
+  - soai-application-web
+  - soai-application-web.default
+  - soai-application-web.default.svc
+  - soai-application-web.default.svc.cluster.local
+  - soai-application-webserver
+  - soai-application-webserver.default
+  - soai-application-webserver.default.svc
+  - soai-application-webserver.default.svc.cluster.local
+  - soai-application-recruitment
+  - soai-application-recruitment.default
+  - soai-application-recruitment.default.svc
+  - soai-application-recruitment.default.svc.cluster.local
+  - soai-application-authentication
+  - soai-application-authentication.default
+  - soai-application-authentication.default.svc
+  - soai-application-authentication.default.svc.cluster.local
+  issuerRef:
+    name: ca-issuer
+    kind: Issuer
+    group: cert-manager.io
+---
+# Source: soai-application/templates/application-secret.yaml
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: ca-issuer
+  namespace: default
+spec:
+  ca:
+    secretName: ca-cert

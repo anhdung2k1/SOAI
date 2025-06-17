@@ -19,6 +19,22 @@ spec:
         {{- include "soai-application.podSeccompProfile" . | indent 8 }}
         {{- include "soai-application.supplementalGroups" . }}
       initContainers:
-      {{- include "ck-initContainers" (list . "mysql") | indent 6 }}
+      {{- include "soai-initContainers" (list . "mysql") | indent 6 }}
       containers:
       {{- include "soai-mysql.container" (list .) | nindent 6 }}
+      volumes:
+      - name: config-map
+        configMap:
+          name: {{ template "soai-mysql.name" . }}-configmap
+      {{- if .Values.storage.enabled }}
+      - name: {{ template "soai-mysql.name" . }}-persistent-storage
+        persistentVolumeClaim:
+          claimName: {{ template "soai-mysql.name" . }}-pv-claim
+      {{- else }}
+      - name: {{ template "soai-mysql.name" . }}-ephemeral-storage
+        emptyDir: {}
+      {{- end }}
+    {{- if include "soai-application.pullSecrets" . }}
+      imagePullSecrets:
+        - name: {{ template "soai-application.pullSecrets" . }}
+    {{- end }}

@@ -1,7 +1,7 @@
 {{- define "soai-mysql.container" -}}
 {{- $top := index . 0 -}}
 - name: {{ $top.Values.server.mysqlServer.name }}
-  image: mysql:8.0.32
+  image: {{ template "soai-application.imagePath" (merge (dict "imageName" "soai-mysql") $top) }}
   imagePullPolicy: {{ template "soai-application.imagePullPolicy" $top }}
   # MySQL container run in internal system user with UID 999 => But some process need to run as root
   # Drop the ALL capability and add only the required capabilities
@@ -9,16 +9,12 @@
   securityContext:
     allowPrivilegeEscalation: false
     privileged: false
-    readOnlyRootFilesystem: false
-    runAsNonRoot: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1001
     capabilities:
       drop:
         - ALL
-      add:
-        - CHOWN
-        - DAC_OVERRIDE
-        - SETGID
-        - SETUID
     {{- with (index $top.Values "seccompProfile" "mysql") }}
     seccompProfile:
     {{- toYaml . | nindent 6 }}
@@ -55,20 +51,10 @@
   - name: {{ template "soai-mysql.name" $top }}-ephemeral-storage
   {{- end }}
     mountPath: /var/lib/mysql
+  - name: conf
+    value: 
   - name: config-map
     mountPath: /etc/mysql/conf.d
   resources:
 {{- include "soai-application.resources" (index $top.Values "resources" "mysql") | indent 2 }}
-volumes:
-- name: config-map
-  configMap:
-    name: {{ template "soai-mysql.name" $top }}-configmap
-{{- if $top.Values.storage.enabled }}
-- name: {{ template "soai-mysql.name" $top }}-persistent-storage
-  persistentVolumeClaim:
-    claimName: {{ template "soai-mysql.name" $top }}-pv-claim
-{{- else }}
-- name: {{ template "soai-mysql.name" $top }}-ephemeral-storage
-  emptyDir: {}
-{{- end }}
 {{- end }}

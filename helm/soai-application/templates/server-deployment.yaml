@@ -1,3 +1,4 @@
+{{- $g := fromJson (include "soai-application.global" . ) -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -24,8 +25,25 @@ spec:
         fsGroup: {{ template "soai-application.fsGroup.coordinated" . }}
         {{- include "soai-application.podSeccompProfile" . | indent 8 }}
         {{- include "soai-application.supplementalGroups" . }}
+      initContainers:
+      {{- include "soai-initContainers" (list . "recruitment") | indent 6 }}
       containers:
       {{- include "soai-recruitment-containers" (list .) | nindent 6 }}
+      {{- include "soai-genai-containers" (list .) | nindent 6 }}
+      volumes:
+      {{- if .Values.storage.enabled }}
+      - name: {{ template "soai-recruitment.name" . }}-persistent-storage
+        persistentVolumeClaim:
+          claimName: {{ template "soai-recruitment.name" . }}-pv-claim
+      {{- else }}
+      - name: {{ template "soai-recruitment.name" . }}-ephemeral-storage
+        emptyDir: {}
+      {{- end }}
+      {{- if $g.security.tls.enabled }}
+      - name: tls-cert
+        secret:
+          secretName: {{ template "soai-application.name" . }}-cert
+      {{- end }}
     {{- if include "soai-application.pullSecrets" . }}
       imagePullSecrets:
         - name: {{ template "soai-application.pullSecrets" . }}

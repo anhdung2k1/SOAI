@@ -1,3 +1,4 @@
+{{- $g := fromJson (include "soai-application.global" . ) -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,6 +27,18 @@ spec:
         {{- include "soai-application.supplementalGroups" . }}
       containers:
       {{- include "soai-webserver-containers" (list .) | nindent 6 }}
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: {{ template "soai-application.name" . }}-nginx-configmap
+          items:
+            - key: nginx.conf
+              path: nginx.conf
+      {{- if $g.security.tls.enabled }}
+      - name: tls-webserver-cert
+        secret:
+          secretName: {{ template "soai-application.name" . }}-cert
+      {{- end }}
     {{- if include "soai-application.pullSecrets" . }}
       imagePullSecrets:
         - name: {{ template "soai-application.pullSecrets" . }}

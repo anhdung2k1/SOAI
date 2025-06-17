@@ -77,23 +77,4 @@
   {{- end }}
 {{ include "soai-application.readinessProbe" (list $top "/actuator/health" "authentication") | indent 2 }}
 {{ include "soai-application.livenessProbe" (list $top "/actuator/health" "authentication") | indent 2 }}
-volumes:
-- name: config-properties
-  configMap:
-    name: {{ template "soai-application.name" $top }}-auth-configmap
-    items:
-      - key: application.yaml
-        path: application.yaml
-{{- if $g.security.tls.enabled }}
-- name: tls-auth-secret
-  secret:
-    secretName: {{ template "soai-application.name" $top }}-cert
-- name: keystore-cert
-  {{- if $top.Values.storage.enabled }}
-  persistentVolumeClaim:
-    claimName: {{ template "soai-authentication.name" $top }}-pv-claim
-  {{- else }}
-  emptyDir: {}
-  {{- end }}
-{{- end }}
 {{- end -}}

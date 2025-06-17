@@ -1,16 +1,17 @@
-{{- define "ck-initContainers" -}}
+{{- define "soai-initContainers" -}}
 {{- $top := index . 0 }}
 {{- $pod := index . 1 -}}
 {{- $g := fromJson (include "soai-application.global" $top ) -}}
 {{- if eq $pod "mysql" }}
 - name: soai-mysql-initcontainer
-  image: mysql:8.0.32
+  image: {{ template "soai-application.imagePath" (merge (dict "imageName" "soai-mysql") $top) }}
   imagePullPolicy: {{ template "soai-application.imagePullPolicy" $top }}
   securityContext:
     allowPrivilegeEscalation: false
     privileged: false
     readOnlyRootFilesystem: true
-    runAsNonRoot: false
+    runAsNonRoot: true
+    runAsUser: 1001
     capabilities:
       drop:
         - ALL
@@ -106,11 +107,12 @@
   volumeMounts:
   - name: keystore-cert
     mountPath: {{ $top.Values.server.secretsPath.keyStorePath }}
-  - name: tls-auth-secret
+  - name: tls-secret
     mountPath: {{ $top.Values.server.secretsPath.certPath }}
 {{- end }}
+{{- else if eq $pod "recruitment" }}
 - name: wait-for-mysql
-  image: mysql:8.0.32
+  image: {{ template "soai-application.imagePath" (merge (dict "imageName" "soai-mysql") $top) }}
   imagePullPolicy: {{ template "soai-application.imagePullPolicy" $top }}
   securityContext:
     allowPrivilegeEscalation: false
