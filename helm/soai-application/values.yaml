@@ -201,11 +201,12 @@ appArmorProfile:
 
 storage:
   # Storage enabled => PV and PVC will be used
-  enabled: false
+  enabled: true
+  retainPolicy: Retain
   # Storage enabled & PV disabled => only PVC used
   # Storage enabled & PV enabled => Both PV and PVC are used
   persistentVolume:
-    enabled: true
+    enabled: false
     hostPath:
       recruitment: /mnt/soai/data-recruitment
       mysql: /mnt/soai/data-mysql

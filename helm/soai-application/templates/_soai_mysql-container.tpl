@@ -3,11 +3,22 @@
 - name: {{ $top.Values.server.mysqlServer.name }}
   image: mysql:8.0.32
   imagePullPolicy: {{ template "soai-application.imagePullPolicy" $top }}
+  # MySQL container run in internal system user with UID 999 => But some process need to run as root
+  # Drop the ALL capability and add only the required capabilities
+  # This is a workaround for the issue with MySQL 8.0.32 and UID 999
   securityContext:
     allowPrivilegeEscalation: false
     privileged: false
-    readOnlyRootFilesystem: true
-    runAsNonRoot: true
+    readOnlyRootFilesystem: false
+    runAsNonRoot: false
+    capabilities:
+      drop:
+        - ALL
+      add:
+        - CHOWN
+        - DAC_OVERRIDE
+        - SETGID
+        - SETUID
     {{- with (index $top.Values "seccompProfile" "mysql") }}
     seccompProfile:
     {{- toYaml . | nindent 6 }}
