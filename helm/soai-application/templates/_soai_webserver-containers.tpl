@@ -2,7 +2,7 @@
 {{- $top := index . 0 -}}
 {{- $g := fromJson (include "soai-application.global" $top) -}}
 - name: {{ $top.Values.server.webserver.name }}
-  image: nginxinc/nginx-unprivileged:latest
+  image: {{ template "soai-application.imagePath" (merge (dict "imageName" "soai-webserver") $top) }}
   imagePullPolicy: {{ include "soai-application.imagePullPolicy" $top }}
   securityContext:
     {{- include "soai-application.appArmorProfile.securityContext" (list $top "webserver") | indent 4 }}
@@ -10,6 +10,7 @@
     privileged: false
     readOnlyRootFilesystem: true
     runAsNonRoot: true
+    runAsUser: 101
     capabilities:
       drop:
         - ALL

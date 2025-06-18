@@ -98,7 +98,7 @@ app.kubernetes.io/instance: {{ .Release.Name | quote }}
 {{- end }}
 
 {{/*
-Selector labels for server.
+Selector labels for recruitment.
 */}}
 {{- define "soai-recruitment.selectorLabels" -}}
 component: {{ .Values.server.recruitment.name | quote }}
@@ -107,6 +107,19 @@ release: {{ .Release.Name | quote }}
 app.kubernetes.io/instance: {{ .Release.Name | quote }}
 {{- end }}
 
+{{/*
+Selector labels for genai.
+*/}}
+{{- define "soai-genai.selectorLabels" -}}
+component: {{ .Values.server.genai.name | quote }}
+app: {{ template "soai-genai.name" . }}
+release: {{ .Release.Name | quote }}
+app.kubernetes.io/instance: {{ .Release.Name | quote }}
+{{- end }}
+
+{{/*
+Selector labels for webserver.
+*/}}
 {{- define "soai-webserver.selectorLabels" -}}
 component: {{ .Values.server.webserver.name | quote }}
 app: {{ template "soai-webserver.name" . }}
@@ -118,7 +131,7 @@ app.kubernetes.io/instance: {{ .Release.Name | quote }}
 Selector labels for server.
 */}}
 {{- define "soai-web.selectorLabels" -}}
-component: {{ .Values.server.faceClient.name | quote }}
+component: {{ .Values.server.web.name | quote }}
 app: {{ template "soai-web.name" . }}
 release: {{ .Release.Name | quote }}
 app.kubernetes.io/instance: {{ .Release.Name | quote }}
@@ -243,6 +256,19 @@ Merged labels for common server
     {{- $g := fromJson (include "soai-application.global" .) -}}
     {{- $selector := include "soai-recruitment.selectorLabels" . | fromYaml -}}
     {{- $name := (include "soai-recruitment.name" .) }}
+    {{- $static := include "soai-application.static-labels" (list . $name) | fromYaml -}}
+    {{- $global := $g.label -}}
+    {{- $service := .Values.labels -}}
+    {{- include "soai-application.mergeLabels" (dict "location" .Template.Name "sources" (list $selector $static $global $service)) | trim }}
+{{- end -}}
+
+{{/*
+Merged labels for common genai
+*/}}
+{{- define "soai-genai.labels" -}}
+    {{- $g := fromJson (include "soai-application.global" .) -}}
+    {{- $selector := include "soai-genai.selectorLabels" . | fromYaml -}}
+    {{- $name := (include "soai-genai.name" .) }}
     {{- $static := include "soai-application.static-labels" (list . $name) | fromYaml -}}
     {{- $global := $g.label -}}
     {{- $service := .Values.labels -}}

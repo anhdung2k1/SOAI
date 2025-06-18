@@ -59,6 +59,66 @@ spec:
     {{- end }}
   type: {{ .Values.server.recruitment.serviceType }}
 ---
+# SOAI GenAI Service
+apiVersion: v1
+kind: Service
+metadata:
+  annotations: {{- include "soai-application.annotations" . | nindent 4 }}
+  labels: {{- include "soai-genai.labels" . | nindent 4 }}
+  name: {{ template "soai-genai.name" . }}
+spec:
+  selector:
+    app: {{ template "soai-genai.name" . }}
+  ports:
+    {{- if $g.security.tls.enabled }}
+    - name: {{ template "soai-genai.name" . }}-https
+      protocol: "TCP"
+      port: {{ .Values.server.genai.httpsPort }}
+      {{- if not (eq .Values.server.genai.serviceType "ClusterIP" ) }}
+      nodePort: {{ .Values.server.genai.httpsNodePort }}
+      {{- end }}
+      targetPort: tls-genai-svc
+    {{- else }}
+    - name: {{ template "soai-genai.name" . }}-http
+      protocol: "TCP"
+      port: {{ .Values.server.genai.httpPort }}
+      {{- if not (eq .Values.server.genai.serviceType "ClusterIP" ) }}
+      nodePort: {{ .Values.server.genai.httpNodePort }}
+      {{- end }}
+      targetPort: http-genai-svc
+    {{- end }}
+  type: {{ .Values.server.genai.serviceType }}
+---
+# SOAI Web Service
+apiVersion: v1
+kind: Service
+metadata:
+  annotations: {{- include "soai-application.annotations" . | nindent 4 }}
+  labels: {{- include "soai-web.labels" . | nindent 4 }}
+  name: {{ template "soai-web.name" . }}
+spec:
+  selector:
+    app: {{ template "soai-web.name" . }}
+  ports:
+    {{- if $g.security.tls.enabled }}
+    - name: {{ template "soai-web.name" . }}-https
+      protocol: "TCP"
+      port: {{ .Values.server.web.httpsPort }}
+      {{- if not (eq .Values.server.web.serviceType "ClusterIP" ) }}
+      nodePort: {{ .Values.server.web.httpsNodePort }}
+      {{- end }}
+      targetPort: tls-web-svc
+    {{- else }}
+    - name: {{ template "soai-web.name" . }}-http
+      protocol: "TCP"
+      port: {{ .Values.server.web.httpPort }}
+      {{- if not (eq .Values.server.web.serviceType "ClusterIP" ) }}
+      nodePort: {{ .Values.server.web.httpNodePort }}
+      {{- end }}
+      targetPort: http-web-svc
+    {{- end }}
+  type: {{ .Values.server.web.serviceType }}
+---
 # SOAI Webserver Service
 apiVersion: v1
 kind: Service

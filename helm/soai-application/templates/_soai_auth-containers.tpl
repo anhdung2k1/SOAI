@@ -57,7 +57,7 @@
       secretKeyRef:
         name: {{ template "soai-mysql.name" $top }}-secret
         key: {{ template "soai-mysql.name" $top }}-password
-  - name: CONFIG_PATH
+  - name: SPRING_CONFIG_LOCATION
     value: /etc/config/application.yaml
   {{- if $g.security.tls.enabled }}
   - name: KEYSTORE_PASSWORD

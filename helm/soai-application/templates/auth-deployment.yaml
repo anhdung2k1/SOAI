@@ -36,6 +36,7 @@ spec:
       - name: config-properties
         configMap:
           name: {{ template "soai-application.name" . }}-auth-configmap
+          defaultMode: 0444
           items:
             - key: application.yaml
               path: application.yaml

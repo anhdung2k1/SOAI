@@ -111,8 +111,7 @@ run-authentication: wait-mysql
 			DB_PORT=3306 \
 			DB_NAME=soai_db \
 			DB_USERNAME=soai_user \
-			DB_PASSWORD=soai_password" \
-		--cmd="java -jar app.jar"
+			DB_PASSWORD=soai_password"
 
 wait-authentication:
 	@echo "Waiting for Authentication container to start..."

@@ -215,8 +215,10 @@ storage:
       mysql: 2Gi
       recruitment: 1Gi
       authentication: 1Gi
+  # StoageClass is enabled => PVC will use StorageClass
+  # StorageClass is disabled => PVC will use default StorageClass
   storageClass:
-    enabled: true
+    enabled: false
     name: local-storage
     provisioner: kubernetes.io/no-provisioner
 
