@@ -27,4 +27,10 @@
     {{- end }}
   resources:
 {{- include "soai-application.resources" (index $top.Values "resources" "web") | indent 2 }}
+  volumeMounts:
+  {{- if $g.security.tls.enabled }}
+  - name: tls-cert
+    mountPath: {{ $top.Values.server.secretsPath.certPath }}
+    readOnly: true
+  {{- end }}
 {{- end -}}

@@ -28,8 +28,9 @@ spec:
         {{- include "soai-application.supplementalGroups" . }}
       containers:
       {{- include "soai-web-containers" (list .) | nindent 6 }}
+      volumes:
       {{- if $g.security.tls.enabled }}
-      - name: tls-web-cert
+      - name: tls-cert
         secret:
           secretName: {{ template "soai-application.name" . }}-cert
       {{- end }}

@@ -23,6 +23,8 @@ spec:
       containers:
       {{- include "soai-mysql.container" (list .) | nindent 6 }}
       volumes:
+      - name: conf
+        emptyDir: {}
       - name: config-map
         configMap:
           name: {{ template "soai-mysql.name" . }}-configmap

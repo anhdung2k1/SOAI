@@ -20,7 +20,7 @@
     {{- end }}
   ports:    
     {{- if $g.security.tls.enabled }}
-    - name: tls-webserver-svc
+    - name: tls-wsv-svc
       containerPort: {{ $top.Values.server.webserver.httpsPort }}
     {{- else }}
     - name: http-webserver-svc
@@ -32,7 +32,7 @@
   - name: nginx-conf
     mountPath: /etc/nginx/conf.d/
   {{- if $g.security.tls.enabled }}
-  - name: tls-webserver-cert
+  - name: tls-cert
     mountPath: {{ $top.Values.server.secretsPath.certPath }}
     readOnly: true
   {{- end }}

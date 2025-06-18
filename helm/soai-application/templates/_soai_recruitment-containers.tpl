@@ -19,7 +19,7 @@
     {{- end }}
   ports:    
     {{- if $g.security.tls.enabled }}
-    - name: tls-recruitment-svc
+    - name: tls-rcm-svc
       containerPort: {{ $top.Values.server.recruitment.httpsPort }}
     {{- else }}
     - name: http-recruitment-svc
@@ -91,7 +91,7 @@
   {{- end }}
     mountPath: /app/app/cv_uploads
   {{- if $g.security.tls.enabled }}
-  - name: tls-recruitment-cert
+  - name: tls-cert
     mountPath: {{ $top.Values.server.secretsPath.certPath }}
     readOnly: true
   {{- end }}

@@ -52,9 +52,7 @@
   {{- end }}
     mountPath: /var/lib/mysql
   - name: conf
-    value: 
-  - name: config-map
-    mountPath: /etc/mysql/conf.d
+    value: /etc/mysql/conf.d
   resources:
 {{- include "soai-application.resources" (index $top.Values "resources" "mysql") | indent 2 }}
 {{- end }}

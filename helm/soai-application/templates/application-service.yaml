@@ -47,7 +47,7 @@ spec:
       {{- if not (eq .Values.server.recruitment.serviceType "ClusterIP" ) }}
       nodePort: {{ .Values.server.recruitment.httpsNodePort }}
       {{- end }}
-      targetPort: tls-recruitment-svc
+      targetPort: tls-rcm-svc
     {{- else }}
     - name: {{ template "soai-recruitment.name" . }}-http
       protocol: "TCP"
@@ -137,7 +137,7 @@ spec:
       {{- if not (eq .Values.server.webserver.serviceType "ClusterIP" ) }}
       nodePort: {{ .Values.server.webserver.httpsNodePort }}
       {{- end }}
-      targetPort: tls-webserver-svc
+      targetPort: tls-wsv-svc
     {{- else }}
     - name: {{ template "soai-webserver.name" . }}-http
       protocol: "TCP"

@@ -35,5 +35,5 @@ metadata:
   annotations: 
     {{- include "soai-application.annotations" . | nindent 4 }}
 data:
-  nginx.conf: |
-{{ tpl (.Files.Get "files/nginx.conf") . | indent 4 }}
+  default.conf: |
+{{ tpl (.Files.Get "files/default.conf") . | indent 4 }}
