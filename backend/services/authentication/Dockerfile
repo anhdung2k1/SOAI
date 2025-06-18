@@ -12,6 +12,7 @@ RUN mvn clean package -DskipTests
 
 FROM openjdk:17-jdk-slim
 
+ARG USER_ID=1001
 ARG COMMIT
 ARG APP_VERSION
 ARG BUILD_TIME
@@ -22,10 +23,14 @@ LABEL \
     soai.image.title="SOAI Backend Authentication Service" \
     soai.image.created="$BUILD_TIME"
 
+# Create a non-root user to run the application
+RUN groupadd -g ${USER_ID} soai_authentication && \
+    useradd -u ${USER_ID} -g soai_authentication -s /bin/false -m soai_authentication
+
 WORKDIR /app
-COPY --chmod=0755 --chown=${USER_ID}:0 --from=builder /app/target/*.jar app.jar
+COPY --chmod=0755 --chown=soai_authentication:soai_authentication --from=builder /app/target/*.jar app.jar
 EXPOSE 9090
 
-USER ${USER_ID}
+USER soai_authentication
 
 CMD ["java", "-jar", "app.jar"]

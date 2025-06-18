@@ -59,14 +59,27 @@ image-push-combined:
     - echo "$CI_JOB_TOKEN" | docker login -u gitlab-ci-token --password-stdin "$CI_REGISTRY"
     - chmod +x ./vas.sh Makefile
     - chmod -R +x build/ || exit_code=$?
-    # - rm -rf build/helm-build/**/*.tgz
-    # - rm -rf build/helm-build/**/*.sha256
+    - rm -rf build/helm-build/**/*.tgz
+    - rm -rf build/helm-build/**/*.sha256
   script:
+    # Packaging the helm chart
+    - make package-helm
     - make image
     - make push
     - chmod -R +w build/ || exit_code=$?
   needs:
     - job: prepare
+
+remove:
+  stage: Remove
+  when: always
+  before_script:
+    - docker images
+    - chmod +x ./vas.sh Makefile
+  needs:
+    - job: image-push-combined
+  script:
+    - make remove
 
 functional-test:
   stage: Test
@@ -83,14 +96,3 @@ functional-test:
     expire_in: 1 day
     paths:
       - "build/**/*"
-
-remove:
-  stage: Remove
-  when: always
-  before_script:
-    - docker images
-    - chmod +x ./vas.sh Makefile
-  needs:
-    - job: image-push-combined
-  script:
-    - make remove

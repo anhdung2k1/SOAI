@@ -28,7 +28,7 @@ services:
       - soai-net
 
   mysql:
-    image: mysql:latest
+    image: bitnami/mysql:8.0.32
     container_name: soai_mysql
     restart: always
     environment:
@@ -88,7 +88,7 @@ services:
     networks:
       - soai-net
     ports:
-      - "80:80"
+      - "8080:80"
 
   web:
     container_name: soai_web
@@ -103,7 +103,6 @@ services:
       - soai-net
     volumes:
       - ./web:/frontend
-    command: sh -c "/frontend/loader.sh"
 
   recruitment:
     container_name: soai_recruitment_agent

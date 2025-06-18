@@ -1,0 +1,20 @@
+nameOverride: ""
+
+cert-manager:
+  enabled: true
+  crds:
+    enabled: true
+
+kube-prometheus-stack:
+  grafana:
+    ingress:
+      enabled: false
+    service:
+      type: NodePort
+      nodePort: 32000
+  prometheus:
+    ingress:
+      enabled: false
+    service:
+      type: NodePort
+      nodePort: 32001

@@ -1,0 +1,180 @@
+{{- $g := fromJson (include "soai-application.global" . ) -}}
+# SOAI Authentication Service
+apiVersion: v1
+kind: Service
+metadata:
+  annotations: {{- include "soai-application.annotations" . | nindent 4 }}
+  labels: {{- include "soai-authentication.labels" . | nindent 4 }}
+  name: {{ template "soai-authentication.name" . }}
+spec:
+  selector:
+    app: {{ template "soai-authentication.name" . }}
+  ports:
+    {{- if $g.security.tls.enabled }}
+    - name: {{ template "soai-authentication.name" . }}-https
+      protocol: "TCP"
+      port: {{ .Values.server.authentication.httpsPort }}
+      {{- if not (eq .Values.server.authentication.serviceType "ClusterIP" ) }}
+      nodePort: {{ .Values.server.authentication.httpsNodePort }}
+      {{- end }}
+      targetPort: tls-auth-svc
+    {{- else }}
+    - name: {{ template "soai-authentication.name" . }}-http
+      protocol: "TCP"
+      port: {{ .Values.server.authentication.httpPort }}
+      {{- if not (eq .Values.server.authentication.serviceType "ClusterIP" ) }}
+      nodePort: {{ .Values.server.authentication.httpNodePort }}
+      {{- end }}
+      targetPort: http-auth-svc
+    {{- end }}
+  type: {{ .Values.server.authentication.serviceType }}
+---
+# SOAI Recruitment Service
+apiVersion: v1
+kind: Service
+metadata:
+  annotations: {{- include "soai-application.annotations" . | nindent 4 }}
+  labels: {{- include "soai-recruitment.labels" . | nindent 4 }}
+  name: {{ template "soai-recruitment.name" . }}
+spec:
+  selector:
+    app: {{ template "soai-recruitment.name" . }}
+  ports:
+    {{- if $g.security.tls.enabled }}
+    - name: {{ template "soai-recruitment.name" . }}-https
+      protocol: "TCP"
+      port: {{ .Values.server.recruitment.httpsPort }}
+      {{- if not (eq .Values.server.recruitment.serviceType "ClusterIP" ) }}
+      nodePort: {{ .Values.server.recruitment.httpsNodePort }}
+      {{- end }}
+      targetPort: tls-rcm-svc
+    {{- else }}
+    - name: {{ template "soai-recruitment.name" . }}-http
+      protocol: "TCP"
+      port: {{ .Values.server.recruitment.httpPort }}
+      {{- if not (eq .Values.server.recruitment.serviceType "ClusterIP" ) }}
+      nodePort: {{ .Values.server.recruitment.httpNodePort }}
+      {{- end }}
+      targetPort: http-recruitment-svc
+    {{- end }}
+  type: {{ .Values.server.recruitment.serviceType }}
+---
+# SOAI GenAI Service
+apiVersion: v1
+kind: Service
+metadata:
+  annotations: {{- include "soai-application.annotations" . | nindent 4 }}
+  labels: {{- include "soai-genai.labels" . | nindent 4 }}
+  name: {{ template "soai-genai.name" . }}
+spec:
+  selector:
+    app: {{ template "soai-genai.name" . }}
+  ports:
+    {{- if $g.security.tls.enabled }}
+    - name: {{ template "soai-genai.name" . }}-https
+      protocol: "TCP"
+      port: {{ .Values.server.genai.httpsPort }}
+      {{- if not (eq .Values.server.genai.serviceType "ClusterIP" ) }}
+      nodePort: {{ .Values.server.genai.httpsNodePort }}
+      {{- end }}
+      targetPort: tls-genai-svc
+    {{- else }}
+    - name: {{ template "soai-genai.name" . }}-http
+      protocol: "TCP"
+      port: {{ .Values.server.genai.httpPort }}
+      {{- if not (eq .Values.server.genai.serviceType "ClusterIP" ) }}
+      nodePort: {{ .Values.server.genai.httpNodePort }}
+      {{- end }}
+      targetPort: http-genai-svc
+    {{- end }}
+  type: {{ .Values.server.genai.serviceType }}
+---
+# SOAI Web Service
+apiVersion: v1
+kind: Service
+metadata:
+  annotations: {{- include "soai-application.annotations" . | nindent 4 }}
+  labels: {{- include "soai-web.labels" . | nindent 4 }}
+  name: {{ template "soai-web.name" . }}
+spec:
+  selector:
+    app: {{ template "soai-web.name" . }}
+  ports:
+    {{- if $g.security.tls.enabled }}
+    - name: {{ template "soai-web.name" . }}-https
+      protocol: "TCP"
+      port: {{ .Values.server.web.httpsPort }}
+      {{- if not (eq .Values.server.web.serviceType "ClusterIP" ) }}
+      nodePort: {{ .Values.server.web.httpsNodePort }}
+      {{- end }}
+      targetPort: tls-web-svc
+    {{- else }}
+    - name: {{ template "soai-web.name" . }}-http
+      protocol: "TCP"
+      port: {{ .Values.server.web.httpPort }}
+      {{- if not (eq .Values.server.web.serviceType "ClusterIP" ) }}
+      nodePort: {{ .Values.server.web.httpNodePort }}
+      {{- end }}
+      targetPort: http-web-svc
+    {{- end }}
+  type: {{ .Values.server.web.serviceType }}
+---
+# SOAI Webserver Service
+apiVersion: v1
+kind: Service
+metadata:
+  annotations: {{- include "soai-application.annotations" . | nindent 4 }}
+  labels: {{- include "soai-webserver.labels" . | nindent 4 }}
+  name: {{ template "soai-webserver.name" . }}
+spec:
+  selector:
+    app: {{ template "soai-webserver.name" . }}
+  ports:
+    {{- if $g.security.tls.enabled }}
+    - name: {{ template "soai-webserver.name" . }}-https
+      protocol: "TCP"
+      port: {{ .Values.server.webserver.httpsPort }}
+      {{- if not (eq .Values.server.webserver.serviceType "ClusterIP" ) }}
+      nodePort: {{ .Values.server.webserver.httpsNodePort }}
+      {{- end }}
+      targetPort: tls-wsv-svc
+    {{- else }}
+    - name: {{ template "soai-webserver.name" . }}-http
+      protocol: "TCP"
+      port: {{ .Values.server.webserver.httpPort }}
+      {{- if not (eq .Values.server.webserver.serviceType "ClusterIP" ) }}
+      nodePort: {{ .Values.server.webserver.httpNodePort }}
+      {{- end }}
+      targetPort: http-webserver-svc
+    {{- end }}
+  type: {{ .Values.server.webserver.serviceType }}
+---
+# MySQL Service
+# This service is used for internal communication between MySQL pods in a StatefulSet.
+apiVersion: v1
+kind: Service
+metadata:
+  annotations: {{- include "soai-application.annotations" . | nindent 4 }}
+  labels: {{- include "soai-mysql.labels" . | nindent 4 }}
+  name: {{ template "soai-mysql.name" . }}
+spec:
+  ports:
+  - name: {{ template "soai-mysql.name" . }}
+    port: {{ .Values.server.mysqlServer.port }}
+  clusterIP: None
+  selector:
+    app: {{ template "soai-mysql.name" . }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations: {{- include "soai-application.annotations" . | nindent 4 }}
+  labels: {{- include "soai-mysql.labels" . | nindent 4 }}
+  # This service is used for read operations, allowing external access to MySQL.
+  name: {{ template "soai-mysql.name" . }}-read
+spec:
+  ports:
+  - name: {{ template "soai-mysql.name" . }}
+    port: {{ .Values.server.mysqlServer.port }}
+  selector:
+    app: {{ template "soai-mysql.name" . }}

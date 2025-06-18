@@ -46,7 +46,7 @@ git-tag:
 	$(TOP_DIR)/vas.sh create_git_tag
 
 ## Package the helm chart
-package-helm:
+package-helm: generate-ca
 	@echo "Package helm"
 	$(TOP_DIR)/vas.sh build_helm \
 		--release=$(RELEASE)

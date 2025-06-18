@@ -1,4 +1,4 @@
-FROM nginx:latest
+FROM nginxinc/nginx-unprivileged:latest
 
 ARG COMMIT
 ARG APP_VERSION
