@@ -32,8 +32,8 @@ spec:
         configMap:
           name: {{ template "soai-application.name" . }}-nginx-configmap
           items:
-            - key: nginx.conf
-              path: nginx.conf
+            - key: default.conf
+              path: default.conf
       {{- if $g.security.tls.enabled }}
       - name: tls-cert
         secret:
