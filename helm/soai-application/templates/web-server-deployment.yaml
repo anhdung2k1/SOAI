@@ -34,6 +34,8 @@ spec:
           items:
             - key: default.conf
               path: default.conf
+      - name: tmp-volume
+        emptyDir: {}
       {{- if $g.security.tls.enabled }}
       - name: tls-cert
         secret:

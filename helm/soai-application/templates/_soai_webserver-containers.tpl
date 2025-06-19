@@ -31,6 +31,8 @@
   volumeMounts:
   - name: nginx-conf
     mountPath: /etc/nginx/conf.d/
+  - name: tmp-volume
+    mountPath: /tmp
   {{- if $g.security.tls.enabled }}
   - name: tls-cert
     mountPath: {{ $top.Values.server.secretsPath.certPath }}
