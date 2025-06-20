@@ -1,5 +1,5 @@
 # --- Stage 1: Build React App ---
-FROM node:23.1.0-slim AS builder
+FROM node:23.1.0 AS builder
 
 WORKDIR /app
 
@@ -22,9 +22,10 @@ LABEL \
   soai.image.title="SOAI React Frontend (Nginx Non-Root)" \
   soai.image.created=$BUILD_TIME
 
+COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder /app/build /usr/share/nginx/html
 
-EXPOSE 8080
+EXPOSE 3000
 
 USER 101
 

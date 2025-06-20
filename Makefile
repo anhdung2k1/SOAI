@@ -154,9 +154,7 @@ run-web:
 	@echo "Run Frontend Web Container"
 	$(TOP_DIR)/vas.sh run_image \
 		--name=web \
-		--port=3000:3000 \
-		--env="WDS_SOCKET_PORT=0" \
-		--cmd="sh -c '/frontend/loader.sh'"
+		--port=3000:3000
 
 check-health: \
 	check-authentication-health \
