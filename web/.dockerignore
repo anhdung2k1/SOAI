@@ -1,0 +1,18 @@
+# Ignore dependencies and build artifacts
+main-app/node_modules
+main-app/build
+main-app/*.log
+
+# Ignore version control and environment config
+main-app/.git
+main-app/.env
+main-app/.env.*         # if using dotenv variants
+
+# Ignore Docker context noise
+*.log
+.git
+Dockerfile
+
+# Ignore CI configs (if not used in container)
+.github
+.gitlab

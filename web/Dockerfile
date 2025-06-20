@@ -1,30 +1,31 @@
-FROM node:23.1.0-alpine
+# --- Stage 1: Build React App ---
+FROM node:23.1.0-slim AS builder
 
-ARG USER_ID=1001
+WORKDIR /app
+
+COPY main-app/package.json ./
+RUN npm install
+
+COPY main-app/ ./
+RUN npm run build
+
+# --- Stage 2: Serve with nginx-unprivileged ---
+FROM nginxinc/nginx-unprivileged:latest
+
 ARG COMMIT
 ARG APP_VERSION
 ARG BUILD_TIME
 
 LABEL \
-    soai.app.commit=$COMMIT \
-    soai.app.version=$APP_VERSION \
-    soai.image.title="SOAI Frontend React Service" \
-    soai.image.created="$BUILD_TIME"
+  soai.app.commit=$COMMIT \
+  soai.app.version=$APP_VERSION \
+  soai.image.title="SOAI React Frontend (Nginx Non-Root)" \
+  soai.image.created=$BUILD_TIME
 
-RUN addgroup -g ${USER_ID} soai_web && \
-    adduser -u ${USER_ID} -G soai_web -s /bin/false -D soai_web && \
-    npm install -g serve
+COPY --from=builder /app/build /usr/share/nginx/html
 
-WORKDIR /frontend
-# Copy the app source code
-COPY --chmod=0755 --chown=soai_web:soai_web main-app/ /frontend/
+EXPOSE 8080
 
-RUN npm install && \
-    npm run build && \
-    chown -R soai_web:soai_web /frontend
+USER 101
 
-USER ${USER_ID}
-
-EXPOSE 3000
-
-CMD ["serve", "-s", "build"]
+CMD ["nginx", "-g", "daemon off;"]

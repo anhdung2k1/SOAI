@@ -44,4 +44,4 @@ RUN rm -rf /app/app/logs && \
 
 USER ${USER_ID}
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8003", "--reload", "--log-level", "debug"]
+CMD ["python", "main.py"]
