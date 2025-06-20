@@ -154,9 +154,7 @@ run-web:
 	@echo "Run Frontend Web Container"
 	$(TOP_DIR)/vas.sh run_image \
 		--name=web \
-		--port=3000:3000 \
-		--env="WDS_SOCKET_PORT=0" \
-		--cmd="sh -c '/frontend/loader.sh'"
+		--port=3000:3000
 
 check-health: \
 	check-authentication-health \
@@ -195,10 +193,13 @@ test:	test-recruitment \
 	collect-recruitment-log
 
 test-recruitment:
-	chmod +x $(RECRUITMENT_DIR)/tests/test_api_recruitment.py
-	pip install httpx
-	@echo "Automation test for Recruitment Agent"
-	$(RECRUITMENT_DIR)/tests/test_api_recruitment.py
+	@echo "Automation test for Recruitment Agent using Docker"
+	docker run --rm \
+		-e HOST_NAME="host.docker.internal" \
+		-v $(RECRUITMENT_DIR):/app -w /app/tests python:3.11-slim bash -c "\
+		apt-get update && apt-get install -y curl && \
+		pip install httpx && \
+		python test_api_recruitment.py"
 collect-authentication-log:
 	@echo "Collect SOAI_AUTHENTICATION logs"
 	$(TOP_DIR)/vas.sh collect_docker_logs --name=authentication

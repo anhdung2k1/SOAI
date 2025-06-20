@@ -34,6 +34,12 @@ spec:
           items:
             - key: default.conf
               path: default.conf
+      - name: tmp-volume
+        emptyDir: {}
+      - name: nginx-cache
+        emptyDir: {}
+      - name: nginx-logs
+        emptyDir: {}
       {{- if $g.security.tls.enabled }}
       - name: tls-cert
         secret:

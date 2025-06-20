@@ -8,7 +8,7 @@ metadata:
 spec:
   replicas: {{ .Values.server.web.replicaCount }}
   strategy:
-    {{ toYaml .Values.updateStrategy | indent 4 }}
+{{ toYaml .Values.updateStrategy | indent 4 }}
   selector:
     matchLabels: 
       {{- include "soai-web.selectorLabels" . | nindent 6 }}
@@ -33,6 +33,12 @@ spec:
       - name: tls-cert
         secret:
           secretName: {{ template "soai-application.name" . }}-cert
+      - name: tmp-volume
+        emptyDir: {}
+      - name: nginx-cache
+        emptyDir: {}
+      - name: nginx-logs
+        emptyDir: {}
       {{- end }}
       {{- if include "soai-application.pullSecrets" . }}
         imagePullSecrets:

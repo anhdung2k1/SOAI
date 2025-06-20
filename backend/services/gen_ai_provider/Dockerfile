@@ -44,4 +44,4 @@ RUN rm -rf /app/app/logs && \
 USER ${USER_ID}
 
 # Command to run the FastAPI app using uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8004", "--reload", "--log-level", "debug"]
+CMD ["python", "main.py"]

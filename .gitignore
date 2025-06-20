@@ -38,7 +38,7 @@ helm/soai-application/files/ca.key
 test/athena_chart/charts/
 
 # package-lock.json
-web/main-app/package-lock.json
+# web/main-app/package-lock.json
 # Compiled Dynamic libraries
 *.so
 *.dylib

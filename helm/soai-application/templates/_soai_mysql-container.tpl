@@ -9,7 +9,7 @@
   securityContext:
     allowPrivilegeEscalation: false
     privileged: false
-    readOnlyRootFilesystem: true
+    readOnlyRootFilesystem: false
     runAsNonRoot: true
     runAsUser: 1001
     capabilities:
@@ -52,7 +52,7 @@
   {{- end }}
     mountPath: /var/lib/mysql
   - name: conf
-    value: /etc/mysql/conf.d
+    mountPath: /etc/mysql/conf.d
   resources:
 {{- include "soai-application.resources" (index $top.Values "resources" "mysql") | indent 2 }}
 {{- end }}

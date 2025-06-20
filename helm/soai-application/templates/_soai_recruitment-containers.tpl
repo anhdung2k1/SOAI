@@ -78,11 +78,7 @@
     value: {{ $top.Values.server.secretsPath.certPath }}/ca.crt
   {{- end }}
   - name: TLS_ENABLED
-  {{- if $g.security.tls.enabled }}
-    value: "true"
-  {{- else }}
-    value: "false"
-  {{- end }}
+    value: {{ ternary "true" "false" $g.security.tls.enabled | quote }}
   volumeMounts:
   {{- if $top.Values.storage.enabled }}
   - name: {{ template "soai-recruitment.name" $top }}-persistent-storage
@@ -95,6 +91,8 @@
     mountPath: {{ $top.Values.server.secretsPath.certPath }}
     readOnly: true
   {{- end }}
+  - name: tmp-volume
+    mountPath: /tmp
 {{ include "soai-application.readinessProbe" (list $top "/api/v1/recruitment/health" "recruitment") | indent 2 }}
 {{ include "soai-application.livenessProbe" (list $top "/api/v1/recruitment/health" "recruitment") | indent 2 }}
 {{- end -}}
