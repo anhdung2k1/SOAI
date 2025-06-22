@@ -38,6 +38,15 @@ public class SecurityConfiguration {
         "/actuator/**"
     };
 
+    /**
+     * Configures and returns the application's security filter chain.
+     *
+     * Sets up stateless JWT-based authentication, applies dynamic CORS configuration, disables CSRF protection,
+     * permits access to predefined public endpoints, and requires authentication for all other requests.
+     *
+     * @return the configured SecurityFilterChain
+     * @throws Exception if an error occurs during security configuration
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         log.info("Configuring SecurityFilterChain.");
@@ -59,6 +68,14 @@ public class SecurityConfiguration {
                 .build();
     }
 
+    /**
+     * Provides a CORS configuration source that dynamically allows any request origin.
+     *
+     * Configures CORS to trust all origins at runtime, permit all headers, expose the "Authorization" header,
+     * allow credentials, and support standard HTTP methods. Applies this configuration to all application paths.
+     *
+     * @return a CorsConfigurationSource with dynamic origin handling for all endpoints
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         log.info("Setting up dynamic CORS configuration.");

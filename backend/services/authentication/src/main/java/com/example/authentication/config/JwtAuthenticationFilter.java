@@ -29,6 +29,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     @Autowired
     private final UserDetailsService userDetailsService;
+    /**
+     * Processes incoming HTTP requests to perform JWT-based authentication.
+     *
+     * Extracts a JWT token from the "Authorization" header or an "Authorization" cookie if the header is absent.
+     * If a valid JWT is found, authenticates the user by validating the token and setting the authentication in the security context.
+     * Continues the filter chain regardless of authentication outcome.
+     *
+     * @param request  the HTTP request
+     * @param response the HTTP response
+     * @param filterChain the filter chain to continue processing
+     * @throws ServletException if an error occurs during filtering
+     * @throws IOException if an I/O error occurs during filtering
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -80,7 +93,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     /**
-     * This method ensures that the filter will be skipped for public endpoints like signin/signup.
+     * Determines whether the JWT authentication filter should be skipped for the given request.
+     *
+     * The filter is bypassed for requests whose servlet path starts with any of the following public endpoint prefixes:
+     * "/api/v1/authentications/signin", "/api/v1/authentications/signup", "/api/v1/authentications/docs",
+     * "/api/v1/authentications/swagger-ui", or "/actuator".
+     *
+     * @param request the current HTTP request
+     * @return true if the filter should be skipped for this request; false otherwise
      */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
