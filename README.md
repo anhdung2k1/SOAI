@@ -101,5 +101,24 @@ This will sent and push the drop version to docker registry. Helm will manage to
 $ make git-tag
 ```
 This will create the git tag and push to git.
+## Deploy helm chart to k8s cluster
+### Prepare
+```bash
+$ make package-helm
+```
+The helm build will locate at `build/helm-build/soai-application/` folder
+You can preview the helm chart by
+```bash
+$ helm template soai-app build/helm-build/soai-application/soai-application/
+```
+```bash
+$ helm -n <namespace> install soai-app build/helm-build/soai-application/soai-application-<version>.tgz --set <values> --debug --create-namespace
+```
+This will install SOAI helm chart to k8s cluster.
+The TLS certificate was used by `cert-manager` you can install it in `test/athena_chart`.
+```bash
+$ ./deploy.sh -n monitoring
+```
+You can install the cert-manager, prometheus, grafana to monitor and create `cert-manaager` CRDs in order to deploy TLS certificates in SOAI-application.
 ### License
 This repository is proprietary and confidential. Usage is subject to internal policies. Contact maintainers for access or usage rights.

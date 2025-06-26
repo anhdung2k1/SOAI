@@ -36,12 +36,6 @@ EXPOSE 8003
 
 WORKDIR /app/app
 
-# Logs directory for storing logging
-RUN rm -rf /app/app/logs && \
-    mkdir -p /app/app/logs && \
-    chmod -R 755 /app/app/logs && \
-    chown -R ${USER_ID}:0 /app/app/logs
-
 USER ${USER_ID}
 
 CMD ["python", "main.py"]
