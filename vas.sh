@@ -169,6 +169,7 @@ generate_ca() {
 build_image() {
     test -n "$VAS_GIT" || die "Not set [VAS_GIT]"
     test -n "$__name" || die "Module name required"
+
     image_name=soai-$__name
     # default target_dir
     target_dir="$VAS_GIT/backend/services/$__name"
@@ -179,14 +180,34 @@ build_image() {
         target_dir="$VAS_GIT/$__name"
     fi
 
-    docker build $target_dir \
-            --file $target_dir/Dockerfile \
+    # Ensure buildx builder exists
+    docker buildx inspect multiarch-builder >/dev/null 2>&1 || docker buildx create --name multiarch-builder --use
+
+    echo "Building image [$image_name:$version]"
+
+    # Support build image with multi-architecture amd64/arm64 when set RELEASE
+    if [ "$RELEASE" == "true" ]; then
+        docker buildx build "$target_dir" \
+            --file "$target_dir/Dockerfile" \
             --tag "$DOCKER_REGISTRY/$image_name:$version" \
-            --build-arg COMMIT=$git_commit \
-            --build-arg APP_VERSION=$version \
-            --build-arg BUILD_TIME=`date +"%d/%m/%Y:%H:%M:%S"` \
-            --build-arg USER_ID=$(get_user_id) \
-        || die "Failed to build docker images: $__name"
+            --platform linux/amd64,linux/arm64 \
+            --build-arg COMMIT="$git_commit" \
+            --build-arg APP_VERSION="$version" \
+            --build-arg BUILD_TIME="$(date +"%d/%m/%Y:%H:%M:%S")" \
+            --build-arg USER_ID="$(get_user_id)" \
+            --push \
+            || die "Failed to build multi-arch image"
+    else
+        # Only build with current architecture if the RELEASE is not set.
+        docker build "$target_dir" \
+            --file "$target_dir/Dockerfile" \
+            --tag "$DOCKER_REGISTRY/$image_name:$version" \
+            --build-arg COMMIT="$git_commit" \
+            --build-arg APP_VERSION="$version" \
+            --build-arg BUILD_TIME="$(date +"%d/%m/%Y:%H:%M:%S")" \
+            --build-arg USER_ID="$(get_user_id)" \
+            || die "Failed to build native image"
+    fi
 }
 
 ## create helm_md5sum
@@ -256,15 +277,28 @@ build_helm() {
 ## --name=<module name>
 ##
 push_image() {
-   test -n "$VAS_GIT" || die "Not set [VAS_GIT]"
-   test -n "$__name" || die "Module name required"
-   test -n "$DOCKER_REGISTRY" || die "Not set [DOCKER_REGISTRY]"
-   image_name=soai-$__name
-   version=$(get_version)
+    test -n "$VAS_GIT" || die "Not set [VAS_GIT]"
+    test -n "$__name" || die "Module name required"
+    test -n "$DOCKER_REGISTRY" || die "Not set [DOCKER_REGISTRY]"
 
-   ## Docker push to docker registry
-   docker push $DOCKER_REGISTRY/$image_name:$version \
-	   || die "Failed to push docker registry: $DOCKER_REGISTRY"
+    image_name=soai-$__name
+    version=$(get_version)
+
+    # Decide target registry path
+    if [ "$RELEASE" == "true" ]; then
+        target="$DOCKER_REGISTRY/$image_name:$version"
+    else
+        target="$DOCKER_REGISTRY/staging/$image_name:$version"
+    fi
+
+    # Check if the image exists locally
+    if docker image inspect "$target" >/dev/null 2>&1; then
+        echo "Pushing image: $target"
+        docker push "$target" || die "Failed to push docker image to registry: $target"
+    else
+        echo "Image [$target] not found locally. Skipping push."
+        echo "It may have already been pushed via buildx --push or was never built."
+    fi
 }
 
 # Ensure Docker network exists

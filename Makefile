@@ -74,7 +74,8 @@ run: run-mysql \
 	run-consul \
 	run-authentication \
 	run-genai \
-	run-recruitment
+	run-recruitment \
+	run-web
 
 run-mysql:
 	@echo "Run MySQL Container"
