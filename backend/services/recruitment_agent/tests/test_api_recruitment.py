@@ -174,19 +174,23 @@ class TestRecruitmentAPI(unittest.TestCase):
             self.fail("Pre-clean step failed")
 
         try:
+            # Test upload JD with ADMIN
             log_info("[Step 1] Upload JD")
             response = self.upload_jd(self.admin_token)
             self.assertEqual(response.status_code, 200)
 
+            # Test upload CV with ADMIN
             log_info("[Step 2] Upload CV")
             response = self.upload_cv(self.user_token, email, position)
             self.assertEqual(response.status_code, 200)
 
+            # Test GET Pending CV with admin
             log_info("[Step 3] Get pending CV")
             pending_cv = self.get_pending_cv(name, self.admin_token)
             self.assertGreater(len(pending_cv), 0)
             cv_id = pending_cv[0]["id"]
 
+            # Test Approve CV with admin
             log_info("[Step 4] Approve CV")
             response = api_request(
                 "POST",
@@ -196,6 +200,7 @@ class TestRecruitmentAPI(unittest.TestCase):
             )
             self.assertIn(response.status_code, [200, 400])
 
+            # Test Update CV with ADMIN
             log_info("[Step 5] Update CV")
             response = api_request(
                 "PUT",
@@ -205,6 +210,7 @@ class TestRecruitmentAPI(unittest.TestCase):
             )
             self.assertEqual(response.status_code, 200)
 
+            # Test get CV with ADMIN
             log_info("[Step 6] Get CV by ID")
             response = api_request(
                 "GET", f"{BASE_URL}/cvs/{cv_id}", headers=get_headers(self.admin_token)
@@ -226,6 +232,7 @@ class TestRecruitmentAPI(unittest.TestCase):
             )
             self.assertEqual(response.status_code, 200)
 
+            # Test get Interviews candidate with admin
             log_info("[Step 8] Get Interviews")
             response = api_request(
                 "GET",
@@ -235,6 +242,7 @@ class TestRecruitmentAPI(unittest.TestCase):
             )
             interview_id = response.json()[0]["id"]
 
+            # Test Accept the interview with admin
             log_info("[Step 9] Accept Interview")
             response = api_request(
                 "POST",
@@ -245,14 +253,56 @@ class TestRecruitmentAPI(unittest.TestCase):
             log_info(f"Accept Interview Response: {response.json()}")
             self.assertEqual(response.status_code, 200)
             
+            # Test the interview questions were generated after candidate accepted the interview
             log_info("Checking if interview questions were generated")
+            questions_response = api_request(
+                "GET", f"{BASE_URL}/interview-questions/{cv_id}/questions",
+                headers=get_headers(self.admin_token)
+            )
+            self.assertEqual(questions_response.status_code, 200)
+
+            questions_before = questions_response.json()
+            log_info(f"Get the interview_questions: {questions_before}")
+            self.assertGreater(len(questions_before), 0)
+
+            # Edit the first question
+            question_id = questions_before[0]["id"]
+            original_question = questions_before[0]["original_question"]
+            new_question_edit = "This is a modified version of the original question."
+
+            edit_response = api_request(
+                "PUT", f"{BASE_URL}/interview-questions/{question_id}/edit",
+                json={"new_question": new_question_edit},
+                headers=get_headers(self.admin_token)
+            )
+            self.assertEqual(edit_response.status_code, 200)
+
+            # Re-fetch and validate edit
+            log_info("Check if the question was successfully edited")
+            questions_response_post = api_request(
+                "GET", f"{BASE_URL}/interview-questions/{cv_id}/questions",
+                headers=get_headers(self.admin_token)
+            )
+            self.assertEqual(questions_response_post.status_code, 200)
+            questions_after = questions_response_post.json()
+            log_info(f"Get the interview_questions after edit: {questions_after}")
+
+            # Assert the edit actually changed the content
+            self.assertNotEqual(
+                questions_after[0]["edited_question"], original_question,
+                "Edited question must differ from the original"
+            )
+
+            log_info(f"Checking if interview questios were regenerated")
             response = api_request(
-                "GET", f"{BASE_URL}/interview-questions/{cv_id}/questions", headers=get_headers(self.admin_token)
+                "POST", f"{BASE_URL}/interview-questions/{cv_id}/questions/regenerate",
+                headers=get_headers(self.admin_token)
             )
             self.assertEqual(response.status_code, 200)
-            log_info(f"Get the interview_questions: {response.json()}")
+            log_info(f"Get the interview_questions regenerated: {response.json()}")
             self.assertGreater(len(response.json()), 0)
 
+            # Test update the interview change the interviewer_name with admin
             log_info("[Step 10] Update Interview")
             response = api_request(
                 "PUT",
@@ -262,6 +312,7 @@ class TestRecruitmentAPI(unittest.TestCase):
             )
             self.assertEqual(response.status_code, 200)
 
+            # Test candidate cancel the interview schedule
             log_info("[Step 11] Cancel Interview")
             response = api_request(
                 "POST",
@@ -270,6 +321,7 @@ class TestRecruitmentAPI(unittest.TestCase):
             )
             self.assertEqual(response.status_code, 200)
 
+            # Get list all CVs with admin
             log_info("[Step 12] List All CVs")
             response = api_request(
                 "GET",
@@ -279,12 +331,14 @@ class TestRecruitmentAPI(unittest.TestCase):
             )
             self.assertEqual(response.status_code, 200)
 
+            # Get JD list with admin
             log_info("[Step 13] Get JD List")
             response = api_request(
                 "GET", f"{BASE_URL}/jds", headers=get_headers(self.admin_token)
             )
             jd_id = response.json()[0]["id"]
 
+            # Update JD with admin
             log_info("[Step 14] Update JD")
             response = api_request(
                 "PUT",
@@ -294,6 +348,7 @@ class TestRecruitmentAPI(unittest.TestCase):
             )
             self.assertEqual(response.status_code, 200)
             
+            # Delete JD with admin
             log_info("[Step 15] Delete JD")
             self.clean_jd("Senior DevOps Engineer")
 
@@ -314,6 +369,7 @@ class TestRecruitmentAPI(unittest.TestCase):
 
         self.preclean_candidate(name, position)
 
+        # Upload JD with candidate user => Blocked
         log_info("Trying to Upload JD with USER role")
         response = self.upload_jd(self.user_token)
         self.assertEqual(response.status_code, 403)
@@ -321,16 +377,19 @@ class TestRecruitmentAPI(unittest.TestCase):
 
         log_info("Uploading JD as ADMIN for CV testing")
         self.upload_jd(self.admin_token)
-            
+
+        # Upload the CV with unmatch JD
         log_info("Trying to upload CV with unmatch position")
         response = self.upload_cv(self.user_token, email, unmatch_position)
         self.assertEqual(response.status_code, 200)
         log_info("Unmatch position CV response: " + str(response.json().get("message")))
 
+        # Upload CV with User => Pass
         log_info("Uploading CV with USER role")
         response = self.upload_cv(self.user_token, email, position)
         self.assertEqual(response.status_code, 200)
 
+        # Get Pending CVs with candidate user => Blocked
         log_info("Trying to get pending CV with USER role")
         response = api_request(
             "GET",
@@ -348,6 +407,7 @@ class TestRecruitmentAPI(unittest.TestCase):
             self.skipTest("No pending CV found for permission test.")
         candidate_id = pending_cv[0]["id"]
 
+        # Approve CV with candidate user => Blocked
         log_info("Trying to approve CV with USER role")
         response = api_request(
             "POST",

@@ -188,13 +188,13 @@ async def get_questions_for_cv(
 @router.put("/interview-questions/{question_id}/edit")
 async def edit_question(
     question_id: int,
-    new_text: str = Body(..., embed=True),
+    new_question: str = Body(..., embed=True),
     db: Session = Depends(get_db),
     get_current_user: dict = JWTService.require_role("ADMIN")
 ):
     logger.debug(f"USER '{get_current_user.get('sub')}' is calling PUT /interview-questions/{question_id}/edit")
     return recruitment_service.edit_interview_question(
-        question_id, new_text, db, edited_by=get_current_user["sub"]
+        question_id, new_question, db, edited_by=get_current_user["sub"]
     )
 
 # Only TA can regenerate the interview questions
