@@ -56,7 +56,7 @@ server:
   authentication:
     name: authentication
     replicaCount: 1
-    serviceType: LoadBalancer
+    serviceType: ClusterIP
     httpPort: "9090"
     httpsPort: "9443"
     httpNodePort: "30903"
@@ -66,7 +66,7 @@ server:
     name: recruitment
     replicaCount: 1
     logLevel: INFO
-    serviceType: LoadBalancer
+    serviceType: ClusterIP
     httpPort: "8003"
     httpsPort: "8433"
     httpNodePort: "30803"
@@ -76,7 +76,7 @@ server:
     name: genai
     replicaCount: 1
     logLevel: INFO
-    serviceType: LoadBalancer
+    serviceType: ClusterIP
     httpPort: "8004"
     httpsPort: "8434"
     httpNodePort: "30804"

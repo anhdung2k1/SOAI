@@ -1,0 +1,148 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: soai-configmap
+data:
+  prometheus.yaml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+
+    scrape_configs:
+      - job_name: 'prometheus'
+        static_configs:
+          - targets: ['localhost:9090']
+
+      - job_name: 'soai_services'
+        metrics_path: /metrics
+        static_configs:
+          - targets:
+              - genai:8004
+              - recruitment:8003
+        relabel_configs:
+          - source_labels: [__address__]
+            regex: '(.*):.*'
+            target_label: instance
+            replacement: '${1}'
+          - source_labels: [__address__]
+            target_label: service
+            regex: 'genai:.*'
+            replacement: 'gen_ai_provider'
+          - source_labels: [__address__]
+            target_label: service
+            regex: 'recruitment:.*'
+            replacement: 'recruitment_agent'
+
+      - job_name: 'authentication_service'
+        metrics_path: /actuator/prometheus
+        static_configs:
+          - targets:
+              - authentication:9090
+        relabel_configs:
+          - source_labels: [__address__]
+            regex: '(.*):.*'
+            target_label: instance
+            replacement: '${1}'
+          - source_labels: [__address__]
+            target_label: service
+            regex: 'authentication:.*'
+            replacement: 'authentication_service'
+
+  otel-collector-config.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+
+    exporters:
+      clickhouse:
+        endpoint: tcp://clickhouse:9000
+        username: otel_user
+        password: otel_pass
+        database: default
+        logs_table_name: otel_logs
+        traces_table_name: otel_traces
+
+    processors:
+      batch:
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [clickhouse]
+        logs:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [clickhouse]
+
+  otel-user.xml: |
+    <yandex>
+      <users>
+        <otel_user>
+          <password>otel_pass</password>
+          <networks>
+            <ip>::/0</ip>
+          </networks>
+          <profile>default</profile>
+          <quota>default</quota>
+        </otel_user>
+      </users>
+    </yandex>
+
+  init-tables.sql: |
+    DROP TABLE IF EXISTS otel_traces;
+
+    CREATE TABLE IF NOT EXISTS otel_traces (
+        Timestamp DateTime64(9),
+        TraceId String,
+        SpanId String,
+        TraceState String,
+        ParentSpanId String,
+        Name String,
+        Kind Int32,
+        StartTime DateTime64(9),
+        EndTime DateTime64(9),
+        Duration UInt64 ALIAS toUnixTimestamp64Nanosecond(EndTime) - toUnixTimestamp64Nanosecond(StartTime),
+        Attributes Map(String, String),
+        DroppedAttributesCount Int32,
+        Events Nested (
+            Name String,
+            Attributes Map(String, String),
+            DroppedAttributesCount Int32,
+            Timestamp DateTime64(9)
+        ),
+        DroppedEventsCount Int32,
+        StatusCode Int32,
+        StatusMessage String,
+        ServiceName LowCardinality(String),
+        ResourceAttributes Map(String, String),
+        ScopeName LowCardinality(String),
+        ScopeVersion String
+    ) ENGINE = MergeTree
+    ORDER BY (ServiceName, StartTime)
+    TTL StartTime + INTERVAL 7 DAY;
+
+    DROP TABLE IF EXISTS otel_logs;
+
+    CREATE TABLE IF NOT EXISTS otel_logs (
+        Timestamp DateTime64(9),
+        TraceId String,
+        SpanId String,
+        TraceFlags UInt8,
+        SeverityText String,
+        SeverityNumber Int32,
+        Body String,
+        Attributes Map(String, String),
+        DroppedAttributesCount Int32,
+        ResourceAttributes Map(String, String),
+        ScopeName LowCardinality(String),
+        ScopeVersion String,
+        ServiceName LowCardinality(String)
+    ) ENGINE = MergeTree
+    ORDER BY (ServiceName, Timestamp)
+    TTL Timestamp + INTERVAL 7 DAY;

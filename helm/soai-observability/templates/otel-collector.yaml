@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: otel-collector
+  template:
+    metadata:
+      labels:
+        app: otel-collector
+    spec:
+      initContainers:
+        - name: wait-for-clickhouse
+          image: busybox
+          command: ['sh', '-c', 'until nc -z clickhouse 9000; do echo waiting for clickhouse; sleep 2; done']
+      containers:
+        - name: otel-collector
+          image: otel/opentelemetry-collector-contrib:latest
+          args: ["--config=/etc/otel/config.yaml"]
+          ports:
+            - containerPort: {{ .Values.otel.grpcPort }}
+            - containerPort: {{ .Values.otel.httpPort }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/otel/config.yaml
+              subPath: otel-collector-config.yaml
+      volumes:
+        - name: config
+          configMap:
+            name: soai-configmap

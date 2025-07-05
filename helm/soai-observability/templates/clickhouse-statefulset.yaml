@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: clickhouse
+spec:
+  serviceName: "clickhouse"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clickhouse
+  template:
+    metadata:
+      labels:
+        app: clickhouse
+    spec:
+      containers:
+        - name: clickhouse
+          image: clickhouse/clickhouse-server:latest
+          ports:
+            - containerPort: {{ .Values.clickhouse.httpPort }}
+            - containerPort: {{ .Values.clickhouse.tcpPort }}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/clickhouse
+            - name: config
+              mountPath: /etc/clickhouse-server/users.d/otel-user.xml
+              subPath: otel-user.xml
+            - name: init
+              mountPath: /docker-entrypoint-initdb.d/init-tables.sql
+              subPath: init-tables.sql
+      volumes:
+        - name: config
+          configMap:
+            name: soai-configmap
+        - name: init
+          configMap:
+            name: soai-configmap
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: {{ .Values.clickhouse.storage }}

@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+spec:
+  type: LoadBalancer
+  selector:
+    app: prometheus
+  ports:
+    - name: web
+      port: {{ .Values.prometheus.externalPort }}
+      targetPort: {{ .Values.prometheus.port }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+spec:
+  type: LoadBalancer
+  selector:
+    app: grafana
+  ports:
+    - name: web
+      port: {{ .Values.grafana.port }}
+      targetPort: {{ .Values.grafana.port }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-collector
+spec:
+  type: LoadBalancer
+  selector:
+    app: otel-collector
+  ports:
+    - name: otlp-grpc
+      port: {{ .Values.otel.grpcPort }}
+      targetPort: {{ .Values.otel.grpcPort }}
+    - name: otlp-http
+      port: {{ .Values.otel.httpPort }}
+      targetPort: {{ .Values.otel.httpPort }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: clickhouse
+spec:
+  type: LoadBalancer
+  selector:
+    app: clickhouse
+  ports:
+    - name: http
+      port: {{ .Values.clickhouse.httpPort }}
+      targetPort: {{ .Values.clickhouse.httpPort }}
+    - name: tcp
+      port: {{ .Values.clickhouse.tcpPort }}
+      targetPort: {{ .Values.clickhouse.tcpPort }}
