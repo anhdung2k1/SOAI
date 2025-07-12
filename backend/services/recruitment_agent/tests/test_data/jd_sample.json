@@ -1,625 +1,579 @@
 [
-  {
-    "position": "Senior Data Analyst (Power BI)",
-    "skills_required": ["Power BI", "SQL", "Python", "DAX"],
-    "location": "Rosario, Santa Fe Province, Argentina",
-    "date": "2025-05-09",
-    "experience_required": 5,
-    "level": "Senior",
-    "referral": true,
-    "referral_code": "REF1469Z",
-    "company_description": "Endava combines world-class engineering, industry expertise, and a people-centric mindset to create intelligent digital experiences and drive business transformation for leading global brands.",
-    "job_description": "As a Senior Data Analyst, you'll transform raw data into actionable insights, develop robust dashboards in Power BI, and contribute to impactful data-driven decisions across global projects.",
-    "responsibilities": [
-      "Drive business solutions through data interpretation and analysis.",
-      "Mentor or manage a team of analysts.",
-      "Collaborate with cross-functional teams to understand data needs and provide solutions.",
-      "Create detailed reports and dashboards for various stakeholders.",
-      "Deliver impactful analyses that lead to business improvements.",
-      "Maintain data integrity and ensure security across databases."
-    ],
-    "qualifications": [
-      "Proven experience with Power BI, SQL, Python, and DAX.",
-      "Strong knowledge of statistical analysis methods.",
-      "Ability to turn complex data into clear business strategies.",
-      "Experience with Azure SQL, Databricks, Event Grid, Event Hub, Service Bus, CosmosDB, Voltage, Azure KeyVault, and Azure Monitor is a plus."
-    ],
-    "additional_information": {
-      "finance": [
-        "Competitive salary package",
-        "Share plan",
-        "Company performance bonuses",
-        "Value-based recognition awards",
-        "Referral bonus"
-      ],
-      "career_development": [
-        "Career coaching",
-        "Global opportunities",
-        "Internal development programmes"
-      ],
-      "learning": [
-        "Training",
-        "Certifications",
-        "Workshops",
-        "Conferences",
-        "Internal tech communities"
-      ],
-      "work_life_balance": [
-        "Hybrid work and flexible hours",
-        "Employee assistance programme"
-      ],
-      "health": [
-        "Global wellbeing programme",
-        "Access to wellbeing apps"
-      ],
-      "community": [
-        "Tech communities",
-        "Hobby clubs",
-        "Inclusion and diversity programmes"
-      ]
+    {
+        "position": "Student Applicant – Data Science Program",
+        "skills_required": [
+            "Logical thinking",
+            "Data analysis",
+            "Python",
+            "Statistics"
+        ],
+        "location": "Ho Chi Minh City, Vietnam",
+        "date": "2025-05-09",
+        "experience_required": 3,
+        "level": "Outstanding",
+        "referral": true,
+        "referral_code": "HS2025A1",
+        "company_description": "The Smart Admission System evaluates students holistically based on their competency profiles, academic performance, and learning portfolios to ensure fair and personalized admissions.",
+        "job_description": "This applicant demonstrates strong academic foundations, proficiency in data tools, and a passion for independent learning—ideal for pursuing a data science-focused curriculum.",
+        "responsibilities": [
+            "Participated in national and provincial academic competitions in STEM fields.",
+            "Built personal data projects using Python and data visualization tools.",
+            "Actively involved in academic clubs and peer knowledge sharing.",
+            "Authored personal essays and reflections showcasing learning growth.",
+            "Engaged in educational and social extracurricular activities.",
+            "Maintained consistent academic performance across subjects."
+        ],
+        "qualifications": [
+            "Proficiency in Python, Power BI, and advanced Excel.",
+            "Strong analytical and presentation skills.",
+            "Demonstrated independent learning and research abilities.",
+            "Awards in math, informatics, and science competitions.",
+            "Personal learning projects or portfolios are a strong advantage."
+        ],
+        "additional_information": {
+            "finance": [
+                "Full or partial merit-based scholarships",
+                "Achievement-based recognition awards",
+                "Support for academic-related expenses",
+                "Referral scholarship for recommending talented peers"
+            ],
+            "career_development": [
+                "Personalized career coaching",
+                "Access to international scholarship programs",
+                "Research mentorship opportunities"
+            ],
+            "learning": [
+                "Specialized learning tracks",
+                "Digital skills certifications",
+                "Academic summer camps",
+                "Expert workshops and seminars",
+                "High-potential student communities"
+            ],
+            "work_life_balance": [
+                "Physical wellness and creative arts programs",
+                "Flexible academic paths based on competency"
+            ],
+            "health": [
+                "Mental wellbeing support initiatives",
+                "Access to study & wellbeing mobile apps"
+            ],
+            "community": [
+                "Academic and innovation clubs",
+                "Soft-skills and leadership clubs",
+                "Inclusion and diversity initiatives",
+                "National student exchange & networking events"
+            ]
+        },
+        "hiring_manager": "Nguyen Thanh Tam (Director of Admissions)",
+        "recruiter": "Tran Minh Huy (Student Counselor)"
     },
-    "hiring_manager": "Matias Salmeri",
-    "recruiter": "Ximena Ramos"
-  },
-  {
-    "position": "Senior Data Engineer (Azure)",
-    "skills_required": [
-      "Azure Data Factory",
-      "Databricks",
-      "SQL",
-      "Python",
-      "Azure Synapse Analytics",
-      "Azure Cosmos DB",
-      "Apache Spark",
-      "Apache Kafka",
-      "Azure Storage (ADLS2)",
-      "Scala",
-      "Azure Functions",
-      "Snowflake",
-      "Voltage"
-    ],
-    "location": "Rosario, Santa Fe Province, Argentina",
-    "date": "2025-05-09",
-    "experience_required": 5,
-    "level": "Senior",
-    "referral": true,
-    "referral_code": "REF1468X",
-    "company_description": "Endava combines world-class engineering, industry expertise, and a people-centric mindset to create intelligent digital experiences and drive business transformation for leading global brands.",
-    "job_description": "As a Senior Data Engineer (Azure), you'll design, build, and optimize scalable data pipelines and infrastructure using Azure services. You'll collaborate with data teams and stakeholders to deliver robust solutions that enable data-driven innovation.",
-    "responsibilities": [
-      "Build and maintain robust data pipelines to ensure efficient data flow.",
-      "Develop ETL processes using Azure Data Factory or Talend.",
-      "Leverage big data technologies like Apache Spark and Apache Kafka with Databricks.",
-      "Manage cloud data services including Azure Storage (ADLS2), Azure SQL, Cosmos DB, and Azure Synapse.",
-      "Develop solutions using Python, Java, or Scala within Databricks.",
-      "Implement data warehousing solutions like Redshift or Snowflake.",
-      "Collaborate with data scientists, analysts, and stakeholders to deliver efficient data solutions."
-    ],
-    "qualifications": [
-      "Hands-on experience with Azure Databricks and Python.",
-      "Experience implementing ETL/ELT processes and scalable data pipelines.",
-      "Proficiency in Azure SQL, Azure Synapse Analytics, and Cosmos DB.",
-      "Strong SQL scripting skills and knowledge of data warehouse tools.",
-      "Familiarity with Spark, Scala, Voltage, and Azure Functions.",
-      "Experience with Snowflake and other cloud-based data technologies."
-    ],
-    "additional_information": {
-      "finance": [
-        "Competitive salary package",
-        "Share plan",
-        "Company performance bonuses",
-        "Value-based recognition awards",
-        "Referral bonus"
-      ],
-      "career_development": [
-        "Career coaching",
-        "Global opportunities",
-        "Non-linear career paths",
-        "Internal development programmes"
-      ],
-      "learning": [
-        "Complex projects",
-        "Rotations",
-        "Training and certifications",
-        "Workshops and conferences",
-        "Internal tech communities"
-      ],
-      "work_life_balance": [
-        "Hybrid work",
-        "Flexible working hours",
-        "Employee assistance programme"
-      ],
-      "health": [
-        "Global wellbeing programme",
-        "Access to wellbeing apps"
-      ],
-      "community": [
-        "Tech communities",
-        "Hobby clubs",
-        "Inclusion and diversity programmes",
-        "Events and celebrations"
-      ]
+    {
+        "position": "Student Applicant – Cloud Computing Track",
+        "skills_required": [
+            "Cloud fundamentals",
+            "Azure Data Factory",
+            "Python",
+            "SQL",
+            "Data Pipelines"
+        ],
+        "location": "Rosario, Santa Fe Province, Argentina",
+        "date": "2025-05-09",
+        "experience_required": 3,
+        "level": "High Potential",
+        "referral": true,
+        "referral_code": "HS2025CLOUDX",
+        "company_description": "The Smart Admission System recognizes students with demonstrated ability to engage in real-world technology challenges using modern infrastructure tools and data frameworks.",
+        "job_description": "This student applicant has a strong interest in cloud technologies and data engineering. Their portfolio includes structured data projects, collaborative research, and automation demos.",
+        "responsibilities": [
+            "Built end-to-end data pipeline simulations using cloud platforms.",
+            "Led peer learning workshops on Python and ETL logic.",
+            "Created cloud project dashboards using Azure services.",
+            "Participated in school innovation fairs and STEM hackathons.",
+            "Explored emerging tools such as Apache Spark and Kafka.",
+            "Practiced documentation and version control in team settings."
+        ],
+        "qualifications": [
+            "Strong grasp of Azure tools and data flows.",
+            "Built custom ETL logic for sample datasets.",
+            "Experience integrating APIs and cloud storage services.",
+            "Proficient in Python scripting and SQL queries.",
+            "Portfolio includes cloud automation or notebook-based projects."
+        ],
+        "additional_information": {
+            "finance": [
+                "Merit-based cloud innovation scholarships",
+                "Tech competition reward grants",
+                "Project-based bursary support",
+                "Referral-based bonus points"
+            ],
+            "career_development": [
+                "Cloud mentorship programs",
+                "Hackathon and research sponsorships",
+                "Hands-on bootcamp invitations"
+            ],
+            "learning": [
+                "Workshops on cloud tools and DevOps basics",
+                "Intro to distributed computing and data modeling",
+                "Tech community participation (student forums)"
+            ],
+            "work_life_balance": [
+                "Balance between tech + academic growth",
+                "Flexible project-based evaluation"
+            ],
+            "health": [
+                "Self-paced study with built-in wellness breaks",
+                "Mindfulness content embedded in platform"
+            ],
+            "community": [
+                "Cloud explorers club",
+                "Peer coding groups",
+                "Tech-for-good innovation teams",
+                "Student-led seminars"
+            ]
+        },
+        "hiring_manager": "Matias Salmeri (STEM Program Director)",
+        "recruiter": "Ximena Ramos (Academic Coordinator)"
     },
-    "hiring_manager": "Matias Salmeri",
-    "recruiter": "Ximena Ramos"
-  },
-  {
-    "position": "Senior Automation Tester",
-    "skills_required": ["Selenium", "Cypress", "Java", "TestNG"],
-    "experience_required": 4,
-    "level": "Mid-Senior",
-    "location": "Cali, Valle del Cauca, Colombia",
-    "date": null,
-    "company_description": "Technology is our how. And people are our why. For over two decades, we have been harnessing technology to drive meaningful change.\n\nBy combining world-class engineering, industry expertise and a people-centric mindset, we consult and partner with leading brands from various industries to create dynamic platforms and intelligent digital experiences that drive innovation and transform businesses.\n\nFrom prototype to real-world impact - be part of a global shift by doing work that matters.",
-    "job_description": "Our Testers work with project teams to ensure software quality through systematic test planning, execution, and defect tracking, ensuring functionality, performance, and reliability of applications before deployment. With deep knowledge of various types of applications, databases, and operating systems, they maintain high standards of product excellence and user satisfaction.",
-    "responsibilities": [
-      "Test software systems, review and analyze documentation, specifications and understand the business requirements.",
-      "Involved in investigating, analyzing and writing tests for reported defects.",
-      "Implement best practices for test automation to optimize test execution efficiency.",
-      "Contribute to test planning and strategy, collaborating with QA and development teams to define test objectives, scope, and schedules.",
-      "Provide input on risk assessment and mitigation strategies related to automated testing."
-    ],
-    "qualifications": [
-      "+4 years of experience",
-      "Knowledge of automated testing methods & frameworks",
-      "Strong knowledge and experience in Web Services/API testing (REST API).",
-      "Knowledge in scripting and programming languages based on OOP. Java",
-      "Proficiency in understanding software development life cycle (SDLC) and testing methodologies (e.g., black-box testing, white-box testing, regression testing).",
-      "Strong analytical and organizational skills and attention to details",
-      "Proficiency in executing automated and manual test cases and accurately documenting test results.",
-      "Familiarity with bug tracking systems and experience in defect identification, reporting, and tracking.",
-      "Desirable:  ISTQB Certification or other relevant certifications and Playwright Experience"
-    ],
-    "additional_information": {
-      "finance": [
-        "Competitive salary package",
-        "Share plan",
-        "Company performance bonuses",
-        "Value-based recognition awards",
-        "Referral bonus"
-      ],
-      "career_development": [
-        "Career coaching",
-        "Global opportunities",
-        "Non-linear career paths",
-        "Internal development programmes"
-      ],
-      "learning": [
-        "Complex projects",
-        "Rotations",
-        "Training and certifications",
-        "Workshops and conferences",
-        "Internal tech communities"
-      ],
-      "work_life_balance": [
-        "Hybrid work",
-        "Flexible working hours",
-        "Employee assistance programme"
-      ],
-      "health": [
-        "Global wellbeing programme",
-        "Access to wellbeing apps"
-      ],
-      "community": [
-        "Tech communities",
-        "Hobby clubs",
-        "Inclusion and diversity programmes",
-        "Events and celebrations"
-      ]
+    {
+        "position": "Student Applicant – Software Quality Track",
+        "skills_required": [
+            "Automation Thinking",
+            "Test Scripting",
+            "Java Basics",
+            "Analytical Skills"
+        ],
+        "experience_required": 2,
+        "level": "Mid-High",
+        "location": "Cali, Valle del Cauca, Colombia",
+        "date": null,
+        "company_description": "The Smart Admission Platform values students with a structured mindset and strong attention to detail, ideal for software validation and quality assurance domains.",
+        "job_description": "This applicant has demonstrated critical thinking in test-driven learning projects, using automation tools and structured reporting for self-evaluation and peer reviews.",
+        "responsibilities": [
+            "Created logic-based test cases for peer projects.",
+            "Simulated bug reporting via online testing tools.",
+            "Led QA roles in school-based software teams.",
+            "Documented test scenarios and reports independently.",
+            "Submitted reflection essays on problem analysis and solution breakdown."
+        ],
+        "qualifications": [
+            "Familiarity with automated testing concepts.",
+            "Strong communication and logical sequencing.",
+            "Understanding of SDLC basics and common bugs.",
+            "Introductory experience with Java/Python scripts.",
+            "ISTQB Junior badge or online certification is a plus."
+        ],
+        "additional_information": {
+            "finance": [
+                "Test Engineering merit awards",
+                "Project quality excellence scholarships",
+                "Referral bonus programs"
+            ],
+            "career_development": [
+                "Code review mentorship",
+                "Logic enhancement clubs",
+                "Exposure to testing competitions"
+            ],
+            "learning": [
+                "Mock QA challenges",
+                "Self-assessment modules",
+                "Structured error-based learning"
+            ],
+            "work_life_balance": [
+                "Project breaks for feedback loops",
+                "Mindful design sessions"
+            ],
+            "health": [
+                "Support for eye and screen fatigue",
+                "Balance-focused learning design"
+            ],
+            "community": [
+                "QA focus groups",
+                "Student testers community",
+                "Diversity in tech workshops"
+            ]
+        },
+        "hiring_manager": "Freddy Jimenez (Quality Lead)",
+        "recruiter": "Nuria Tambasco (Student Experience Officer)",
+        "referral": true,
+        "referral_code": "HS1026QA"
     },
-    "hiring_manager": "Freddy Jimenez",
-    "recruiter": "Nuria Tambasco",
-    "referral": true,
-    "referral_code": "REF1026Z"
-  },
-  {
-    "position": "Business Analyst",
-    "skills_required": ["Business Analysis", "Stakeholder Management", "Agile", "Scrum"],
-    "location": "Cluj-Napoca, Romania",
-    "experience_required": 3,
-    "level": "Mid",
-    "referral": false,
-    "referral_code": null,
-    "company_description": "Technology is our how. And people are our why. For over two decades, we have been harnessing technology to drive meaningful change.\n\nBy combining world-class engineering, industry expertise and a people-centric mindset, we consult and partner with leading brands from various industries to create dynamic platforms and intelligent digital experiences that drive innovation and transform businesses.\n\nFrom prototype to real-world impact - be part of a global shift by doing work that matters.",
-    "job_description": "As a Business Analyst at Endava you will identify client needs, analyze processes, and propose solutions to align with strategic goals. While fostering efficiency and ensuring organizational success through systematic approaches, Business Analyst also mediate between clients and engineering teams to ensure project clarity.",
-    "responsibilities": [
-      "Establishing and building relationship with the client's stakeholder through deep understanding business domain and consultancy.",
-      "Gathering and analyzing business requirements.",
-      "Providing solution directions and recommendations based on the client's needs, environment specifics and industry trends.",
-      "Creating and keeping up to date product backlog (creating user stories and acceptance criteria from the product vision and epics).",
-      "Working closely with engineering team and ensuring that user stories are implemented in line with the product vision and timelines.",
-      "Understanding the market reasoning behind given requirement and ensuring that development team deliver it according to global business goals and feature specifics",
-      "Closely observing industry trends in the area of application design and proposing new solutions to the client processes and the product"
-    ],
-    "qualifications": [
-      "3+ years of experience",
-      "Experience as product owner and/or business analyst in the Agile environment, defining business requirements and creating user stories",
-      "Demonstrated Leadership skills and team management.",
-      "Demonstrable ability to translate business needs into solution requirements and define those in a written format that allows engineering teams to align behind the product vision",
-      "Knowledge and experience of software development planning techniques, including Agile Scrum.",
-      "Understand all standard tools and methodologies concerning Business Analysis including processes, artifacts, and tools.",
-      "Strong analytical skills, systematic approach and self-reliant.",
-      "Ability to measure and report on the effectiveness of product iterations.",
-      "Excellent analytical and problem-solving skills, with a keen eye for detail and the ability to identify process inefficiencies and areas for improvement in diverse markets.",
-      "Strong project management skills, capable of handling multiple tasks simultaneously while meeting deadlines in various time zones.",
-      "Collaborative mindset with excellent interpersonal skills, promoting effective teamwork and relationship-building across cultures.",
-      "Adaptable and proactive, with a willingness to embrace new technologies and approaches to drive innovation and efficiency."
-    ],
-    "additional_information": {
-      "finance": [
-        "Competitive salary package",
-        "Share plan",
-        "Company performance bonuses",
-        "Value-based recognition awards",
-        "Referral bonus"
-      ],
-      "career_development": [
-        "Career coaching",
-        "Global career opportunities",
-        "Non-linear career paths",
-        "Internal development programmes for management and technical leadership"
-      ],
-      "learning": [
-        "Complex projects",
-        "Rotations",
-        "Internal tech communities",
-        "Training",
-        "Certifications",
-        "Coaching",
-        "Online learning platforms subscriptions",
-        "Pass-it-on sessions",
-        "Workshops",
-        "Conferences"
-      ],
-      "work_life_balance": [
-        "Hybrid work",
-        "Flexible working hours",
-        "Employee assistance programme"
-      ],
-      "health": [
-        "Global internal wellbeing programme",
-        "Access to wellbeing apps"
-      ],
-      "community": [
-        "Global internal tech communities",
-        "Hobby clubs and interest groups",
-        "Inclusion and diversity programmes",
-        "Events and celebrations"
-      ]
+    {
+        "position": "Student Applicant – Business & Systems Thinking Track",
+        "skills_required": [
+            "Business Logic",
+            "Stakeholder Collaboration",
+            "Scrum Mindset",
+            "Requirement Mapping"
+        ],
+        "location": "Cluj-Napoca, Romania",
+        "experience_required": 2,
+        "level": "Intermediate",
+        "referral": false,
+        "referral_code": null,
+        "company_description": "The system seeks students who can think across systems, articulate goals clearly, and translate needs into solution logic. Ideal for future entrepreneurs and analysts.",
+        "job_description": "This student shows potential in synthesizing problem spaces and communicating clear action steps. They are collaborative and oriented around user outcomes.",
+        "responsibilities": [
+            "Mapped problem-solving frameworks in projects.",
+            "Wrote structured requirement documents for group work.",
+            "Assumed scrum facilitator roles in school projects.",
+            "Documented research findings to support proposals.",
+            "Aligned user needs with digital prototype ideas."
+        ],
+        "qualifications": [
+            "Experience with group project organization.",
+            "Able to write user stories and feedback summaries.",
+            "Basic familiarity with agile thinking and timelines.",
+            "Effective communication across different roles.",
+            "Early exposure to product ideation or hackathons."
+        ],
+        "additional_information": {
+            "finance": [
+                "Entrepreneurship scholarship fund",
+                "Student idea pitch rewards",
+                "Global exchange bursaries"
+            ],
+            "career_development": [
+                "Product discovery mentoring",
+                "Leadership simulation programs",
+                "Cross-campus teamwork labs"
+            ],
+            "learning": [
+                "Workshops on agile tools",
+                "Journaling and retrospective techniques",
+                "Storytelling for solution design"
+            ],
+            "work_life_balance": [
+                "Time for ideation & feedback",
+                "Balance between structure and creativity"
+            ],
+            "health": [
+                "Self-reflection guidance",
+                "Team dynamic well-being support"
+            ],
+            "community": [
+                "Student startup networks",
+                "Young analyst circles",
+                "Women in business tech initiatives"
+            ]
+        },
+        "hiring_manager": "Daniela Paun (Business Systems Coordinator)",
+        "recruiter": "Livia Marti (Admission Advisor)"
     },
-    "hiring_manager": "Daniela Paun",
-    "recruiter": "Livia Marti"
-  },
-  {
-    "position": "Senior DevOps Engineer",
-    "skills_required": ["AWS", "Docker", "Kubernetes", "Terraform", "Azure DevOps", "Python", "Bash"],
-    "location": "Buenos Aires, Argentina",
-    "experience_required": 5,
-    "level": "Mid-Senior",
-    "referral": false,
-    "referral_code": null,
-    "company_description": "Technology is our how. And people are our why. For over two decades, we have been harnessing technology to drive meaningful change.\n\nBy combining world-class engineering, industry expertise and a people-centric mindset, we consult and partner with leading brands from various industries to create dynamic platforms and intelligent digital experiences that drive innovation and transform businesses.\n\nFrom prototype to real-world impact - be part of a global shift by doing work that matters.",
-    "job_description": "Application Management focuses on the end-to-end support of software applications throughout their lifecycle, from deployment and monitoring to ongoing maintenance and performance optimization, ensuring alignment with business goals and consistent value delivery. Within this space, DevOps practices add automation of routine operational tasks, CI/CD pipeline management, infrastructure as code, observability through logs and metrics, and the adoption of scalable and reliable system patterns. DevOps engineers in this domain serve as a key link between development and operations teams, enabling faster delivery cycles while upholding stability, performance, and security compliance.",
-    "responsibilities": [
-      "Design and manage CI/CD pipelines for ADF, Databricks notebooks, Spark jobs, and Power BI (via Azure Pipelines).",
-      "Automate provisioning and orchestration of data workflows (Databricks, ADF, Event Hubs, Spark).",
-      "Implement monitoring (Azure Monitor, Log Analytics) and cost tracking across pipelines.",
-      "Apply security controls: RBAC, Key Vaults, data encryption (Voltage), and secure deployment practices.",
-      "Partner with QA and engineering to support test environments and rollout readiness."
-    ],
-    "qualifications": [
-      "5+ years in DevOps roles, ideally within data & analytics environments.",
-      "Hands-on experience with Azure DevOps, Terraform, and scripting (Python).",
-      "Prior involvement in deploying large-scale ETL/data pipelines.",
-      "Familiarity with infrastructure-as-code and Databricks environments.",
-      "Strong problem-solving and troubleshooting abilities.",
-      "Excellent communication and teamwork skills."
-    ],
-    "additional_information": {
-      "finance": [
-        "Competitive salary package",
-        "Share plan",
-        "Company performance bonuses",
-        "Value-based recognition awards",
-        "Referral bonus"
-      ],
-      "career_development": [
-        "Career coaching",
-        "Global career opportunities",
-        "Non-linear career paths",
-        "Internal development programmes for management and technical leadership"
-      ],
-      "learning": [
-        "Complex projects",
-        "Rotations",
-        "Internal tech communities",
-        "Training",
-        "Certifications",
-        "Coaching",
-        "Online learning platforms subscriptions",
-        "Pass-it-on sessions",
-        "Workshops",
-        "Conferences"
-      ],
-      "work_life_balance": [
-        "Hybrid work",
-        "Flexible working hours",
-        "Employee assistance programme"
-      ],
-      "health": [
-        "Global internal wellbeing programme",
-        "Access to wellbeing apps"
-      ],
-      "community": [
-        "Global internal tech communities",
-        "Hobby clubs and interest groups",
-        "Inclusion and diversity programmes",
-        "Events and celebrations"
-      ]
+    {
+        "position": "Student Applicant – DevOps & Infrastructure Fundamentals",
+        "skills_required": [
+            "Infrastructure basics",
+            "CI/CD Concepts",
+            "Cloud Platforms",
+            "Linux",
+            "Python"
+        ],
+        "location": "Buenos Aires, Argentina",
+        "experience_required": 3,
+        "level": "Mid-High",
+        "referral": false,
+        "referral_code": null,
+        "company_description": "The competency-based program recognizes learners who thrive in systems thinking, automation, and building stable tech platforms to enable innovation.",
+        "job_description": "This student has built or simulated technical pipelines, practiced automation, and demonstrated a system-oriented approach to solving operational challenges.",
+        "responsibilities": [
+            "Set up simulated pipelines using GitHub Actions or scripts.",
+            "Used Terraform syntax in mock infrastructure assignments.",
+            "Deployed small-scale test environments with Docker.",
+            "Monitored metrics and logs for mini cloud deployments.",
+            "Documented system configurations with security in mind."
+        ],
+        "qualifications": [
+            "Basic experience with cloud computing tools.",
+            "Hands-on practice in scripting (Python/Bash).",
+            "Strong awareness of system reliability concepts.",
+            "Good team collaboration in technical contexts.",
+            "Portfolio with DevOps tools or IaC is valued."
+        ],
+        "additional_information": {
+            "finance": [
+                "Tech infrastructure grant awards",
+                "DevOps foundation merit badges",
+                "Scholarship for high system performance"
+            ],
+            "career_development": [
+                "Infrastructure bootcamps",
+                "Observability and logging workshops",
+                "Pathway to SRE programs"
+            ],
+            "learning": [
+                "Docker, K8s & CI/CD simulation labs",
+                "Hands-on Terraform or GitOps tasks",
+                "Tooling exposure in controlled sandbox"
+            ],
+            "work_life_balance": [
+                "Exploration-based projects",
+                "Learning with scheduled reset points"
+            ],
+            "health": [
+                "Stress-free build cycles",
+                "Mindful monitoring routines"
+            ],
+            "community": [
+                "Ops and DevOps communities",
+                "Tech foundations meetups",
+                "Digital infrastructure clubs"
+            ]
+        },
+        "hiring_manager": "Ernesto Szini (Tech Infra Lead)",
+        "recruiter": "Eric Braidi (Student Infra Coordinator)"
     },
-    "hiring_manager": "Ernesto Szini",
-    "recruiter": "Eric Braidi"
-  },
-  {
-    "position": "Senior Fullstack Developer (Java+React)",
-    "skills_required": [
-      "ReactJS",
-      "NodeJS",
-      "MongoDB",
-      "Java",
-      "Spring",
-      "Hibernate",
-      "Maven",
-      "Gradle",
-      "Git",
-      "Agile",
-      "CI/CD"
-    ],
-    "experience_required": 5,
-    "level": "Senior",
-    "location": "Cali, Valle del Cauca, Colombia",
-    "company_description": "Technology is our how. And people are our why. For over two decades, we have been harnessing technology to drive meaningful change.\n\nBy combining world-class engineering, industry expertise and a people-centric mindset, we consult and partner with leading brands from various industries to create dynamic platforms and intelligent digital experiences that drive innovation and transform businesses.\n\nFrom prototype to real-world impact - be part of a global shift by doing work that matters.",
-    "job_description": "Development is the largest discipline at Endava. Our developers design, build, and release software products in multiple programming languages, frameworks, and libraries. Always collaborating with cross-functional project teams, our developers are adaptable problem-solvers with a client-oriented mindset.",
-    "responsibilities": [
-      "Designs, estimates, and implements technical solutions for medium/high complexity applications.",
-      "Participates actively in all phases of the application development lifecycle.",
-      "Collaborates with various project stakeholders to provide support for clarifying requirements, processes, architecture, and priorities.",
-      "Recommends and promotes IT industry standards, tools, and practices (DevOps, etc.) to achieve well-engineered software products.",
-      "Proposes improvements and escalates risks/issues related to development activities.",
-      "Participates in the review of the work done by development team members.",
-      "Learns and applies new technologies, practices, and tools as appropriate to the project.",
-      "Participates in internal and external tech communities, events, etc.",
-      "Shares experience and knowledge gained from projects."
-    ],
-    "qualifications": [
-      "5+ years of experience in software development.",
-      "2+ years working as a full-stack developer using React.",
-      "Strong understanding of different common programming paradigms (OOP, Functional, etc.).",
-      "Strong familiarity with design/architectural patterns and clean code principles (e.g., SOLID, GoF, MVVM).",
-      "Proficient in relevant programming languages, frameworks, and tools such as Java, Javascript, Spring, Hibernate, React, Maven, Gradle.",
-      "Practical experience in platform-specific database systems and SQL.",
-      "Good understanding of version control systems like Git or similar.",
-      "Solid experience with testing and mocking frameworks.",
-      "Familiar with common communication protocols and standards such as HTTP, REST, JSON, TCP/IP, and others.",
-      "Experience with Agile methodologies (e.g., SCRUM, KANBAN).",
-      "Knowledge of CI/CD tools and practices.",
-      "Good problem-solving skills and analytical thinking.",
-      "Excellent communication and teamwork abilities.",
-      "Upper English proficiency."
-    ],
-    "additional_information": {
-      "finance": [
-        "Competitive salary package",
-        "Share plan",
-        "Company performance bonuses",
-        "Value-based recognition awards",
-        "Referral bonus"
-      ],
-      "career_development": [
-        "Career coaching",
-        "Global career opportunities",
-        "Non-linear career paths",
-        "Internal development programmes for management and technical leadership"
-      ],
-      "learning": [
-        "Complex projects",
-        "Rotations",
-        "Internal tech communities",
-        "Training",
-        "Certifications",
-        "Coaching",
-        "Online learning platforms subscriptions",
-        "Pass-it-on sessions",
-        "Workshops",
-        "Conferences"
-      ],
-      "work_life_balance": [
-        "Hybrid work",
-        "Flexible working hours",
-        "Employee assistance programme"
-      ],
-      "health": [
-        "Global internal wellbeing programme",
-        "Access to wellbeing apps"
-      ],
-      "community": [
-        "Global internal tech communities",
-        "Hobby clubs and interest groups",
-        "Inclusion and diversity programmes",
-        "Events and celebrations"
-      ]
+    {
+        "position": "Student Applicant – Fullstack Development Track",
+        "skills_required": [
+            "Java",
+            "ReactJS",
+            "MongoDB",
+            "Agile",
+            "SQL"
+        ],
+        "experience_required": 3,
+        "level": "Senior Learner",
+        "location": "Cali, Valle del Cauca, Colombia",
+        "company_description": "This admission profile reflects students who can build complete software products from backend to frontend, showing initiative and teamwork in digital innovation.",
+        "job_description": "This student’s portfolio showcases working applications, strong design patterns, and collaborative development contributions with consistent learning growth.",
+        "responsibilities": [
+            "Designed and implemented fullstack applications.",
+            "Contributed to collaborative school tech projects.",
+            "Applied version control using Git in group settings.",
+            "Followed agile-based workflows for school tech clubs.",
+            "Presented tech demos in local fairs or contests."
+        ],
+        "qualifications": [
+            "Proficient in Java and ReactJS.",
+            "Understanding of backend database design (MongoDB, SQL).",
+            "Experience with CI/CD and REST principles.",
+            "Ability to work across full development lifecycle.",
+            "Portfolio link or GitHub activity available."
+        ],
+        "additional_information": {
+            "finance": [
+                "Fullstack innovator awards",
+                "Hackathon project scholarships",
+                "Mentorship-backed funding"
+            ],
+            "career_development": [
+                "Frontend/backend focus areas",
+                "Tech leadership support tracks",
+                "Code quality and refactoring workshops"
+            ],
+            "learning": [
+                "Project-driven sprints",
+                "Structured component-based learning",
+                "Advanced software patterns"
+            ],
+            "work_life_balance": [
+                "Balance between solo and team work",
+                "Innovation hours"
+            ],
+            "health": [
+                "Cognitive endurance practices",
+                "Balanced workload design"
+            ],
+            "community": [
+                "Tech builder clubs",
+                "Fullstack student councils",
+                "Peer coding and feedback loops"
+            ]
+        },
+        "hiring_manager": "Sebastian Petrina (Software Track Head)",
+        "recruiter": "Agustina Chichizola (Admissions - Tech)"
     },
-    "hiring_manager": "Sebastian Petrina",
-    "recruiter": "Agustina Chichizola"
-  },
-  {
-    "position": "Junior Frontend Developer",
-    "skills_required": [
-      "ReactJS",
-      "Redux Toolkit",
-      "NextJS",
-      "JavaScript",
-      "Nodejs",
-      "ASP.NET"
-    ],
-    "experience_required": 1,
-    "level": "Junior",
-    "location": "Ho Chi Minh City, Vietnam",
-    "company_description": "Technology is our how. And people are our why. For over two decades, we have been harnessing technology to drive meaningful change.\n\nBy combining world-class engineering, industry expertise and a people-centric mindset, we consult and partner with leading brands from various industries to create dynamic platforms and intelligent digital experiences that drive innovation and transform businesses.\n\nFrom prototype to real-world impact - be part of a global shift by doing work that matters.",
-    "job_description": "Development is the largest discipline at Endava. Our developers design, build, and release software products in multiple programming languages, frameworks, and libraries. Always collaborating with cross-functional project teams, our developers are adaptable problem-solvers with a client-oriented mindset.",
-    "responsibilities": [
-      "Assist in the development and maintenance of user-facing features using ReactJS and modern front-end technologies.",
-      "Collaborate with designers, backend developers, and other stakeholders to implement responsive and accessible interfaces.",
-      "Learn and apply clean coding practices and participate in code reviews.",
-      "Write reusable components and maintain consistency across applications using Redux Toolkit and NextJS.",
-      "Support testing and debugging of frontend features.",
-      "Stay updated on emerging trends in front-end development and suggest improvements where applicable."
-    ],
-    "qualifications": [
-      "1+ year of experience in frontend development.",
-      "Basic understanding of JavaScript and modern frameworks, particularly ReactJS.",
-      "Experience with Redux Toolkit and/or state management tools.",
-      "Familiarity with NextJS, routing, and server-side rendering concepts.",
-      "Understanding of HTML5, CSS3, and responsive design principles.",
-      "Good communication and collaboration skills.",
-      "Willingness to learn and grow in a fast-paced development environment.",
-      "Experience working in Agile teams is a plus."
-    ],
-    "additional_information": {
-      "finance": [
-        "Competitive salary package",
-        "Share plan",
-        "Company performance bonuses",
-        "Value-based recognition awards",
-        "Referral bonus"
-      ],
-      "career_development": [
-        "Career coaching",
-        "Global career opportunities",
-        "Non-linear career paths",
-        "Internal development programmes for management and technical leadership"
-      ],
-      "learning": [
-        "Complex projects",
-        "Rotations",
-        "Internal tech communities",
-        "Training",
-        "Certifications",
-        "Coaching",
-        "Online learning platforms subscriptions",
-        "Pass-it-on sessions",
-        "Workshops",
-        "Conferences"
-      ],
-      "work_life_balance": [
-        "Hybrid work",
-        "Flexible working hours",
-        "Employee assistance programme"
-      ],
-      "health": [
-        "Global internal wellbeing programme",
-        "Access to wellbeing apps"
-      ],
-      "community": [
-        "Global internal tech communities",
-        "Hobby clubs and interest groups",
-        "Inclusion and diversity programmes",
-        "Events and celebrations"
-      ]
+    {
+        "position": "Student Applicant – Frontend Foundations Program",
+        "skills_required": [
+            "ReactJS",
+            "Redux Toolkit",
+            "NextJS",
+            "JavaScript"
+        ],
+        "experience_required": 1,
+        "level": "Junior",
+        "location": "Ho Chi Minh City, Vietnam",
+        "company_description": "This competency track welcomes early learners who show curiosity, creativity, and strong fundamentals in building user interfaces and interactive content.",
+        "job_description": "This student is exploring frontend technologies, has built basic UI applications, and is keen on user experience, performance, and modern frameworks.",
+        "responsibilities": [
+            "Developed frontend prototypes using ReactJS and CSS.",
+            "Practiced responsive design for multiple devices.",
+            "Explored Redux Toolkit for state handling.",
+            "Learned through project-based challenges.",
+            "Collaborated in beginner tech circles."
+        ],
+        "qualifications": [
+            "Basic experience in modern web development.",
+            "Strong interest in UI/UX principles.",
+            "Learning-oriented and adaptive to tech changes.",
+            "Intro projects using JavaScript frameworks.",
+            "Willingness to learn from feedback and mentors."
+        ],
+        "additional_information": {
+            "finance": [
+                "Rising frontend talent scholarships",
+                "Creative UI awards",
+                "Mentored program stipends"
+            ],
+            "career_development": [
+                "Beginner-to-intermediate bootcamps",
+                "Frontend specialization tracks",
+                "Design systems exposure"
+            ],
+            "learning": [
+                "Component-based learning kits",
+                "Project sprints",
+                "Cross-collaboration labs"
+            ],
+            "work_life_balance": [
+                "Paced curriculum",
+                "Time for experimentation"
+            ],
+            "health": [
+                "Eyestrain and ergonomics support",
+                "Wellness breaks in learning cycle"
+            ],
+            "community": [
+                "Beginner dev communities",
+                "UI/UX peer reviews",
+                "Coding for impact clubs"
+            ]
+        },
+        "hiring_manager": "Nhat Pham (Frontend Mentor)",
+        "recruiter": "Han Nguyen (Student Dev Onboarding)"
     },
-    "hiring_manager": "Nhat Pham",
-    "recruiter": "Han Nguyen"
-  },
-  {
-    "position": "Fullstack Cloud-Native Developer (Java + Kubernetes)",
-    "skills_required": [
-      "Java",
-      "Spring Boot",
-      "Kubernetes",
-      "Docker",
-      "Microservices",
-      "ReactJS",
-      "GitLab CI/CD",
-      "Kafka",
-      "MySQL",
-      "Helm",
-      "Linux",
-      "Bash Script"
-    ],
-    "location": "Ho Chi Minh City, Vietnam",
-    "date": "2025-07-13",
-    "experience_required": 3,
-    "level": "Mid-Senior",
-    "referral": true,
-    "referral_code": "REF1532F",
-    "company_description": "Technology is our how. And people are our why. For over two decades, we have been harnessing technology to drive meaningful change.\n\nBy combining world-class engineering, industry expertise and a people-centric mindset, we consult and partner with leading brands from various industries to create dynamic platforms and intelligent digital experiences that drive innovation and transform businesses.\n\nFrom prototype to real-world impact - be part of a global shift by doing work that matters.",
-    "job_description": "As a Fullstack Cloud-Native Developer, you will design and implement scalable, secure, and resilient microservices and backend services using Spring Boot and Kubernetes. You will collaborate across engineering and DevOps teams to build modern applications, integrate with CI/CD pipelines, and ensure production-readiness through observability and automation. Occasional frontend work with ReactJS may be required to deliver end-to-end features.",
-    "responsibilities": [
-      "Design and implement backend services and microservices using Java, Spring Boot, and related technologies.",
-      "Develop frontend components in ReactJS for fullstack delivery when needed.",
-      "Containerize applications using Docker and deploy via Kubernetes and Helm.",
-      "Build and maintain CI/CD pipelines using GitLab CI and Jenkins.",
-      "Implement secure coding practices and follow architectural guidelines for cloud-native systems.",
-      "Integrate Kafka-based event streaming where appropriate for scalable communication.",
-      "Ensure performance and reliability using observability tools, logs, and metrics.",
-      "Collaborate with cross-functional teams in Agile/Scrum methodology.",
-      "Participate in code reviews, technical discussions, and mentor junior team members."
-    ],
-    "qualifications": [
-      "3+ years of hands-on experience in backend development using Java and Spring Boot.",
-      "Solid understanding of containerization (Docker) and orchestration (Kubernetes, Helm).",
-      "Experience with microservices architecture and REST API development.",
-      "Working knowledge of frontend development using ReactJS, HTML/CSS/JavaScript.",
-      "Familiarity with Kafka or other event streaming platforms.",
-      "Proficiency in working with SQL databases such as MySQL or Oracle.",
-      "Experience with CI/CD tools such as GitLab CI or Jenkins.",
-      "Strong understanding of Linux environments and scripting (Bash).",
-      "Knowledge of security, monitoring, and scalable design principles.",
-      "Excellent communication and teamwork abilities in cross-functional setups."
-    ],
-    "additional_information": {
-      "finance": [
-        "Competitive salary package",
-        "Share plan",
-        "Company performance bonuses",
-        "Value-based recognition awards",
-        "Referral bonus"
-      ],
-      "career_development": [
-        "Career coaching",
-        "Global career opportunities",
-        "Non-linear career paths",
-        "Internal development programmes for management and technical leadership"
-      ],
-      "learning": [
-        "Complex projects",
-        "Rotations",
-        "Internal tech communities",
-        "Training",
-        "Certifications",
-        "Coaching",
-        "Online learning platforms subscriptions",
-        "Pass-it-on sessions",
-        "Workshops",
-        "Conferences"
-      ],
-      "work_life_balance": [
-        "Hybrid work",
-        "Flexible working hours",
-        "Employee assistance programme"
-      ],
-      "health": [
-        "Global internal wellbeing programme",
-        "Access to wellbeing apps"
-      ],
-      "community": [
-        "Global internal tech communities",
-        "Hobby clubs and interest groups",
-        "Inclusion and diversity programmes",
-        "Events and celebrations"
-      ]
+    {
+        "position": "Student Applicant – AI Engineering & Cloud Computing Track",
+        "skills_required": [
+            "Java",
+            "Python",
+            "Cloud Architecture",
+            "Microservices",
+            "Spring Boot",
+            "Kubernetes"
+        ],
+        "location": "Ho Chi Minh City, Vietnam",
+        "date": "2025-07-11",
+        "experience_required": 3,
+        "level": "Senior Learner",
+        "referral": true,
+        "referral_code": "HS2025DUNGAI",
+        "company_description": "The Smart Admission System evaluates students holistically based on competencies, portfolio projects, and technical growth. It recognizes practical experience in AI, system design, and scalable cloud applications.",
+        "job_description": "This student showcases advanced programming, microservices architecture understanding, and a strong background in AI-related projects. Their hands-on experience with backend systems, data pipelines, and REST API development reflects high competency in engineering-oriented learning.",
+        "responsibilities": [
+            "Developed full-stack and microservices-based applications in Java, Python, and Spring Boot.",
+            "Built face recognition and identity checking systems using YOLOv8, ArcFace, and Flask.",
+            "Implemented scalable backend systems using Docker, Kubernetes, and Helm.",
+            "Designed cloud-native pipelines with Kafka, Jenkins, GitLab CI/CD.",
+            "Built Android applications interacting with socket servers and MySQL databases.",
+            "Practiced MVC design, RESTful APIs, and secure system integration via Spring Security."
+        ],
+        "qualifications": [
+            "Bachelor's degree in Computer Science and Electronics (dual enrollment).",
+            "Certified Kubernetes Administrator (CKA), UX Design (Google), Data Science Specialization.",
+            "Hands-on experience with cloud infrastructure and DevOps pipelines.",
+            "Advanced knowledge in database systems, data warehousing, and ML concepts.",
+            "GitHub portfolio with production-level projects in AI and backend development."
+        ],
+        "additional_information": {
+            "finance": [
+                "Merit-based scholarship for AI and Cloud competencies",
+                "Innovation bonus for real-world deployments",
+                "Support for international competitions and conferences",
+                "Referral reward for peer recommendation"
+            ],
+            "career_development": [
+                "Mentorship with AI professionals",
+                "Access to global research internships",
+                "Pathways to tech entrepreneurship"
+            ],
+            "learning": [
+                "Advanced machine learning training tracks",
+                "Kubernetes and cloud-native development labs",
+                "Capstone projects in AI and software engineering"
+            ],
+            "work_life_balance": [
+                "Flexible learning programs",
+                "Hackathons and wellness-integrated study modules"
+            ],
+            "health": [
+                "AI-based cognitive well-being assistant",
+                "Mindfulness and focus programs for deep learners"
+            ],
+            "community": [
+                "AI research circles and innovation hubs",
+                "Tech for good initiatives",
+                "Open-source project clubs"
+            ]
+        },
+        "hiring_manager": "Nguyen Thanh Tam (Director of Engineering Admissions)",
+        "recruiter": "Tran Minh Huy (Technical Program Advisor)"
     },
-    "hiring_manager": "Nhat Pham",
-    "recruiter": "Han Nguyen"
-  }
+    {
+        "position": "Student Applicant – Fullstack Web Development Track",
+        "skills_required": [
+            "ReactJS",
+            "NextJS",
+            "NodeJS",
+            "MySQL",
+            "Socket.IO",
+            "REST API"
+        ],
+        "location": "Ho Chi Minh City, Vietnam",
+        "date": "2025-07-11",
+        "experience_required": 2,
+        "level": "Mid-Level Learner",
+        "referral": true,
+        "referral_code": "HS2025TRADEV",
+        "company_description": "The Smart Admission System identifies and supports learners with hands-on fullstack development experience, real-time systems, and strong UI/UX practices, enabling them to thrive in fast-paced academic technology environments.",
+        "job_description": "This student has built multiple functional web systems such as an e-commerce platform and a social network clone. Their projects involve both frontend and backend logic, state management, real-time communication, and cloud integration.",
+        "responsibilities": [
+            "Developed a Shopee-clone e-commerce site featuring authentication, profile, and cart systems.",
+            "Built a Discord-like social app with real-time messaging and video chat using Socket.IO and LiveKit.",
+            "Worked with state management libraries (Redux Toolkit, React Query) to structure data flow.",
+            "Customized CRM systems and IVR services in industry internship settings.",
+            "Integrated email APIs and chatbot-like communication into internal tools.",
+            "Practiced agile teamwork, participated in UI/UX enhancement and test automation."
+        ],
+        "qualifications": [
+            "Bachelor of Information Technology from UIT – VNU HCM.",
+            "Frontend: ReactJS, NextJS, TailwindCSS, React Hook Form, React Query.",
+            "Backend: NodeJS (ExpressJS), ASP.NET, Flask (Python).",
+            "Database: MySQL, MongoDB, SQL Server.",
+            "Hands-on experience with GitHub, GitLab, Bitbucket; strong understanding of REST APIs and real-time protocols."
+        ],
+        "additional_information": {
+            "finance": [
+                "Project-based scholarship incentives",
+                "Tech product innovation grants",
+                "Referral bonus and peer mentoring rewards"
+            ],
+            "career_development": [
+                "Tech leadership camps",
+                "Cross-functional coding challenges",
+                "Startup internship pathways"
+            ],
+            "learning": [
+                "Hands-on labs for fullstack workflows",
+                "Certification preparation (e.g., React, NodeJS)",
+                "Open-source contribution workshops"
+            ],
+            "work_life_balance": [
+                "Balance-focused project calendars",
+                "Dedicated design thinking days"
+            ],
+            "health": [
+                "Stress monitoring tools integrated in study platform",
+                "Support for deep-focus development sessions"
+            ],
+            "community": [
+                "Open dev communities",
+                "NextJS/React circles",
+                "Hackathon teams and idea incubators"
+            ]
+        },
+        "hiring_manager": "Pham Minh Tu (Academic Fullstack Program Lead)",
+        "recruiter": "Le Thu Thao (Tech Admissions Officer)"
+    }
 ]

@@ -45,7 +45,7 @@ class TestRecruitmentAPI(unittest.TestCase):
         log_info("Running post-test cleanup...")
         tester = cls()
         tester.admin_token = cls.admin_token
-        tester.postclean_candidate("Bui Thanh Tra", "Junior Frontend Developer")
+        tester.postclean_candidate("Bui Thanh Tra", "Student Applicant – Frontend Foundations Program")
 
     def preclean_candidate(self, candidate_name, position):
         """Clean up test data before each test."""
@@ -164,7 +164,7 @@ class TestRecruitmentAPI(unittest.TestCase):
 
         name = "Bui Thanh Tra"
         email = "kudung053@gmail.com"
-        position = "Junior Frontend Developer"
+        position = "Student Applicant – Frontend Foundations Program"
 
         try:
             self.preclean_candidate(name, position)
@@ -364,7 +364,7 @@ class TestRecruitmentAPI(unittest.TestCase):
 
         name = "Bui Thanh Tra"
         email = "kudung053@gmail.com"
-        position = "Junior Frontend Developer"
+        position = "Student Applicant – Frontend Foundations Program"
         unmatch_position = "Senior Fullstack Developer (Java+React)"
 
         self.preclean_candidate(name, position)
