@@ -1,579 +1,568 @@
 [
     {
-        "position": "Student Applicant – Data Science Program",
+        "position": "Chương trình Khoa học Dữ liệu",
         "skills_required": [
-            "Logical thinking",
-            "Data analysis",
+            "Toán học: 9.0",
+            "Tin học: 9.0",
+            "Tư duy logic",
+            "Phân tích dữ liệu",
             "Python",
-            "Statistics"
+            "Thống kê"
         ],
         "location": "Ho Chi Minh City, Vietnam",
         "date": "2025-05-09",
-        "experience_required": 3,
-        "level": "Outstanding",
+        "experience_required": 1,
+        "level": "Xuất sắc",
         "referral": true,
         "referral_code": "HS2025A1",
-        "company_description": "The Smart Admission System evaluates students holistically based on their competency profiles, academic performance, and learning portfolios to ensure fair and personalized admissions.",
-        "job_description": "This applicant demonstrates strong academic foundations, proficiency in data tools, and a passion for independent learning—ideal for pursuing a data science-focused curriculum.",
+        "company_description": "Hệ thống Tuyển sinh Thông minh tích hợp AI Agent nhằm đánh giá toàn diện năng lực học sinh thông qua hồ sơ học tập, dự án cá nhân, và tiềm năng phát triển trong lĩnh vực công nghệ. Hệ thống hỗ trợ quy trình tuyển chọn tự động, minh bạch, phù hợp với từng năng lực học sinh và hướng tới hành trình phát triển nghề nghiệp tương lai.",
+        "job_description": "Ứng viên này có hồ sơ phù hợp để tích hợp vào hệ thống tuyển sinh thông minh với sự hỗ trợ của AI Agent. Hồ sơ thể hiện tiềm năng phát triển công nghệ, khả năng tự học, và kinh nghiệm thực tiễn phù hợp với các vai trò trong chương trình đào tạo ứng dụng AI vào tuyển sinh dựa trên năng lực.",
         "responsibilities": [
-            "Participated in national and provincial academic competitions in STEM fields.",
-            "Built personal data projects using Python and data visualization tools.",
-            "Actively involved in academic clubs and peer knowledge sharing.",
-            "Authored personal essays and reflections showcasing learning growth.",
-            "Engaged in educational and social extracurricular activities.",
-            "Maintained consistent academic performance across subjects."
+            "Tham gia xây dựng và mô phỏng các bài toán ứng dụng AI trong tuyển sinh.",
+            "Thực hiện các dự án học tập cá nhân liên quan đến dữ liệu, mô hình hoá, và hệ thống gợi ý.",
+            "Chia sẻ kiến thức và tham gia nhóm học thuật về công nghệ và giáo dục.",
+            "Đóng góp ý tưởng cho các agent AI phân tích năng lực học sinh.",
+            "Tham gia hoạt động phát triển cộng đồng công nghệ trong nhà trường.",
+            "Duy trì thành tích học tập tốt và thể hiện sự phát triển năng lực liên tục."
         ],
         "qualifications": [
-            "Proficiency in Python, Power BI, and advanced Excel.",
-            "Strong analytical and presentation skills.",
-            "Demonstrated independent learning and research abilities.",
-            "Awards in math, informatics, and science competitions.",
-            "Personal learning projects or portfolios are a strong advantage."
+            "Có nền tảng về lập trình (Python/Java/JavaScript).",
+            "Kỹ năng phân tích dữ liệu, tư duy hệ thống và logic.",
+            "Hiểu biết cơ bản về AI, mô hình học máy hoặc quy trình phân tích học tập.",
+            "Tư duy học tập độc lập và chủ động khám phá công nghệ mới.",
+            "Có dự án cá nhân, portfolio hoặc giải thưởng học thuật là một lợi thế."
         ],
         "additional_information": {
-            "finance": [
-                "Full or partial merit-based scholarships",
-                "Achievement-based recognition awards",
-                "Support for academic-related expenses",
-                "Referral scholarship for recommending talented peers"
+            "tài_chính": [
+            "Học bổng bán phần hoặc toàn phần dựa trên thành tích",
+            "Giải thưởng ghi nhận học thuật",
+            "Hỗ trợ chi phí học tập liên quan",
+            "Học bổng giới thiệu bạn bè tài năng"
             ],
-            "career_development": [
-                "Personalized career coaching",
-                "Access to international scholarship programs",
-                "Research mentorship opportunities"
+            "phát_triển_nghề_nghiệp": [
+            "Hướng nghiệp cá nhân hóa",
+            "Truy cập chương trình học bổng quốc tế",
+            "Cố vấn nghiên cứu học thuật"
             ],
-            "learning": [
-                "Specialized learning tracks",
-                "Digital skills certifications",
-                "Academic summer camps",
-                "Expert workshops and seminars",
-                "High-potential student communities"
+            "học_tập": [
+            "Lộ trình học tập chuyên sâu",
+            "Chứng chỉ kỹ năng số",
+            "Trại hè học thuật",
+            "Hội thảo chuyên gia",
+            "Cộng đồng học sinh tiềm năng"
             ],
-            "work_life_balance": [
-                "Physical wellness and creative arts programs",
-                "Flexible academic paths based on competency"
+            "cân_bằng_học_tập_cuộc_sống": [
+            "Chương trình thể chất và nghệ thuật sáng tạo",
+            "Lộ trình học tập linh hoạt theo năng lực"
             ],
-            "health": [
-                "Mental wellbeing support initiatives",
-                "Access to study & wellbeing mobile apps"
+            "sức_khoẻ": [
+            "Chương trình hỗ trợ sức khỏe tinh thần",
+            "Ứng dụng di động hỗ trợ học tập và sức khỏe"
             ],
-            "community": [
-                "Academic and innovation clubs",
-                "Soft-skills and leadership clubs",
-                "Inclusion and diversity initiatives",
-                "National student exchange & networking events"
+            "cộng_đồng": [
+            "Câu lạc bộ học thuật và đổi mới",
+            "Câu lạc bộ kỹ năng mềm và lãnh đạo",
+            "Sáng kiến hòa nhập và đa dạng",
+            "Sự kiện giao lưu và trao đổi học sinh toàn quốc"
             ]
         },
-        "hiring_manager": "Nguyen Thanh Tam (Director of Admissions)",
-        "recruiter": "Tran Minh Huy (Student Counselor)"
+        "hiring_manager": "Nguyen Thanh Tam (Giám đốc Tuyển sinh)",
+        "recruiter": "Tran Minh Huy (Cố vấn Học sinh)"
     },
     {
-        "position": "Student Applicant – Cloud Computing Track",
+        "position": "Chương trình Điện toán Đám mây",
         "skills_required": [
-            "Cloud fundamentals",
-            "Azure Data Factory",
+            "Toán học: 8.5",
+            "Tin học: 9.0",
+            "Công nghệ: 8.5",
             "Python",
-            "SQL",
-            "Data Pipelines"
+            "SQL"
         ],
         "location": "Rosario, Santa Fe Province, Argentina",
         "date": "2025-05-09",
-        "experience_required": 3,
-        "level": "High Potential",
+        "experience_required": 1,
+        "level": "Tiềm năng cao",
         "referral": true,
         "referral_code": "HS2025CLOUDX",
-        "company_description": "The Smart Admission System recognizes students with demonstrated ability to engage in real-world technology challenges using modern infrastructure tools and data frameworks.",
-        "job_description": "This student applicant has a strong interest in cloud technologies and data engineering. Their portfolio includes structured data projects, collaborative research, and automation demos.",
+        "company_description": "Hệ thống Tuyển sinh Thông minh tích hợp AI Agent nhằm đánh giá toàn diện năng lực học sinh thông qua hồ sơ học tập, dự án cá nhân, và tiềm năng phát triển trong lĩnh vực công nghệ. Hệ thống hỗ trợ quy trình tuyển chọn tự động, minh bạch, phù hợp với từng năng lực học sinh và hướng tới hành trình phát triển nghề nghiệp tương lai.",
+        "job_description": "Ứng viên này có hồ sơ phù hợp để tích hợp vào hệ thống tuyển sinh thông minh với sự hỗ trợ của AI Agent. Hồ sơ thể hiện tiềm năng phát triển công nghệ, khả năng tự học, và kinh nghiệm thực tiễn phù hợp với các vai trò trong chương trình đào tạo ứng dụng AI vào tuyển sinh dựa trên năng lực.",
         "responsibilities": [
-            "Built end-to-end data pipeline simulations using cloud platforms.",
-            "Led peer learning workshops on Python and ETL logic.",
-            "Created cloud project dashboards using Azure services.",
-            "Participated in school innovation fairs and STEM hackathons.",
-            "Explored emerging tools such as Apache Spark and Kafka.",
-            "Practiced documentation and version control in team settings."
+            "Tham gia xây dựng và mô phỏng các bài toán ứng dụng AI trong tuyển sinh.",
+            "Thực hiện các dự án học tập cá nhân liên quan đến dữ liệu, mô hình hoá, và hệ thống gợi ý.",
+            "Chia sẻ kiến thức và tham gia nhóm học thuật về công nghệ và giáo dục.",
+            "Đóng góp ý tưởng cho các agent AI phân tích năng lực học sinh.",
+            "Tham gia hoạt động phát triển cộng đồng công nghệ trong nhà trường.",
+            "Duy trì thành tích học tập tốt và thể hiện sự phát triển năng lực liên tục."
         ],
         "qualifications": [
-            "Strong grasp of Azure tools and data flows.",
-            "Built custom ETL logic for sample datasets.",
-            "Experience integrating APIs and cloud storage services.",
-            "Proficient in Python scripting and SQL queries.",
-            "Portfolio includes cloud automation or notebook-based projects."
+            "Có nền tảng về lập trình (Python/Java/JavaScript).",
+            "Kỹ năng phân tích dữ liệu, tư duy hệ thống và logic.",
+            "Hiểu biết cơ bản về AI, mô hình học máy hoặc quy trình phân tích học tập.",
+            "Tư duy học tập độc lập và chủ động khám phá công nghệ mới.",
+            "Có dự án cá nhân, portfolio hoặc giải thưởng học thuật là một lợi thế."
         ],
         "additional_information": {
-            "finance": [
-                "Merit-based cloud innovation scholarships",
-                "Tech competition reward grants",
-                "Project-based bursary support",
-                "Referral-based bonus points"
+            "tài_chính": [
+            "Học bổng đổi mới cloud dựa trên thành tích",
+            "Giải thưởng cuộc thi công nghệ",
+            "Hỗ trợ học bổng theo dự án",
+            "Điểm cộng từ giới thiệu học sinh"
             ],
-            "career_development": [
-                "Cloud mentorship programs",
-                "Hackathon and research sponsorships",
-                "Hands-on bootcamp invitations"
+            "phát_triển_nghề_nghiệp": [
+            "Chương trình cố vấn cloud",
+            "Tài trợ nghiên cứu và hackathon",
+            "Tham gia các bootcamp thực hành"
             ],
-            "learning": [
-                "Workshops on cloud tools and DevOps basics",
-                "Intro to distributed computing and data modeling",
-                "Tech community participation (student forums)"
+            "học_tập": [
+            "Workshop công cụ cloud và DevOps cơ bản",
+            "Giới thiệu điện toán phân tán và mô hình dữ liệu",
+            "Tham gia cộng đồng công nghệ học sinh"
             ],
-            "work_life_balance": [
-                "Balance between tech + academic growth",
-                "Flexible project-based evaluation"
+            "cân_bằng_học_tập_cuộc_sống": [
+            "Cân bằng phát triển công nghệ và học thuật",
+            "Đánh giá linh hoạt theo dự án"
             ],
-            "health": [
-                "Self-paced study with built-in wellness breaks",
-                "Mindfulness content embedded in platform"
+            "sức_khoẻ": [
+            "Tự học với thời gian linh hoạt và nghỉ ngơi tích hợp",
+            "Nội dung thiền định tích hợp trong nền tảng"
             ],
-            "community": [
-                "Cloud explorers club",
-                "Peer coding groups",
-                "Tech-for-good innovation teams",
-                "Student-led seminars"
+            "cộng_đồng": [
+            "Câu lạc bộ khám phá cloud",
+            "Nhóm lập trình học sinh",
+            "Nhóm đổi mới công nghệ vì cộng đồng",
+            "Hội thảo chia sẻ học sinh"
             ]
         },
-        "hiring_manager": "Matias Salmeri (STEM Program Director)",
-        "recruiter": "Ximena Ramos (Academic Coordinator)"
+        "hiring_manager": "Matias Salmeri (Giám đốc Chương trình STEM)",
+        "recruiter": "Ximena Ramos (Điều phối viên Tuyển sinh)"
     },
     {
-        "position": "Student Applicant – Software Quality Track",
+        "position": "Chương trình Kiểm thử & Đảm bảo Chất lượng phần mềm",
         "skills_required": [
-            "Automation Thinking",
-            "Test Scripting",
-            "Java Basics",
-            "Analytical Skills"
+            "Tin học: 8.5",
+            "Toán học: 8.0",
+            "Công nghệ: 8.5",
+            "Tư duy kiểm thử tự động",
+            "Viết kịch bản kiểm thử",
+            "Kiến thức cơ bản về Java",
+            "Kỹ năng phân tích"
         ],
-        "experience_required": 2,
-        "level": "Mid-High",
         "location": "Cali, Valle del Cauca, Colombia",
         "date": null,
-        "company_description": "The Smart Admission Platform values students with a structured mindset and strong attention to detail, ideal for software validation and quality assurance domains.",
-        "job_description": "This applicant has demonstrated critical thinking in test-driven learning projects, using automation tools and structured reporting for self-evaluation and peer reviews.",
-        "responsibilities": [
-            "Created logic-based test cases for peer projects.",
-            "Simulated bug reporting via online testing tools.",
-            "Led QA roles in school-based software teams.",
-            "Documented test scenarios and reports independently.",
-            "Submitted reflection essays on problem analysis and solution breakdown."
-        ],
-        "qualifications": [
-            "Familiarity with automated testing concepts.",
-            "Strong communication and logical sequencing.",
-            "Understanding of SDLC basics and common bugs.",
-            "Introductory experience with Java/Python scripts.",
-            "ISTQB Junior badge or online certification is a plus."
-        ],
-        "additional_information": {
-            "finance": [
-                "Test Engineering merit awards",
-                "Project quality excellence scholarships",
-                "Referral bonus programs"
-            ],
-            "career_development": [
-                "Code review mentorship",
-                "Logic enhancement clubs",
-                "Exposure to testing competitions"
-            ],
-            "learning": [
-                "Mock QA challenges",
-                "Self-assessment modules",
-                "Structured error-based learning"
-            ],
-            "work_life_balance": [
-                "Project breaks for feedback loops",
-                "Mindful design sessions"
-            ],
-            "health": [
-                "Support for eye and screen fatigue",
-                "Balance-focused learning design"
-            ],
-            "community": [
-                "QA focus groups",
-                "Student testers community",
-                "Diversity in tech workshops"
-            ]
-        },
-        "hiring_manager": "Freddy Jimenez (Quality Lead)",
-        "recruiter": "Nuria Tambasco (Student Experience Officer)",
+        "experience_required": 0,
+        "level": "Trung bình - Khá",
         "referral": true,
-        "referral_code": "HS1026QA"
-    },
-    {
-        "position": "Student Applicant – Business & Systems Thinking Track",
-        "skills_required": [
-            "Business Logic",
-            "Stakeholder Collaboration",
-            "Scrum Mindset",
-            "Requirement Mapping"
-        ],
-        "location": "Cluj-Napoca, Romania",
-        "experience_required": 2,
-        "level": "Intermediate",
-        "referral": false,
-        "referral_code": null,
-        "company_description": "The system seeks students who can think across systems, articulate goals clearly, and translate needs into solution logic. Ideal for future entrepreneurs and analysts.",
-        "job_description": "This student shows potential in synthesizing problem spaces and communicating clear action steps. They are collaborative and oriented around user outcomes.",
+        "referral_code": "HS1026QA",
+        "company_description": "Hệ thống Tuyển sinh Thông minh tích hợp AI Agent nhằm đánh giá toàn diện năng lực học sinh thông qua hồ sơ học tập, dự án cá nhân, và tiềm năng phát triển trong lĩnh vực công nghệ. Hệ thống hỗ trợ quy trình tuyển chọn tự động, minh bạch, phù hợp với từng năng lực học sinh và hướng tới hành trình phát triển nghề nghiệp tương lai.",
+        "job_description": "Ứng viên này có hồ sơ phù hợp để tích hợp vào hệ thống tuyển sinh thông minh với sự hỗ trợ của AI Agent. Hồ sơ thể hiện tiềm năng phát triển công nghệ, khả năng tự học, và kinh nghiệm thực tiễn phù hợp với các vai trò trong chương trình đào tạo ứng dụng AI vào tuyển sinh dựa trên năng lực.",
         "responsibilities": [
-            "Mapped problem-solving frameworks in projects.",
-            "Wrote structured requirement documents for group work.",
-            "Assumed scrum facilitator roles in school projects.",
-            "Documented research findings to support proposals.",
-            "Aligned user needs with digital prototype ideas."
+            "Tham gia xây dựng và mô phỏng các bài toán ứng dụng AI trong tuyển sinh.",
+            "Thực hiện các dự án học tập cá nhân liên quan đến dữ liệu, mô hình hoá, và hệ thống gợi ý.",
+            "Chia sẻ kiến thức và tham gia nhóm học thuật về công nghệ và giáo dục.",
+            "Đóng góp ý tưởng cho các agent AI phân tích năng lực học sinh.",
+            "Tham gia hoạt động phát triển cộng đồng công nghệ trong nhà trường.",
+            "Duy trì thành tích học tập tốt và thể hiện sự phát triển năng lực liên tục."
         ],
         "qualifications": [
-            "Experience with group project organization.",
-            "Able to write user stories and feedback summaries.",
-            "Basic familiarity with agile thinking and timelines.",
-            "Effective communication across different roles.",
-            "Early exposure to product ideation or hackathons."
+            "Có nền tảng về lập trình (Python/Java/JavaScript).",
+            "Kỹ năng phân tích dữ liệu, tư duy hệ thống và logic.",
+            "Hiểu biết cơ bản về AI, mô hình học máy hoặc quy trình phân tích học tập.",
+            "Tư duy học tập độc lập và chủ động khám phá công nghệ mới.",
+            "Có dự án cá nhân, portfolio hoặc giải thưởng học thuật là một lợi thế."
         ],
         "additional_information": {
-            "finance": [
-                "Entrepreneurship scholarship fund",
-                "Student idea pitch rewards",
-                "Global exchange bursaries"
+            "tài_chính": [
+            "Học bổng kỹ sư kiểm thử xuất sắc",
+            "Học bổng chất lượng dự án",
+            "Chương trình thưởng giới thiệu"
             ],
-            "career_development": [
-                "Product discovery mentoring",
-                "Leadership simulation programs",
-                "Cross-campus teamwork labs"
+            "phát_triển_nghề_nghiệp": [
+            "Cố vấn đánh giá mã nguồn",
+            "Câu lạc bộ nâng cao tư duy logic",
+            "Tiếp cận các cuộc thi kiểm thử"
             ],
-            "learning": [
-                "Workshops on agile tools",
-                "Journaling and retrospective techniques",
-                "Storytelling for solution design"
+            "học_tập": [
+            "Thử thách QA mô phỏng",
+            "Module tự đánh giá chất lượng",
+            "Học từ lỗi có cấu trúc"
             ],
-            "work_life_balance": [
-                "Time for ideation & feedback",
-                "Balance between structure and creativity"
+            "cân_bằng_học_tập_cuộc_sống": [
+            "Thời gian nghỉ xen kẽ trong dự án",
+            "Thiết kế học tập mindful"
             ],
-            "health": [
-                "Self-reflection guidance",
-                "Team dynamic well-being support"
+            "sức_khoẻ": [
+            "Hỗ trợ thị lực và căng thẳng màn hình",
+            "Thiết kế học tập cân bằng"
             ],
-            "community": [
-                "Student startup networks",
-                "Young analyst circles",
-                "Women in business tech initiatives"
+            "cộng_đồng": [
+            "Nhóm QA học sinh",
+            "Cộng đồng kiểm thử học sinh",
+            "Hội thảo đa dạng giới trong công nghệ"
             ]
         },
-        "hiring_manager": "Daniela Paun (Business Systems Coordinator)",
-        "recruiter": "Livia Marti (Admission Advisor)"
+        "hiring_manager": "Freddy Jimenez (Trưởng nhóm Chất lượng)",
+        "recruiter": "Nuria Tambasco (Phụ trách Trải nghiệm Học sinh)"
     },
     {
-        "position": "Student Applicant – DevOps & Infrastructure Fundamentals",
+        "position": "Chương trình Lập trình Toàn diện Fullstack",
         "skills_required": [
-            "Infrastructure basics",
-            "CI/CD Concepts",
-            "Cloud Platforms",
-            "Linux",
-            "Python"
-        ],
-        "location": "Buenos Aires, Argentina",
-        "experience_required": 3,
-        "level": "Mid-High",
-        "referral": false,
-        "referral_code": null,
-        "company_description": "The competency-based program recognizes learners who thrive in systems thinking, automation, and building stable tech platforms to enable innovation.",
-        "job_description": "This student has built or simulated technical pipelines, practiced automation, and demonstrated a system-oriented approach to solving operational challenges.",
-        "responsibilities": [
-            "Set up simulated pipelines using GitHub Actions or scripts.",
-            "Used Terraform syntax in mock infrastructure assignments.",
-            "Deployed small-scale test environments with Docker.",
-            "Monitored metrics and logs for mini cloud deployments.",
-            "Documented system configurations with security in mind."
-        ],
-        "qualifications": [
-            "Basic experience with cloud computing tools.",
-            "Hands-on practice in scripting (Python/Bash).",
-            "Strong awareness of system reliability concepts.",
-            "Good team collaboration in technical contexts.",
-            "Portfolio with DevOps tools or IaC is valued."
-        ],
-        "additional_information": {
-            "finance": [
-                "Tech infrastructure grant awards",
-                "DevOps foundation merit badges",
-                "Scholarship for high system performance"
-            ],
-            "career_development": [
-                "Infrastructure bootcamps",
-                "Observability and logging workshops",
-                "Pathway to SRE programs"
-            ],
-            "learning": [
-                "Docker, K8s & CI/CD simulation labs",
-                "Hands-on Terraform or GitOps tasks",
-                "Tooling exposure in controlled sandbox"
-            ],
-            "work_life_balance": [
-                "Exploration-based projects",
-                "Learning with scheduled reset points"
-            ],
-            "health": [
-                "Stress-free build cycles",
-                "Mindful monitoring routines"
-            ],
-            "community": [
-                "Ops and DevOps communities",
-                "Tech foundations meetups",
-                "Digital infrastructure clubs"
-            ]
-        },
-        "hiring_manager": "Ernesto Szini (Tech Infra Lead)",
-        "recruiter": "Eric Braidi (Student Infra Coordinator)"
-    },
-    {
-        "position": "Student Applicant – Fullstack Development Track",
-        "skills_required": [
+            "Tin học: 9.0",
+            "Công nghệ: 8.5",
             "Java",
             "ReactJS",
             "MongoDB",
             "Agile",
             "SQL"
         ],
-        "experience_required": 3,
-        "level": "Senior Learner",
         "location": "Cali, Valle del Cauca, Colombia",
-        "company_description": "This admission profile reflects students who can build complete software products from backend to frontend, showing initiative and teamwork in digital innovation.",
-        "job_description": "This student’s portfolio showcases working applications, strong design patterns, and collaborative development contributions with consistent learning growth.",
-        "responsibilities": [
-            "Designed and implemented fullstack applications.",
-            "Contributed to collaborative school tech projects.",
-            "Applied version control using Git in group settings.",
-            "Followed agile-based workflows for school tech clubs.",
-            "Presented tech demos in local fairs or contests."
-        ],
-        "qualifications": [
-            "Proficient in Java and ReactJS.",
-            "Understanding of backend database design (MongoDB, SQL).",
-            "Experience with CI/CD and REST principles.",
-            "Ability to work across full development lifecycle.",
-            "Portfolio link or GitHub activity available."
-        ],
-        "additional_information": {
-            "finance": [
-                "Fullstack innovator awards",
-                "Hackathon project scholarships",
-                "Mentorship-backed funding"
-            ],
-            "career_development": [
-                "Frontend/backend focus areas",
-                "Tech leadership support tracks",
-                "Code quality and refactoring workshops"
-            ],
-            "learning": [
-                "Project-driven sprints",
-                "Structured component-based learning",
-                "Advanced software patterns"
-            ],
-            "work_life_balance": [
-                "Balance between solo and team work",
-                "Innovation hours"
-            ],
-            "health": [
-                "Cognitive endurance practices",
-                "Balanced workload design"
-            ],
-            "community": [
-                "Tech builder clubs",
-                "Fullstack student councils",
-                "Peer coding and feedback loops"
-            ]
-        },
-        "hiring_manager": "Sebastian Petrina (Software Track Head)",
-        "recruiter": "Agustina Chichizola (Admissions - Tech)"
-    },
-    {
-        "position": "Student Applicant – Frontend Foundations Program",
-        "skills_required": [
-            "ReactJS",
-            "Redux Toolkit",
-            "NextJS",
-            "JavaScript"
-        ],
         "experience_required": 1,
-        "level": "Junior",
-        "location": "Ho Chi Minh City, Vietnam",
-        "company_description": "This competency track welcomes early learners who show curiosity, creativity, and strong fundamentals in building user interfaces and interactive content.",
-        "job_description": "This student is exploring frontend technologies, has built basic UI applications, and is keen on user experience, performance, and modern frameworks.",
+        "level": "Học sinh nâng cao",
+        "company_description": "Hệ thống Tuyển sinh Thông minh tích hợp AI Agent nhằm đánh giá toàn diện năng lực học sinh thông qua hồ sơ học tập, dự án cá nhân, và tiềm năng phát triển trong lĩnh vực công nghệ. Hệ thống hỗ trợ quy trình tuyển chọn tự động, minh bạch, phù hợp với từng năng lực học sinh và hướng tới hành trình phát triển nghề nghiệp tương lai.",
+        "job_description": "Ứng viên này có hồ sơ phù hợp để tích hợp vào hệ thống tuyển sinh thông minh với sự hỗ trợ của AI Agent. Hồ sơ thể hiện tiềm năng phát triển công nghệ, khả năng tự học, và kinh nghiệm thực tiễn phù hợp với các vai trò trong chương trình đào tạo ứng dụng AI vào tuyển sinh dựa trên năng lực.",
         "responsibilities": [
-            "Developed frontend prototypes using ReactJS and CSS.",
-            "Practiced responsive design for multiple devices.",
-            "Explored Redux Toolkit for state handling.",
-            "Learned through project-based challenges.",
-            "Collaborated in beginner tech circles."
+            "Tham gia xây dựng và mô phỏng các bài toán ứng dụng AI trong tuyển sinh.",
+            "Thực hiện các dự án học tập cá nhân liên quan đến dữ liệu, mô hình hoá, và hệ thống gợi ý.",
+            "Chia sẻ kiến thức và tham gia nhóm học thuật về công nghệ và giáo dục.",
+            "Đóng góp ý tưởng cho các agent AI phân tích năng lực học sinh.",
+            "Tham gia hoạt động phát triển cộng đồng công nghệ trong nhà trường.",
+            "Duy trì thành tích học tập tốt và thể hiện sự phát triển năng lực liên tục."
         ],
         "qualifications": [
-            "Basic experience in modern web development.",
-            "Strong interest in UI/UX principles.",
-            "Learning-oriented and adaptive to tech changes.",
-            "Intro projects using JavaScript frameworks.",
-            "Willingness to learn from feedback and mentors."
+            "Có nền tảng về lập trình (Python/Java/JavaScript).",
+            "Kỹ năng phân tích dữ liệu, tư duy hệ thống và logic.",
+            "Hiểu biết cơ bản về AI, mô hình học máy hoặc quy trình phân tích học tập.",
+            "Tư duy học tập độc lập và chủ động khám phá công nghệ mới.",
+            "Có dự án cá nhân, portfolio hoặc giải thưởng học thuật là một lợi thế."
         ],
         "additional_information": {
-            "finance": [
-                "Rising frontend talent scholarships",
-                "Creative UI awards",
-                "Mentored program stipends"
+            "tài_chính": [
+            "Giải thưởng lập trình toàn diện",
+            "Học bổng dựa trên sản phẩm hackathon",
+            "Học bổng từ cố vấn cá nhân"
             ],
-            "career_development": [
-                "Beginner-to-intermediate bootcamps",
-                "Frontend specialization tracks",
-                "Design systems exposure"
+            "phát_triển_nghề_nghiệp": [
+            "Chuyên đề frontend/backend nâng cao",
+            "Hỗ trợ phát triển lãnh đạo công nghệ",
+            "Workshop cải thiện chất lượng mã"
             ],
-            "learning": [
-                "Component-based learning kits",
-                "Project sprints",
-                "Cross-collaboration labs"
+            "học_tập": [
+            "Sprint dự án thực tế",
+            "Học phần theo hướng component",
+            "Mẫu thiết kế phần mềm nâng cao"
             ],
-            "work_life_balance": [
-                "Paced curriculum",
-                "Time for experimentation"
+            "cân_bằng_học_tập_cuộc_sống": [
+            "Cân bằng làm việc nhóm và cá nhân",
+            "Thời gian sáng tạo công nghệ"
             ],
-            "health": [
-                "Eyestrain and ergonomics support",
-                "Wellness breaks in learning cycle"
+            "sức_khoẻ": [
+            "Luyện tập tư duy bền bỉ",
+            "Thiết kế tải học tập hợp lý"
             ],
-            "community": [
-                "Beginner dev communities",
-                "UI/UX peer reviews",
-                "Coding for impact clubs"
+            "cộng_đồng": [
+            "Câu lạc bộ xây dựng sản phẩm",
+            "Hội đồng học sinh fullstack",
+            "Vòng phản hồi kỹ năng lập trình"
             ]
         },
-        "hiring_manager": "Nhat Pham (Frontend Mentor)",
-        "recruiter": "Han Nguyen (Student Dev Onboarding)"
+        "hiring_manager": "Sebastian Petrina (Phụ trách Chương trình Lập trình)",
+        "recruiter": "Agustina Chichizola (Tuyển sinh – Công nghệ)"
     },
     {
-        "position": "Student Applicant – AI Engineering & Cloud Computing Track",
+        "position": "Chương trình Phân tích Dữ liệu & Kinh doanh",
         "skills_required": [
-            "Java",
-            "Python",
-            "Cloud Architecture",
-            "Microservices",
-            "Spring Boot",
-            "Kubernetes"
+            "Toán học: 8.5",
+            "Tin học: 8.0",
+            "Kinh tế học: 8.5",
+            "Excel nâng cao",
+            "Power BI",
+            "Thống kê mô tả"
         ],
-        "location": "Ho Chi Minh City, Vietnam",
-        "date": "2025-07-11",
-        "experience_required": 3,
-        "level": "Senior Learner",
+        "location": "Thành phố Hồ Chí Minh, Việt Nam",
+        "date": "2025-08-15",
+        "experience_required": 0,
+        "level": "Tiềm năng cao",
         "referral": true,
-        "referral_code": "HS2025DUNGAI",
-        "company_description": "The Smart Admission System evaluates students holistically based on competencies, portfolio projects, and technical growth. It recognizes practical experience in AI, system design, and scalable cloud applications.",
-        "job_description": "This student showcases advanced programming, microservices architecture understanding, and a strong background in AI-related projects. Their hands-on experience with backend systems, data pipelines, and REST API development reflects high competency in engineering-oriented learning.",
+        "referral_code": "HS2025BIDA",
+        "company_description": "Hệ thống Tuyển sinh Thông minh tích hợp AI Agent nhằm đánh giá toàn diện năng lực học sinh thông qua hồ sơ học tập, dự án cá nhân, và tiềm năng phát triển trong lĩnh vực công nghệ.",
+        "job_description": "Ứng viên thể hiện năng lực phân tích dữ liệu, tư duy giải quyết vấn đề và có hiểu biết căn bản về kinh doanh.",
         "responsibilities": [
-            "Developed full-stack and microservices-based applications in Java, Python, and Spring Boot.",
-            "Built face recognition and identity checking systems using YOLOv8, ArcFace, and Flask.",
-            "Implemented scalable backend systems using Docker, Kubernetes, and Helm.",
-            "Designed cloud-native pipelines with Kafka, Jenkins, GitLab CI/CD.",
-            "Built Android applications interacting with socket servers and MySQL databases.",
-            "Practiced MVC design, RESTful APIs, and secure system integration via Spring Security."
+            "Phân tích bảng dữ liệu kinh doanh bằng công cụ trực quan.",
+            "Thực hiện báo cáo thống kê mô tả, nhận diện xu hướng.",
+            "Làm việc nhóm mô phỏng vai trò phân tích kinh doanh.",
+            "Gợi ý giải pháp cải thiện hiệu quả kinh doanh học sinh qua dữ liệu."
         ],
         "qualifications": [
-            "Bachelor's degree in Computer Science and Electronics (dual enrollment).",
-            "Certified Kubernetes Administrator (CKA), UX Design (Google), Data Science Specialization.",
-            "Hands-on experience with cloud infrastructure and DevOps pipelines.",
-            "Advanced knowledge in database systems, data warehousing, and ML concepts.",
-            "GitHub portfolio with production-level projects in AI and backend development."
+            "Có khả năng sử dụng Excel, Google Sheets và các công cụ phân tích.",
+            "Hiểu khái niệm chỉ số hiệu suất (KPI), thống kê mô tả.",
+            "Có dự án phân tích dữ liệu thực tế là lợi thế.",
+            "Biết tư duy phản biện và trình bày trực quan."
         ],
         "additional_information": {
-            "finance": [
-                "Merit-based scholarship for AI and Cloud competencies",
-                "Innovation bonus for real-world deployments",
-                "Support for international competitions and conferences",
-                "Referral reward for peer recommendation"
+            "tài_chính": [
+            "Học bổng dành cho học sinh năng lực phân tích tốt",
+            "Thưởng theo dự án mô phỏng kinh doanh"
             ],
-            "career_development": [
-                "Mentorship with AI professionals",
-                "Access to global research internships",
-                "Pathways to tech entrepreneurship"
+            "phát_triển_nghề_nghiệp": [
+            "Cố vấn từ chuyên gia phân tích",
+            "Truy cập học bổng ngành quản trị và tài chính"
             ],
-            "learning": [
-                "Advanced machine learning training tracks",
-                "Kubernetes and cloud-native development labs",
-                "Capstone projects in AI and software engineering"
+            "học_tập": [
+            "Workshop kỹ năng trực quan hóa dữ liệu",
+            "Chứng chỉ phân tích cơ bản"
             ],
-            "work_life_balance": [
-                "Flexible learning programs",
-                "Hackathons and wellness-integrated study modules"
+            "cân_bằng_học_tập_cuộc_sống": [
+            "Dự án theo nhóm linh hoạt thời gian"
             ],
-            "health": [
-                "AI-based cognitive well-being assistant",
-                "Mindfulness and focus programs for deep learners"
+            "sức_khoẻ": [
+            "Tài nguyên học tập không gây căng thẳng"
             ],
-            "community": [
-                "AI research circles and innovation hubs",
-                "Tech for good initiatives",
-                "Open-source project clubs"
+            "cộng_đồng": [
+            "Câu lạc bộ mô phỏng kinh doanh học sinh"
             ]
         },
-        "hiring_manager": "Nguyen Thanh Tam (Director of Engineering Admissions)",
-        "recruiter": "Tran Minh Huy (Technical Program Advisor)"
+        "hiring_manager": "Trịnh Vĩnh Khang (Giám đốc Tuyển sinh Phân tích)",
+        "recruiter": "Nguyễn Thanh Hằng (Tư vấn viên học thuật)"
     },
     {
-        "position": "Student Applicant – Fullstack Web Development Track",
+        "position": "Chương trình Công nghệ Robot & IoT",
         "skills_required": [
-            "ReactJS",
-            "NextJS",
-            "NodeJS",
-            "MySQL",
-            "Socket.IO",
-            "REST API"
+            "Tin học: 9.0",
+            "Vật lý: 8.5",
+            "Công nghệ: 9.0",
+            "Arduino",
+            "Cảm biến",
+            "Điều khiển lập trình"
         ],
-        "location": "Ho Chi Minh City, Vietnam",
-        "date": "2025-07-11",
+        "location": "Đà Nẵng, Việt Nam",
+        "date": "2025-08-20",
+        "experience_required": 0,
+        "level": "Học sinh nâng cao",
+        "referral": false,
+        "company_description": "Chương trình tuyển sinh ứng dụng AI trong phát hiện năng lực công nghệ phần cứng và tích hợp hệ thống.",
+        "job_description": "Học sinh thể hiện khả năng thiết kế, lắp ráp, lập trình các hệ thống vật lý như robot, cảm biến.",
+        "responsibilities": [
+            "Lắp ráp hệ thống robot mô phỏng các bài toán giáo dục.",
+            "Thiết kế cảm biến và điều khiển qua microcontroller.",
+            "Lập trình điều khiển tương tác thực tế (IoT)."
+        ],
+        "qualifications": [
+            "Hiểu căn bản về vật lý điện tử và cấu trúc hệ thống.",
+            "Làm chủ Arduino hoặc Raspberry Pi là lợi thế.",
+            "Từng tham gia hội thi STEM hoặc Khoa học kỹ thuật."
+        ],
+        "additional_information": {
+            "tài_chính": [
+            "Học bổng STEM tích hợp",
+            "Tài trợ linh kiện dự án"
+            ],
+            "phát_triển_nghề_nghiệp": [
+            "Kết nối ngành kỹ thuật điều khiển – tự động hóa",
+            "Truy cập phòng lab kỹ thuật học sinh"
+            ],
+            "học_tập": [
+            "Trại hè chế tạo sáng tạo",
+            "Thực hành robot học đường"
+            ],
+            "cộng_đồng": [
+            "Câu lạc bộ sáng chế robot",
+            "Cộng đồng học sinh điện tử"
+            ]
+        },
+        "hiring_manager": "Lê Văn Trí (Phụ trách Tuyển sinh Kỹ thuật)",
+        "recruiter": "Nguyễn Nhật Huy (Điều phối viên kỹ năng thực hành)"
+    },
+    {
+        "position": "Chương trình Toán học Chuyên sâu",
+        "skills_required": [
+            "Toán học: 10.0",
+            "Vật lý: 8.5",
+            "Tư duy phản biện",
+            "Giải tích nâng cao",
+            "Tổ hợp – xác suất",
+            "Chứng minh toán học"
+        ],
+        "location": "Hà Nội, Việt Nam",
+        "date": "2025-08-25",
+        "experience_required": 0,
+        "level": "Xuất sắc",
+        "referral": true,
+        "referral_code": "HS2025MATH",
+        "company_description": "Chương trình dành cho học sinh có tố chất đặc biệt về tư duy logic và năng lực giải quyết vấn đề trừu tượng, được tuyển chọn với hỗ trợ phân tích AI năng lực toán học.",
+        "job_description": "Học sinh được kỳ vọng tham gia các dự án giải toán mở, thi học sinh giỏi, và ứng dụng tư duy toán vào khoa học dữ liệu, AI hoặc nghiên cứu mô hình.",
+        "responsibilities": [
+            "Giải toán nâng cao có tính ứng dụng hoặc học thuật.",
+            "Tham gia nhóm học sinh giỏi cấp tỉnh, quốc gia.",
+            "Viết luận toán, trình bày lập luận toán học rõ ràng.",
+            "Áp dụng toán vào mô hình dữ liệu, thuật toán tối ưu."
+        ],
+        "qualifications": [
+            "Điểm Toán học trung bình 9.5 trở lên trong 2 năm gần nhất.",
+            "Từng đạt giải hoặc tham gia kỳ thi Toán học cấp trường/trại hè học thuật.",
+            "Có đam mê học thuật thực sự về Toán và tư duy hệ thống."
+        ],
+        "additional_information": {
+            "tài_chính": ["Học bổng tài năng toán học", "Tài trợ tham dự kỳ thi toán quốc tế"],
+            "học_tập": ["Khóa học olympic toán", "Mentor học sinh giỏi quốc gia"],
+            "cộng_đồng": ["Câu lạc bộ Toán học nâng cao", "Trại hè tư duy logic"]
+        },
+        "hiring_manager": "TS. Nguyễn Hoài Nam (Cố vấn Học thuật Toán)",
+        "recruiter": "Trần Mỹ Hạnh (Điều phối viên Tuyển sinh Khoa học Cơ bản)"
+    },
+    {
+        "position": "Chương trình Truyền thông Sáng tạo & Nội dung số",
+        "skills_required": [
+            "Ngữ văn: 9.0",
+            "Tin học: 8.5",
+            "Media Design",
+            "Kỹ năng viết nội dung",
+            "Storytelling",
+            "Premiere / Canva / CapCut"
+        ],
+        "location": "TP. Hồ Chí Minh, Việt Nam",
+        "date": "2025-08-25",
+        "experience_required": 0,
+        "level": "Tiềm năng sáng tạo",
+        "referral": false,
+        "company_description": "Chương trình tuyển sinh dành cho học sinh có năng lực truyền đạt, tư duy sáng tạo và ứng dụng công nghệ vào kể chuyện, truyền thông, sản xuất nội dung.",
+        "job_description": "Học sinh được đào tạo bài bản về storytelling, thiết kế truyền thông số, sản xuất video ngắn, podcast và content cho nền tảng đa phương tiện.",
+        "responsibilities": [
+            "Xây dựng kịch bản nội dung truyền thông theo chủ đề xã hội.",
+            "Tạo video ngắn, poster, podcast bằng công cụ thiết kế cơ bản.",
+            "Tham gia chiến dịch truyền thông giáo dục.",
+            "Phối hợp nhóm thực hiện sản phẩm sáng tạo hàng tháng."
+        ],
+        "qualifications": [
+            "Có kỹ năng viết, trình bày rõ ràng, sáng tạo.",
+            "Sử dụng được công cụ cơ bản: Canva, CapCut, PowerPoint.",
+            "Tư duy hình ảnh, kể chuyện tốt, có portfolio là lợi thế."
+        ],
+        "additional_information": {
+            "tài_chính": ["Học bổng truyền thông sáng tạo", "Giải thưởng nội dung xã hội"],
+            "học_tập": ["Trại hè nội dung số", "Workshop viết luận & visual storytelling"],
+            "cộng_đồng": ["Câu lạc bộ podcast học sinh", "Studio sáng tạo truyền thông học đường"]
+        },
+        "hiring_manager": "Trịnh Thị Quỳnh (Phụ trách Tuyển sinh sáng tạo)",
+        "recruiter": "Ngô Thảo Vy (Mentor Nội dung & Kỹ năng truyền đạt)"
+    },
+    {
+        "position": "Chương trình Nghệ thuật Biểu diễn (Âm nhạc & Sân khấu)",
+        "skills_required": [
+            "Ngữ văn: 8.5",
+            "Âm nhạc: 9.0",
+            "Kỹ năng biểu cảm",
+            "Thanh nhạc / Nhạc cụ",
+            "Diễn xuất / Kịch nói",
+            "Thuyết trình / Làm chủ sân khấu"
+        ],
+        "location": "TP. Hồ Chí Minh, Việt Nam",
+        "date": "2025-08-28",
+        "experience_required": 1,
+        "level": "Tiềm năng biểu diễn",
+        "referral": false,
+        "company_description": "Chương trình tuyển sinh đặc biệt dành cho học sinh có năng lực biểu cảm, tư duy nghệ thuật và kỹ năng trình diễn, được đánh giá bởi AI Agent kết hợp huấn luyện viên chuyên môn.",
+        "job_description": "Học sinh được phát triển qua các module trình diễn, sân khấu hóa, thể hiện cảm xúc, sáng tạo tiết mục âm nhạc cá nhân hoặc nhóm và tham gia trình diễn tại các sự kiện học thuật nghệ thuật.",
+        "responsibilities": [
+            "Tập luyện và trình diễn tiết mục âm nhạc/sân khấu học đường.",
+            "Làm việc nhóm với học sinh nghệ thuật để xây dựng dự án biểu diễn.",
+            "Tham gia các sự kiện biểu diễn nội bộ hoặc công chúng.",
+            "Phối hợp cùng giáo viên mentor để nâng cao kỹ thuật & cảm xúc."
+        ],
+        "qualifications": [
+            "Có năng khiếu ca hát, diễn xuất hoặc chơi nhạc cụ.",
+            "Tư duy nghệ thuật và biểu đạt cảm xúc tốt.",
+            "Có tác phẩm/tiết mục biểu diễn hoặc giải thưởng là lợi thế.",
+            "Chủ động học tập, kỷ luật luyện tập và cộng tác nghệ thuật."
+        ],
+        "additional_information": {
+            "tài_chính": [
+            "Học bổng biểu diễn nghệ thuật",
+            "Tài trợ biểu diễn và học nhạc cụ"
+            ],
+            "phát_triển_nghề_nghiệp": [
+            "Mentor cá nhân về âm nhạc/sân khấu",
+            "Trại hè trình diễn nghệ thuật",
+            "Tư vấn hướng nghiệp ngành nghệ thuật & giải trí"
+            ],
+            "học_tập": [
+            "Workshop cảm xúc, giọng nói, sân khấu",
+            "Lớp học thanh nhạc, kỹ năng trình bày",
+            "Phối hợp sân khấu hóa nội dung giáo dục"
+            ],
+            "cân_bằng_học_tập_cuộc_sống": [
+            "Luyện tập vừa sức",
+            "Thời gian nghỉ ngơi tích hợp sau biểu diễn"
+            ],
+            "sức_khoẻ": [
+            "Hướng dẫn thở, xử lý hồi hộp khi trình diễn",
+            "Chăm sóc giọng nói và thể lực biểu diễn"
+            ],
+            "cộng_đồng": [
+            "Câu lạc bộ âm nhạc/sân khấu học sinh",
+            "Sự kiện biểu diễn định kỳ",
+            "Mạng lưới nghệ thuật học đường"
+            ]
+        },
+        "hiring_manager": "Phạm Anh Vũ (Giám đốc nghệ thuật học sinh)",
+        "recruiter": "Vũ Thảo My (Mentor biểu diễn sân khấu & âm nhạc)"
+    },
+    {
+        "position": "Chương trình Thiết kế Game, AR/VR & Thực tế ảo",
+        "skills_required": [
+            "Tin học: 9.0",
+            "Công nghệ: 9.0",
+            "Toán học: 8.5",
+            "Unity / Unreal Engine",
+            "Mô hình 3D / ARKit",
+            "Kịch bản tương tác"
+        ],
+        "location": "TP. Hồ Chí Minh, Việt Nam",
+        "date": "2025-08-30",
         "experience_required": 2,
-        "level": "Mid-Level Learner",
+        "level": "Tiềm năng sáng tạo số",
         "referral": true,
-        "referral_code": "HS2025TRADEV",
-        "company_description": "The Smart Admission System identifies and supports learners with hands-on fullstack development experience, real-time systems, and strong UI/UX practices, enabling them to thrive in fast-paced academic technology environments.",
-        "job_description": "This student has built multiple functional web systems such as an e-commerce platform and a social network clone. Their projects involve both frontend and backend logic, state management, real-time communication, and cloud integration.",
+        "referral_code": "HS2025XRGAME",
+        "company_description": "Chương trình đào tạo học sinh có tư duy lập trình, mỹ thuật số và khả năng sáng tạo nội dung trong không gian ảo, kết hợp các yếu tố kỹ thuật – nghệ thuật – trải nghiệm người dùng trong môi trường học đường.",
+        "job_description": "Học sinh được hướng dẫn phát triển ý tưởng game tương tác, xây dựng mô hình 3D, lập trình trò chơi, ứng dụng AR/VR và thuyết trình sản phẩm tại showcase học sinh.",
         "responsibilities": [
-            "Developed a Shopee-clone e-commerce site featuring authentication, profile, and cart systems.",
-            "Built a Discord-like social app with real-time messaging and video chat using Socket.IO and LiveKit.",
-            "Worked with state management libraries (Redux Toolkit, React Query) to structure data flow.",
-            "Customized CRM systems and IVR services in industry internship settings.",
-            "Integrated email APIs and chatbot-like communication into internal tools.",
-            "Practiced agile teamwork, participated in UI/UX enhancement and test automation."
+            "Phát triển prototype game đơn giản bằng công cụ như Unity, Unreal.",
+            "Thiết kế nhân vật, môi trường tương tác trong thế giới ảo.",
+            "Viết kịch bản trải nghiệm người dùng trong game hoặc mô phỏng thực tế ảo.",
+            "Tham gia triển lãm sản phẩm sáng tạo số học sinh."
         ],
         "qualifications": [
-            "Bachelor of Information Technology from UIT – VNU HCM.",
-            "Frontend: ReactJS, NextJS, TailwindCSS, React Hook Form, React Query.",
-            "Backend: NodeJS (ExpressJS), ASP.NET, Flask (Python).",
-            "Database: MySQL, MongoDB, SQL Server.",
-            "Hands-on experience with GitHub, GitLab, Bitbucket; strong understanding of REST APIs and real-time protocols."
+            "Có kiến thức cơ bản về lập trình và tư duy logic hình ảnh.",
+            "Đã từng thử làm game mini hoặc mô hình tương tác (Scratch, Roblox, Unity...).",
+            "Khả năng làm việc nhóm sáng tạo và kể chuyện bằng công nghệ.",
+            "Hiểu về UX/UI hoặc nghệ thuật số là lợi thế."
         ],
         "additional_information": {
-            "finance": [
-                "Project-based scholarship incentives",
-                "Tech product innovation grants",
-                "Referral bonus and peer mentoring rewards"
+            "tài_chính": [
+            "Học bổng sáng tạo công nghệ số",
+            "Tài trợ tham gia cuộc thi Game / XR"
             ],
-            "career_development": [
-                "Tech leadership camps",
-                "Cross-functional coding challenges",
-                "Startup internship pathways"
+            "phát_triển_nghề_nghiệp": [
+            "Hướng dẫn từ chuyên gia thiết kế trò chơi",
+            "Liên kết với startup AR/VR trong cộng đồng công nghệ học sinh"
             ],
-            "learning": [
-                "Hands-on labs for fullstack workflows",
-                "Certification preparation (e.g., React, NodeJS)",
-                "Open-source contribution workshops"
+            "học_tập": [
+            "Trại hè thiết kế Game và XR",
+            "Workshop dựng 3D, lập trình cảnh tương tác"
             ],
-            "work_life_balance": [
-                "Balance-focused project calendars",
-                "Dedicated design thinking days"
+            "cân_bằng_học_tập_cuộc_sống": [
+            "Lịch trình học theo dự án linh hoạt",
+            "Khuyến khích khám phá nghệ thuật số"
             ],
-            "health": [
-                "Stress monitoring tools integrated in study platform",
-                "Support for deep-focus development sessions"
+            "sức_khoẻ": [
+            "Hướng dẫn an toàn công nghệ XR",
+            "Chăm sóc mắt và tư thế khi làm việc với thiết bị ảo"
             ],
-            "community": [
-                "Open dev communities",
-                "NextJS/React circles",
-                "Hackathon teams and idea incubators"
+            "cộng_đồng": [
+            "Câu lạc bộ phát triển game học sinh",
+            "Studio sáng tạo số tại trường",
+            "Sân chơi AR/VR sáng tạo định kỳ"
             ]
         },
-        "hiring_manager": "Pham Minh Tu (Academic Fullstack Program Lead)",
-        "recruiter": "Le Thu Thao (Tech Admissions Officer)"
+        "hiring_manager": "Lương Hữu Phát (Trưởng nhóm tuyển sinh công nghệ tương tác)",
+        "recruiter": "Nguyễn Hải My (Mentor lập trình sáng tạo)"
     }
 ]
