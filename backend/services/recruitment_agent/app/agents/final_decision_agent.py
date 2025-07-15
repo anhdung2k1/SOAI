@@ -29,7 +29,7 @@ class FinalDecisionAgent(BaseAgent):
             return state
 
         if state.approved_candidate:
-            candidate_name = state.approved_candidate.get("name", "Candidate")
+            candidate_name = state.approved_candidate.get("name", "Thí sinh")
             logger.info(f"[FinalDecisionAgent] Candidate approved: {candidate_name}")
 
             recipient_email = (
@@ -38,29 +38,33 @@ class FinalDecisionAgent(BaseAgent):
                 or DEFAULT_CANDIDATE_EMAIL
             )
 
-            subject = "Your Application Has Been Approved"
+            subject = f"Thông báo trúng tuyển vào {state.matched_jd.get("position")}"
 
             # Use summary if available
             summary_block = (
-                f"\nHere’s a brief summary of your profile:\n\n{state.cv_summary.strip()}\n"
+                f"\n\nTóm tắt hồ sơ học sinh:\n{state.cv_summary.strip()}"
                 if state.cv_summary else ""
             )
+
             logger.debug(f"[FinalDecisionAgent] CV Summary: {state.cv_summary}")
             logger.debug(f"[FinalDecisionAgent] Sending email to {recipient_email}")
 
             body = f"""
-Dear {candidate_name},
+Kính gửi {candidate_name},
 
-We are excited to inform you that your application has passed our screening process.
-Your qualifications are an excellent match for the {state.matched_jd.get('position')} role at our company.{summary_block}
+Chúng tôi xin trân trọng thông báo rằng bạn đã chính thức được tuyển vào chương trình {state.matched_jd.get("position")}.
 
-Our hiring team was impressed by your CV, and we would like to proceed with the next steps in our hiring process.
+{summary_block}
 
-Please confirm your interest and availability for an interview by replying to this email.
+Chúng tôi đánh giá cao năng lực học tập, tinh thần cầu tiến và những thành tích nổi bật mà bạn đã thể hiện trong hồ sơ đăng ký.
+Chúc mừng bạn đã trở thành một thành viên mới của cộng đồng học sinh năng động và xuất sắc của nhà trường.
 
-Best regards,  
-Talent Acquisition Team
-"""
+Thông tin nhập học và hướng dẫn tiếp theo sẽ được gửi trong thời gian sớm nhất.
+
+Trân trọng,  
+Ban Tuyển sinh  
+
+""".strip()
 
             if recipient_email:
                 self.email_sender.send_email(recipient_email, subject, body)

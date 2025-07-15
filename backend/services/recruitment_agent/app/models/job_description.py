@@ -12,8 +12,6 @@ class JobDescription(DeclarativeBase):
     location = Column(String(50), default="Ho Chi Minh City, Vietnam", nullable=True)
     datetime = Column(Date(), default=date.today ,nullable=True)
 
-    # Experience and level
-    experience_required = Column(Integer, nullable=False)
     level = Column(String(50), default="Mid", nullable=True)
 
     # Referral fields

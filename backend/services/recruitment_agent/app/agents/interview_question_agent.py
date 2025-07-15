@@ -9,22 +9,6 @@ class InterviewQuestionAgent:
     def __init__(self, llm):
         self.llm = llm  # LLM service instance
 
-    def _get_question_count_by_level(self, level: str) -> int:
-        """Return number of questions based on candidate level using regex match."""
-        level_map = [
-            (r"intern", 5),
-            (r"fresher", 10),
-            (r"junior", 15),
-            (r"mid", 20),
-            (r"senior", 25),
-            (r"lead", 30),
-            (r"architect", 35),
-        ]
-        for pattern, count in level_map:
-            if re.search(pattern, level, re.IGNORECASE):
-                return count
-        return 20  # fallback
-
     def run(self, state: RecruitmentState) -> RecruitmentState:
         logger.debug("[InterviewQuestionAgent] Running question generation")
 
@@ -35,55 +19,46 @@ class InterviewQuestionAgent:
         parsed_cv = state.parsed_cv or {}
         matched_jd = state.matched_jd or {}
 
-        name = parsed_cv.get("name", "the candidate")
+        name = parsed_cv.get("name", "học sinh")
         skills = parsed_cv.get("skills", [])
-        experience = parsed_cv.get("experience_years", 0)
-        position = matched_jd.get("position", "this role")
-        level = matched_jd.get("level", "junior")
+        match_score = matched_jd.get("match_score", 80)  # fallback
 
-        question_count = self._get_question_count_by_level(level)
+        position = matched_jd.get("position", "chương trình chuyên")
+        subject = self._extract_major_subject(matched_jd.get("skills_required", []))
+
+        # Determine number of questions based on match_score
+        if match_score >= 90:
+            question_count = 8
+        elif match_score >= 75:
+            question_count = 6
+        else:
+            question_count = 4
 
         logger.debug(
-            f"[InterviewQuestionAgent] Candidate: {name}, Position: {position}, "
-            f"Level: {level}, Experience: {experience}, Skills: {skills}, "
-            f"Question Count: {question_count}"
+            f"[InterviewQuestionAgent] Candidate: {name}, Subject: {subject}, "
+            f"Match Score: {match_score}, Question Count: {question_count}"
         )
 
-        if state.cv_summary:
-            prompt = f"""
-You are a technical interviewer preparing to interview {name} for the position of "{position}" ({level} level).
-Here is a summary of the candidate's profile:
+        prompt = f"""
+You are a Vietnamese high school interviewer. Based on the candidate profile below, write {question_count} **Vietnamese-language** interview questions to assess the student's thinking and subject ability in the specialized program.
 
-{state.cv_summary}
+Each question should test:
+- Thinking ability
+- Basic subject understanding (related to {subject})
+- Application or creative thinking
 
-Generate {question_count} personalized interview questions. For each question, also provide at least one appropriate answer (can be multiple).
+Then, provide at least one sample answer for each question. Questions and answers must be written in Vietnamese, suitable for high school students applying to the program "{position}".
 
-Return the output strictly in JSON format:
+Respond in this JSON format only:
 [
   {{
-    "question": "Your question?",
-    "answers": ["Answer 1...", "Answer 2 (if any)..."]
+    "question": "Câu hỏi bằng tiếng Việt?",
+    "answers": ["Câu trả lời mẫu 1", "Câu trả lời mẫu 2 (nếu có)"]
   }},
   ...
 ]
-Do not include any explanation, formatting, or headers outside this JSON array.
-""".strip()
-        else:
-            prompt = f"""
-You are a technical interviewer preparing for an interview with {name}, who applied for the position of "{position}" ({level} level).
-They have {experience} years of experience and key skills: {', '.join(skills)}.
 
-Generate {question_count} relevant interview questions. For each question, also provide at least one possible answer (can be multiple).
-
-Return the output strictly in JSON format:
-[
-  {{
-    "question": "Your question?",
-    "answers": ["Answer 1...", "Answer 2 (if any)..."]
-  }},
-  ...
-]
-No explanation or formatting outside this JSON array.
+Return only valid JSON. No explanation or markdown.
 """.strip()
 
         logger.debug(f"[InterviewQuestionAgent] Prompt sent to LLM:\n{prompt}")
@@ -95,18 +70,19 @@ No explanation or formatting outside this JSON array.
             state.interview_questions = []
             return state
 
+        # === Normalize and extract content
         try:
             if isinstance(response, dict):
                 response = response.get("data", "")
+            elif hasattr(response, "json"):
+                response = response.json().get("data", "")
             elif hasattr(response, "text"):
-                try:
-                    response = response.json().get("data", "")
-                except Exception:
-                    response = response.text
+                response = response.text
             elif isinstance(response, bytes):
                 response = response.decode("utf-8")
             elif not isinstance(response, str):
                 response = str(response)
+
             response = response.strip()
             if not response:
                 raise ValueError("Empty response after normalization")
@@ -117,6 +93,7 @@ No explanation or formatting outside this JSON array.
 
         logger.debug(f"[InterviewQuestionAgent] Raw response:\n{response}")
 
+        # === Parse JSON Q&A
         qa_pairs = []
 
         try:
@@ -152,8 +129,17 @@ No explanation or formatting outside this JSON array.
             for ans in item['answers']:
                 logger.debug(f"    A: {ans}")
 
-        if len(qa_pairs) < 5:
-            logger.warning(f"[InterviewQuestionAgent] Only {len(qa_pairs)} questions generated (expected at least 5).")
+        if len(qa_pairs) < 3:
+            logger.warning(f"[InterviewQuestionAgent] Only {len(qa_pairs)} questions generated (expected at least 3).")
 
         state.interview_questions = qa_pairs
         return state
+
+    def _extract_major_subject(self, skills_required: list) -> str:
+        """Try to extract the main subject from skills_required"""
+        if not skills_required:
+            return ""
+        for s in skills_required:
+            if isinstance(s, str) and ":" in s:
+                return s.split(":")[0]
+        return skills_required[0] if isinstance(skills_required[0], str) else ""

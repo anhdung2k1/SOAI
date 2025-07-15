@@ -16,80 +16,110 @@ class MatchingAgent(BaseAgent):
             return state
 
         if not state.jd_list:
-            logger.warn(
-                "[MatchingAgent] No Job Descriptions (JDs) available for matching."
-            )
+            logger.warn("[MatchingAgent] No job descriptions available.")
             state.matched_jd = None
-            state.stop_pipeline = True
-            state.final_decision = "CV rejected: No available JDs."
             return state
 
         if not state.parsed_cv:
-            logger.warn("[MatchingAgent] No parsed CV data available.")
+            logger.warn("[MatchingAgent] No parsed CV found.")
             state.matched_jd = None
-            state.stop_pipeline = True
-            state.final_decision = "CV rejected: Invalid CV content."
             return state
 
         parsed_cv = state.parsed_cv
         cv_skills = parsed_cv.get("skills", [])
+
+        def parse_scores(skills):
+            scores = {}
+            for item in skills:
+                if ":" in item:
+                    try:
+                        key, value = item.split(":", 1)
+                        scores[key.strip()] = float(value.strip())
+                    except:
+                        continue
+            return scores
+
+        cv_scores = parse_scores(cv_skills)
 
         best_match = None
         best_score = 0.0
         best_jd_skills = []
 
         for jd in state.jd_list:
-            jd_skills_list = jd.get("skills_required", [])
-            if isinstance(jd_skills_list, str):
+            jd_skills_raw = jd.get("skills_required", [])
+            if isinstance(jd_skills_raw, str):
                 try:
-                    jd_skills_list = json.loads(jd_skills_list)
+                    jd_skills_raw = json.loads(jd_skills_raw)
                 except Exception as e:
-                    logger.error(f"[MatchingAgent] Error decoding JD skills JSON: {e}")
+                    logger.error(f"[MatchingAgent] Failed to parse JD skills: {e}")
                     continue
 
-            # Call LLM to evaluate match
-            prompt = self.build_prompt(cv_skills, jd_skills_list)
-            score = self.query_llm_score(prompt)
+            jd_scores = parse_scores(jd_skills_raw)
+
+            # === Subject-based score ===
+            total_pct = 0
+            count = 0
+            for subject, required_score in jd_scores.items():
+                actual = cv_scores.get(subject)
+                if actual is not None:
+                    pct = min((actual / required_score) * 100, 100)
+                    total_pct += pct
+                    count += 1
+
+            if count == 0:
+                continue
+
+            avg_pct = total_pct / count
+            score_subjects = min(avg_pct * 0.7, 70)
+
+            # === LLM score for extras ===
+            prompt = self.build_extras_prompt(parsed_cv)
+            score_extras_raw = self.query_llm_score(prompt)
+            score_extras = min(score_extras_raw * 0.3, 30)
+
+            total_score = round(score_subjects + score_extras, 2)
 
             logger.debug(
-                f"[MatchingAgent] Checking JD: {jd.get('position', '')} - LLM Score: {score:.2f}%"
+                f"[MatchingAgent] JD: {jd.get('position')} → total_score: {total_score:.2f}"
             )
 
-            if score > best_score:
-                best_score = score
+            if total_score > best_score:
+                best_score = total_score
                 best_match = jd
-                best_jd_skills = jd_skills_list
+                best_jd_skills = jd_skills_raw
 
-        logger.debug(f"[Matching Agent] best_match: {best_match}")
-        logger.debug(f"[Matching Agent] best_jd_skills: {best_jd_skills}")
-        if best_match and best_score >= MATCHING_SCORE_PERCENTAGE:
-            logger.info(
-                f"[MatchingAgent] Best match found: {best_match['position']} (Score: {best_score:.2f}%)"
-            )
+        if best_match:
             state.matched_jd = {
                 "position": best_match.get("position"),
                 "skills_required": best_jd_skills,
-                "experience_required": int(best_match.get("experience_required", 0)),
                 "level": best_match.get("level"),
+                "match_score": int(best_score)
             }
-            logger.debug(f"[Matching Agent] state.matched_jd: {state.matched_jd}")
-        else:
-            logger.error(
-                f"[MatchingAgent] No JD matched above {MATCHING_SCORE_PERCENTAGE}%. Best score: {best_score:.2f}%"
+            logger.info(
+                f"[MatchingAgent] Best match: {best_match.get('position')} (match_score={best_score:.2f}%)"
             )
+        else:
             state.matched_jd = None
-            state.stop_pipeline = True
-            state.final_decision = "CV rejected: No matching JD found."
+            logger.info("[MatchingAgent] No matched JD found.")
 
         return state
 
-    def build_prompt(self, cv_skills, jd_skills):
-        return (
-            f"The candidate has the following skills: {', '.join(cv_skills)}.\n"
-            f"The job requires the following skills: {', '.join(jd_skills)}.\n\n"
-            f"Please rate the candidate's skill match for this job on a scale from 0 to 100.\n"
-            f"Return only a number (e.g., 85). No explanation."
-        )
+    def build_extras_prompt(self, parsed_cv: dict) -> str:
+        return f"""
+You are evaluating a student's profile for high school admission. Based on the provided CV content, assess the candidate’s overall academic potential, including:
+
+- Academic awards or competitions
+- Personal projects or portfolio
+- Logical or critical thinking ability
+- Learning motivation and independence
+
+Score the candidate on a scale from 0 to 100 based on these aspects only (not subject scores).
+
+CV Content:
+{json.dumps(parsed_cv, ensure_ascii=False, indent=2)}
+
+Return only a single integer number, like: 85
+""".strip()
 
     def query_llm_score(self, prompt: str) -> float:
         try:
@@ -99,9 +129,7 @@ class MatchingAgent(BaseAgent):
             if content.startswith("```") and content.endswith("```"):
                 content = content.strip("```").strip()
 
-            return min(max(float(content), 0.0), 100.0)  # clamp between 0 and 100
+            return min(max(float(content), 0.0), 100.0)
         except Exception as e:
-            logger.error(
-                f"[MatchingAgent] LLM call failed or returned invalid score: {e}"
-            )
+            logger.error(f"[MatchingAgent] LLM score failed: {e}")
             return 0.0

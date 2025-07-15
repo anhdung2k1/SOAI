@@ -15,7 +15,6 @@ class CVApplication(DeclarativeBase):
     email = Column(String(255), nullable=True)  # Candidate email address
     skills = Column(Text, nullable=True)  # List of skills extracted from CV (stored as JSON string)
     matched_jd_skills = Column(Text, nullable=True) # JD Match with candidate's skills
-    matched_jd_experience_required = Column(Integer, nullable=True, default=0) # JD Match with candidate's years of experiences
-    experience_years = Column(Integer, nullable=True)  # Candidate's years of experience
     is_matched = Column(Boolean, default=False)  # Whether candidate matched any JD
     parsed_cv = Column(Text, nullable=True)  # Full parsed CV content as JSON string
+    matched_score = Column(Integer, nullable=False, default=0) # LLM Score after Matching

@@ -24,11 +24,10 @@ class JDFetcherAgent(BaseAgent):
             {
                 "position": jd.position,
                 "skills_required": jd.skills_required,
-                "experience_required": jd.experience_required,
                 "level": jd.level,
             }
             for jd in jd_records
-            if not (sig := (jd.position, jd.skills_required, jd.experience_required, jd.level)) in seen_signatures and not seen_signatures.add(sig)
+            if not (sig := (jd.position, jd.skills_required, jd.level)) in seen_signatures and not seen_signatures.add(sig)
         ]
 
         logger.info(f"[JDFetcherAgent] Found {len(jd_list)} JD(s) for position: {state.position_applied_for}")

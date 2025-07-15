@@ -150,14 +150,6 @@ class RecruitmentService:
                 if existing_cv:
                     return CVUploadResponseSchema(message="CV already uploaded and matched successfully. Pending approval.")
 
-                # Validate experience
-                candidate_experience = final_state.parsed_cv.get("experience_years", 0)
-                jd_experience_required = final_state.matched_jd.get("experience_required", 0)
-
-                if abs(candidate_experience - jd_experience_required) > 1:
-                    return CVUploadResponseSchema(
-                        message=f"{FinalDecisionStatus.REJECTED.value}: Candidate experience does not match JD requirements."
-                    )
 
                 # Save CV
                 cv_application = CVApplication(
@@ -167,8 +159,7 @@ class RecruitmentService:
                     status=FinalDecisionStatus.PENDING.value,
                     skills=json.dumps(final_state.parsed_cv.get("skills", [])),
                     matched_jd_skills=json.dumps(final_state.matched_jd.get("skills_required", [])),
-                    matched_jd_experience_required=jd_experience_required,
-                    experience_years=candidate_experience,
+                    matched_score=final_state.matched_jd.get("match_score", 0),
                     is_matched=True,
                     parsed_cv=json.dumps(final_state.parsed_cv)
                 )
@@ -184,7 +175,7 @@ class RecruitmentService:
             return CVUploadResponseSchema(message=f"Error processing CV: {str(e)}")
 
     def approve_cv(self, candidate_id: int, db: Session):
-        """Approve a pending CV based on skills and experience."""
+        """Approve a pending CV based on skills."""
         logger.info(f"Starting approval for candidate_id={candidate_id}.")
 
         cv_application = (
@@ -218,8 +209,7 @@ class RecruitmentService:
             parsed_cv=parsed_cv,
             matched_jd={
                 "position": cv_application.matched_position,
-                "skills_required": matched_jd_skills,
-                "experience_required": cv_application.matched_jd_experience_required,
+                "skills_required": matched_jd_skills
             },
             override_email=cv_application.email,
         )
@@ -269,9 +259,6 @@ class RecruitmentService:
                 if not jd_validated.skills_required:
                     logger.warn("JD skills_required is empty. Skipping this JD.")
                     continue
-                if not jd_validated.experience_required:
-                    logger.warn("JD experience_required is not set. Skipping this JD.")
-                    continue
                 if not jd_validated.level:
                     logger.warn("JD level is not set. Defaulting to 'Mid'.")
                     jd_validated.level = "Mid"
@@ -280,7 +267,6 @@ class RecruitmentService:
                     .filter_by(
                         position=jd_validated.position,
                         skills_required=normalized_skills,
-                        experience_required=jd_validated.experience_required,
                         level=jd_validated.level,
                     )
                     .first()
@@ -300,7 +286,6 @@ class RecruitmentService:
                     skills_required=normalized_skills,
                     location=jd_validated.location,
                     datetime=jd_validated.datetime,
-                    experience_required=jd_validated.experience_required,
                     level=jd_validated.level,
                     referral=jd_validated.referral,
                     referral_code=jd_validated.referral_code,
@@ -408,8 +393,7 @@ class RecruitmentService:
                 parsed_cv = json.loads(cv.parsed_cv)
                 matched_jd = {
                     "position": cv.matched_position,
-                    "skills_required": json.loads(cv.matched_jd_skills),
-                    "experience_required": cv.matched_jd_experience_required,
+                    "skills_required": json.loads(cv.matched_jd_skills)
                 }
 
                 logger.debug(f"Parsed CV: {parsed_cv}")
@@ -624,7 +608,6 @@ class RecruitmentService:
             "candidate_name": cv.candidate_name,
             "email": cv.email,
             "position": cv.matched_position,
-            "experience_years": cv.experience_years,
             "skills": json.loads(cv.skills),
             "jd_skills": json.loads(cv.matched_jd_skills),
             "status": cv.status,
@@ -755,8 +738,7 @@ class RecruitmentService:
         parsed_cv = json.loads(cv.parsed_cv)
         matched_jd = {
             "position": cv.matched_position,
-            "skills_required": json.loads(cv.matched_jd_skills),
-            "experience_required": cv.matched_jd_experience_required,
+            "skills_required": json.loads(cv.matched_jd_skills)
         }
 
         with interview_question_generation_duration_seconds.time():
@@ -874,7 +856,6 @@ class RecruitmentService:
         jd_text = f"""
 Position: {jd.position}
 Level: {jd.level}
-Experience Required: {jd.experience_required}
 
 Location: {jd.location}
 Referral Code: {jd.referral_code or ''}

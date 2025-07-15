@@ -1,632 +1,334 @@
 [
     {
-        "position": "Chương trình Khoa học Dữ liệu",
+        "position": "Tuyển sinh vào lớp 10 chuyên Toán",
         "skills_required": [
-            "Toán học: 9.0",
-            "Tin học: 9.0",
-            "Tư duy logic",
-            "Phân tích dữ liệu",
-            "Python",
-            "Thống kê"
-        ],
-        "location": "Ho Chi Minh City, Vietnam",
-        "date": "2025-05-09",
-        "experience_required": 1,
-        "level": "Xuất sắc",
-        "referral": true,
-        "referral_code": "HS2025A1",
-        "company_description": "Hệ thống Tuyển sinh Thông minh tích hợp AI Agent nhằm đánh giá toàn diện năng lực học sinh thông qua hồ sơ học tập, dự án cá nhân, và tiềm năng phát triển trong lĩnh vực công nghệ. Hệ thống hỗ trợ quy trình tuyển chọn tự động, minh bạch, phù hợp với từng năng lực học sinh và hướng tới hành trình phát triển nghề nghiệp tương lai.",
-        "job_description": "Ứng viên này có hồ sơ phù hợp để tích hợp vào hệ thống tuyển sinh thông minh với sự hỗ trợ của AI Agent. Hồ sơ thể hiện tiềm năng phát triển công nghệ, khả năng tự học, và kinh nghiệm thực tiễn phù hợp với các vai trò trong chương trình đào tạo ứng dụng AI vào tuyển sinh dựa trên năng lực.",
-        "responsibilities": [
-            "Tham gia xây dựng và mô phỏng các bài toán ứng dụng AI trong tuyển sinh.",
-            "Thực hiện các dự án học tập cá nhân liên quan đến dữ liệu, mô hình hoá, và hệ thống gợi ý.",
-            "Chia sẻ kiến thức và tham gia nhóm học thuật về công nghệ và giáo dục.",
-            "Đóng góp ý tưởng cho các agent AI phân tích năng lực học sinh.",
-            "Tham gia hoạt động phát triển cộng đồng công nghệ trong nhà trường.",
-            "Duy trì thành tích học tập tốt và thể hiện sự phát triển năng lực liên tục."
-        ],
-        "qualifications": [
-            "Có nền tảng về lập trình (Python/Java/JavaScript).",
-            "Kỹ năng phân tích dữ liệu, tư duy hệ thống và logic.",
-            "Hiểu biết cơ bản về AI, mô hình học máy hoặc quy trình phân tích học tập.",
-            "Tư duy học tập độc lập và chủ động khám phá công nghệ mới.",
-            "Có dự án cá nhân, portfolio hoặc giải thưởng học thuật là một lợi thế."
-        ],
-        "additional_information": {
-            "tài_chính": [
-            "Học bổng bán phần hoặc toàn phần dựa trên thành tích",
-            "Giải thưởng ghi nhận học thuật",
-            "Hỗ trợ chi phí học tập liên quan",
-            "Học bổng giới thiệu bạn bè tài năng"
-            ],
-            "phát_triển_nghề_nghiệp": [
-            "Hướng nghiệp cá nhân hóa",
-            "Truy cập chương trình học bổng quốc tế",
-            "Cố vấn nghiên cứu học thuật"
-            ],
-            "học_tập": [
-            "Lộ trình học tập chuyên sâu",
-            "Chứng chỉ kỹ năng số",
-            "Trại hè học thuật",
-            "Hội thảo chuyên gia",
-            "Cộng đồng học sinh tiềm năng"
-            ],
-            "cân_bằng_học_tập_cuộc_sống": [
-            "Chương trình thể chất và nghệ thuật sáng tạo",
-            "Lộ trình học tập linh hoạt theo năng lực"
-            ],
-            "sức_khoẻ": [
-            "Chương trình hỗ trợ sức khỏe tinh thần",
-            "Ứng dụng di động hỗ trợ học tập và sức khỏe"
-            ],
-            "cộng_đồng": [
-            "Câu lạc bộ học thuật và đổi mới",
-            "Câu lạc bộ kỹ năng mềm và lãnh đạo",
-            "Sáng kiến hòa nhập và đa dạng",
-            "Sự kiện giao lưu và trao đổi học sinh toàn quốc"
-            ]
-        },
-        "hiring_manager": "Nguyen Thanh Tam (Giám đốc Tuyển sinh)",
-        "recruiter": "Tran Minh Huy (Cố vấn Học sinh)"
-    },
-    {
-        "position": "Chương trình Điện toán Đám mây",
-        "skills_required": [
-            "Toán học: 8.5",
-            "Tin học: 9.0",
-            "Công nghệ: 8.5",
-            "Python",
-            "SQL"
-        ],
-        "location": "Rosario, Santa Fe Province, Argentina",
-        "date": "2025-05-09",
-        "experience_required": 1,
-        "level": "Tiềm năng cao",
-        "referral": true,
-        "referral_code": "HS2025CLOUDX",
-        "company_description": "Hệ thống Tuyển sinh Thông minh tích hợp AI Agent nhằm đánh giá toàn diện năng lực học sinh thông qua hồ sơ học tập, dự án cá nhân, và tiềm năng phát triển trong lĩnh vực công nghệ. Hệ thống hỗ trợ quy trình tuyển chọn tự động, minh bạch, phù hợp với từng năng lực học sinh và hướng tới hành trình phát triển nghề nghiệp tương lai.",
-        "job_description": "Ứng viên này có hồ sơ phù hợp để tích hợp vào hệ thống tuyển sinh thông minh với sự hỗ trợ của AI Agent. Hồ sơ thể hiện tiềm năng phát triển công nghệ, khả năng tự học, và kinh nghiệm thực tiễn phù hợp với các vai trò trong chương trình đào tạo ứng dụng AI vào tuyển sinh dựa trên năng lực.",
-        "responsibilities": [
-            "Tham gia xây dựng và mô phỏng các bài toán ứng dụng AI trong tuyển sinh.",
-            "Thực hiện các dự án học tập cá nhân liên quan đến dữ liệu, mô hình hoá, và hệ thống gợi ý.",
-            "Chia sẻ kiến thức và tham gia nhóm học thuật về công nghệ và giáo dục.",
-            "Đóng góp ý tưởng cho các agent AI phân tích năng lực học sinh.",
-            "Tham gia hoạt động phát triển cộng đồng công nghệ trong nhà trường.",
-            "Duy trì thành tích học tập tốt và thể hiện sự phát triển năng lực liên tục."
-        ],
-        "qualifications": [
-            "Có nền tảng về lập trình (Python/Java/JavaScript).",
-            "Kỹ năng phân tích dữ liệu, tư duy hệ thống và logic.",
-            "Hiểu biết cơ bản về AI, mô hình học máy hoặc quy trình phân tích học tập.",
-            "Tư duy học tập độc lập và chủ động khám phá công nghệ mới.",
-            "Có dự án cá nhân, portfolio hoặc giải thưởng học thuật là một lợi thế."
-        ],
-        "additional_information": {
-            "tài_chính": [
-            "Học bổng đổi mới cloud dựa trên thành tích",
-            "Giải thưởng cuộc thi công nghệ",
-            "Hỗ trợ học bổng theo dự án",
-            "Điểm cộng từ giới thiệu học sinh"
-            ],
-            "phát_triển_nghề_nghiệp": [
-            "Chương trình cố vấn cloud",
-            "Tài trợ nghiên cứu và hackathon",
-            "Tham gia các bootcamp thực hành"
-            ],
-            "học_tập": [
-            "Workshop công cụ cloud và DevOps cơ bản",
-            "Giới thiệu điện toán phân tán và mô hình dữ liệu",
-            "Tham gia cộng đồng công nghệ học sinh"
-            ],
-            "cân_bằng_học_tập_cuộc_sống": [
-            "Cân bằng phát triển công nghệ và học thuật",
-            "Đánh giá linh hoạt theo dự án"
-            ],
-            "sức_khoẻ": [
-            "Tự học với thời gian linh hoạt và nghỉ ngơi tích hợp",
-            "Nội dung thiền định tích hợp trong nền tảng"
-            ],
-            "cộng_đồng": [
-            "Câu lạc bộ khám phá cloud",
-            "Nhóm lập trình học sinh",
-            "Nhóm đổi mới công nghệ vì cộng đồng",
-            "Hội thảo chia sẻ học sinh"
-            ]
-        },
-        "hiring_manager": "Matias Salmeri (Giám đốc Chương trình STEM)",
-        "recruiter": "Ximena Ramos (Điều phối viên Tuyển sinh)"
-    },
-    {
-        "position": "Chương trình Kiểm thử & Đảm bảo Chất lượng phần mềm",
-        "skills_required": [
-            "Tin học: 8.5",
-            "Toán học: 8.0",
-            "Công nghệ: 8.5",
-            "Tư duy kiểm thử tự động",
-            "Viết kịch bản kiểm thử",
-            "Kiến thức cơ bản về Java",
-            "Kỹ năng phân tích"
-        ],
-        "location": "Cali, Valle del Cauca, Colombia",
-        "date": null,
-        "experience_required": 1,
-        "level": "Trung bình - Khá",
-        "referral": true,
-        "referral_code": "HS1026QA",
-        "company_description": "Hệ thống Tuyển sinh Thông minh tích hợp AI Agent nhằm đánh giá toàn diện năng lực học sinh thông qua hồ sơ học tập, dự án cá nhân, và tiềm năng phát triển trong lĩnh vực công nghệ. Hệ thống hỗ trợ quy trình tuyển chọn tự động, minh bạch, phù hợp với từng năng lực học sinh và hướng tới hành trình phát triển nghề nghiệp tương lai.",
-        "job_description": "Ứng viên này có hồ sơ phù hợp để tích hợp vào hệ thống tuyển sinh thông minh với sự hỗ trợ của AI Agent. Hồ sơ thể hiện tiềm năng phát triển công nghệ, khả năng tự học, và kinh nghiệm thực tiễn phù hợp với các vai trò trong chương trình đào tạo ứng dụng AI vào tuyển sinh dựa trên năng lực.",
-        "responsibilities": [
-            "Tham gia xây dựng và mô phỏng các bài toán ứng dụng AI trong tuyển sinh.",
-            "Thực hiện các dự án học tập cá nhân liên quan đến dữ liệu, mô hình hoá, và hệ thống gợi ý.",
-            "Chia sẻ kiến thức và tham gia nhóm học thuật về công nghệ và giáo dục.",
-            "Đóng góp ý tưởng cho các agent AI phân tích năng lực học sinh.",
-            "Tham gia hoạt động phát triển cộng đồng công nghệ trong nhà trường.",
-            "Duy trì thành tích học tập tốt và thể hiện sự phát triển năng lực liên tục."
-        ],
-        "qualifications": [
-            "Có nền tảng về lập trình (Python/Java/JavaScript).",
-            "Kỹ năng phân tích dữ liệu, tư duy hệ thống và logic.",
-            "Hiểu biết cơ bản về AI, mô hình học máy hoặc quy trình phân tích học tập.",
-            "Tư duy học tập độc lập và chủ động khám phá công nghệ mới.",
-            "Có dự án cá nhân, portfolio hoặc giải thưởng học thuật là một lợi thế."
-        ],
-        "additional_information": {
-            "tài_chính": [
-            "Học bổng kỹ sư kiểm thử xuất sắc",
-            "Học bổng chất lượng dự án",
-            "Chương trình thưởng giới thiệu"
-            ],
-            "phát_triển_nghề_nghiệp": [
-            "Cố vấn đánh giá mã nguồn",
-            "Câu lạc bộ nâng cao tư duy logic",
-            "Tiếp cận các cuộc thi kiểm thử"
-            ],
-            "học_tập": [
-            "Thử thách QA mô phỏng",
-            "Module tự đánh giá chất lượng",
-            "Học từ lỗi có cấu trúc"
-            ],
-            "cân_bằng_học_tập_cuộc_sống": [
-            "Thời gian nghỉ xen kẽ trong dự án",
-            "Thiết kế học tập mindful"
-            ],
-            "sức_khoẻ": [
-            "Hỗ trợ thị lực và căng thẳng màn hình",
-            "Thiết kế học tập cân bằng"
-            ],
-            "cộng_đồng": [
-            "Nhóm QA học sinh",
-            "Cộng đồng kiểm thử học sinh",
-            "Hội thảo đa dạng giới trong công nghệ"
-            ]
-        },
-        "hiring_manager": "Freddy Jimenez (Trưởng nhóm Chất lượng)",
-        "recruiter": "Nuria Tambasco (Phụ trách Trải nghiệm Học sinh)"
-    },
-    {
-        "position": "Chương trình Lập trình Toàn diện Fullstack",
-        "skills_required": [
-            "Tin học: 9.0",
-            "Công nghệ: 8.5",
-            "Java",
-            "ReactJS",
-            "MongoDB",
-            "Agile",
-            "SQL"
-        ],
-        "location": "Cali, Valle del Cauca, Colombia",
-        "experience_required": 1,
-        "level": "Học sinh nâng cao",
-        "company_description": "Hệ thống Tuyển sinh Thông minh tích hợp AI Agent nhằm đánh giá toàn diện năng lực học sinh thông qua hồ sơ học tập, dự án cá nhân, và tiềm năng phát triển trong lĩnh vực công nghệ. Hệ thống hỗ trợ quy trình tuyển chọn tự động, minh bạch, phù hợp với từng năng lực học sinh và hướng tới hành trình phát triển nghề nghiệp tương lai.",
-        "job_description": "Ứng viên này có hồ sơ phù hợp để tích hợp vào hệ thống tuyển sinh thông minh với sự hỗ trợ của AI Agent. Hồ sơ thể hiện tiềm năng phát triển công nghệ, khả năng tự học, và kinh nghiệm thực tiễn phù hợp với các vai trò trong chương trình đào tạo ứng dụng AI vào tuyển sinh dựa trên năng lực.",
-        "responsibilities": [
-            "Tham gia xây dựng và mô phỏng các bài toán ứng dụng AI trong tuyển sinh.",
-            "Thực hiện các dự án học tập cá nhân liên quan đến dữ liệu, mô hình hoá, và hệ thống gợi ý.",
-            "Chia sẻ kiến thức và tham gia nhóm học thuật về công nghệ và giáo dục.",
-            "Đóng góp ý tưởng cho các agent AI phân tích năng lực học sinh.",
-            "Tham gia hoạt động phát triển cộng đồng công nghệ trong nhà trường.",
-            "Duy trì thành tích học tập tốt và thể hiện sự phát triển năng lực liên tục."
-        ],
-        "qualifications": [
-            "Có nền tảng về lập trình (Python/Java/JavaScript).",
-            "Kỹ năng phân tích dữ liệu, tư duy hệ thống và logic.",
-            "Hiểu biết cơ bản về AI, mô hình học máy hoặc quy trình phân tích học tập.",
-            "Tư duy học tập độc lập và chủ động khám phá công nghệ mới.",
-            "Có dự án cá nhân, portfolio hoặc giải thưởng học thuật là một lợi thế."
-        ],
-        "additional_information": {
-            "tài_chính": [
-            "Giải thưởng lập trình toàn diện",
-            "Học bổng dựa trên sản phẩm hackathon",
-            "Học bổng từ cố vấn cá nhân"
-            ],
-            "phát_triển_nghề_nghiệp": [
-            "Chuyên đề frontend/backend nâng cao",
-            "Hỗ trợ phát triển lãnh đạo công nghệ",
-            "Workshop cải thiện chất lượng mã"
-            ],
-            "học_tập": [
-            "Sprint dự án thực tế",
-            "Học phần theo hướng component",
-            "Mẫu thiết kế phần mềm nâng cao"
-            ],
-            "cân_bằng_học_tập_cuộc_sống": [
-            "Cân bằng làm việc nhóm và cá nhân",
-            "Thời gian sáng tạo công nghệ"
-            ],
-            "sức_khoẻ": [
-            "Luyện tập tư duy bền bỉ",
-            "Thiết kế tải học tập hợp lý"
-            ],
-            "cộng_đồng": [
-            "Câu lạc bộ xây dựng sản phẩm",
-            "Hội đồng học sinh fullstack",
-            "Vòng phản hồi kỹ năng lập trình"
-            ]
-        },
-        "hiring_manager": "Sebastian Petrina (Phụ trách Chương trình Lập trình)",
-        "recruiter": "Agustina Chichizola (Tuyển sinh – Công nghệ)"
-    },
-    {
-        "position": "Chương trình Phân tích Dữ liệu & Kinh doanh",
-        "skills_required": [
-            "Toán học: 8.5",
-            "Tin học: 8.0",
-            "Kinh tế học: 8.5",
-            "Excel nâng cao",
-            "Power BI",
-            "Thống kê mô tả"
-        ],
-        "location": "Thành phố Hồ Chí Minh, Việt Nam",
-        "date": "2025-08-15",
-        "experience_required": 1,
-        "level": "Tiềm năng cao",
-        "referral": true,
-        "referral_code": "HS2025BIDA",
-        "company_description": "Hệ thống Tuyển sinh Thông minh tích hợp AI Agent nhằm đánh giá toàn diện năng lực học sinh thông qua hồ sơ học tập, dự án cá nhân, và tiềm năng phát triển trong lĩnh vực công nghệ.",
-        "job_description": "Ứng viên thể hiện năng lực phân tích dữ liệu, tư duy giải quyết vấn đề và có hiểu biết căn bản về kinh doanh.",
-        "responsibilities": [
-            "Phân tích bảng dữ liệu kinh doanh bằng công cụ trực quan.",
-            "Thực hiện báo cáo thống kê mô tả, nhận diện xu hướng.",
-            "Làm việc nhóm mô phỏng vai trò phân tích kinh doanh.",
-            "Gợi ý giải pháp cải thiện hiệu quả kinh doanh học sinh qua dữ liệu."
-        ],
-        "qualifications": [
-            "Có khả năng sử dụng Excel, Google Sheets và các công cụ phân tích.",
-            "Hiểu khái niệm chỉ số hiệu suất (KPI), thống kê mô tả.",
-            "Có dự án phân tích dữ liệu thực tế là lợi thế.",
-            "Biết tư duy phản biện và trình bày trực quan."
-        ],
-        "additional_information": {
-            "tài_chính": [
-            "Học bổng dành cho học sinh năng lực phân tích tốt",
-            "Thưởng theo dự án mô phỏng kinh doanh"
-            ],
-            "phát_triển_nghề_nghiệp": [
-            "Cố vấn từ chuyên gia phân tích",
-            "Truy cập học bổng ngành quản trị và tài chính"
-            ],
-            "học_tập": [
-            "Workshop kỹ năng trực quan hóa dữ liệu",
-            "Chứng chỉ phân tích cơ bản"
-            ],
-            "cân_bằng_học_tập_cuộc_sống": [
-            "Dự án theo nhóm linh hoạt thời gian"
-            ],
-            "sức_khoẻ": [
-            "Tài nguyên học tập không gây căng thẳng"
-            ],
-            "cộng_đồng": [
-            "Câu lạc bộ mô phỏng kinh doanh học sinh"
-            ]
-        },
-        "hiring_manager": "Trịnh Vĩnh Khang (Giám đốc Tuyển sinh Phân tích)",
-        "recruiter": "Nguyễn Thanh Hằng (Tư vấn viên học thuật)"
-    },
-    {
-        "position": "Chương trình Công nghệ Robot & IoT",
-        "skills_required": [
-            "Tin học: 9.0",
+            "Toán học: 9.5",
             "Vật lý: 8.5",
-            "Công nghệ: 9.0",
-            "Arduino",
-            "Cảm biến",
-            "Điều khiển lập trình"
+            "Ngữ văn: 7.5"
         ],
-        "location": "Đà Nẵng, Việt Nam",
-        "date": "2025-08-20",
-        "experience_required": 1,
-        "level": "Học sinh nâng cao",
+        "location": "Trường THPT Chuyên Lê Hồng Phong, TP. Hồ Chí Minh",
+        "date": "2025-06-10",
+        "level": "Giỏi",
         "referral": false,
-        "company_description": "Chương trình tuyển sinh ứng dụng AI trong phát hiện năng lực công nghệ phần cứng và tích hợp hệ thống.",
-        "job_description": "Học sinh thể hiện khả năng thiết kế, lắp ráp, lập trình các hệ thống vật lý như robot, cảm biến.",
+        "referral_code": null,
+        "company_description": "Chương trình chuyên Toán dành cho học sinh có năng khiếu và đam mê nổi bật trong lĩnh vực Toán học. Mục tiêu của chương trình là phát triển tư duy logic, khả năng giải quyết vấn đề và chuẩn bị cho học sinh tham gia các kỳ thi học thuật nâng cao.",
+        "job_description": "Học sinh trúng tuyển sẽ tham gia chương trình học chuyên sâu về Toán học, được tăng cường rèn luyện kỹ năng giải toán nâng cao, tư duy phân tích và được khuyến khích tham gia các kỳ thi học sinh giỏi cấp quận, thành phố và quốc gia.",
         "responsibilities": [
-            "Lắp ráp hệ thống robot mô phỏng các bài toán giáo dục.",
-            "Thiết kế cảm biến và điều khiển qua microcontroller.",
-            "Lập trình điều khiển tương tác thực tế (IoT)."
+            "Học các chuyên đề Toán nâng cao theo định hướng chuyên sâu.",
+            "Thực hành giải toán theo nhóm và cá nhân.",
+            "Tham gia các kỳ thi học sinh giỏi, cuộc thi sáng tạo Toán học.",
+            "Tham dự chuyên đề, buổi thảo luận học thuật về Toán."
         ],
         "qualifications": [
-            "Hiểu căn bản về vật lý điện tử và cấu trúc hệ thống.",
-            "Làm chủ Arduino hoặc Raspberry Pi là lợi thế.",
-            "Từng tham gia hội thi STEM hoặc Khoa học kỹ thuật."
+            "Học sinh hoàn thành chương trình THCS với học lực Giỏi.",
+            "Điểm trung bình môn Toán từ 9.5 trở lên trong 2 năm gần nhất.",
+            "Ưu tiên học sinh từng đạt giải trong các kỳ thi Toán học.",
+            "Có tinh thần học hỏi, đam mê với Toán học và khả năng tư duy tốt."
         ],
         "additional_information": {
             "tài_chính": [
-            "Học bổng STEM tích hợp",
-            "Tài trợ linh kiện dự án"
+                "Học bổng chuyên Toán theo kết quả đầu vào",
+                "Hỗ trợ chi phí ôn luyện chuyên đề"
             ],
             "phát_triển_nghề_nghiệp": [
-            "Kết nối ngành kỹ thuật điều khiển – tự động hóa",
-            "Truy cập phòng lab kỹ thuật học sinh"
+                "Định hướng chuyên ngành Khoa học – Kỹ thuật",
+                "Kết nối với giáo viên và học sinh giỏi các khóa trước"
             ],
             "học_tập": [
-            "Trại hè chế tạo sáng tạo",
-            "Thực hành robot học đường"
+                "Chuyên đề Giải tích – Đại số – Tổ hợp nâng cao",
+                "Trại hè Toán học, hội thảo chuyên đề"
+            ],
+            "cân_bằng_học_tập_cuộc_sống": [
+                "Lịch học được thiết kế cân bằng giữa học và nghỉ",
+                "Tổ chức hoạt động ngoại khóa theo nhóm lớp"
+            ],
+            "sức_khoẻ": [
+                "Chăm sóc học đường định kỳ",
+                "Tư vấn tâm lý học sinh"
             ],
             "cộng_đồng": [
-            "Câu lạc bộ sáng chế robot",
-            "Cộng đồng học sinh điện tử"
+                "Câu lạc bộ Toán học học sinh",
+                "Diễn đàn học tập chuyên Toán",
+                "Hoạt động giao lưu với các trường chuyên khác"
             ]
         },
-        "hiring_manager": "Lê Văn Trí (Phụ trách Tuyển sinh Kỹ thuật)",
-        "recruiter": "Nguyễn Nhật Huy (Điều phối viên kỹ năng thực hành)"
+        "hiring_manager": "Nguyễn Thành Công (Tổ trưởng Toán)",
+        "recruiter": "Lê Thanh Hà (Phụ trách tuyển sinh chuyên Toán)"
     },
     {
-        "position": "Chương trình Toán học Chuyên sâu",
-        "skills_required": [
-            "Toán học: 10.0",
-            "Vật lý: 8.5",
-            "Tư duy phản biện",
-            "Giải tích nâng cao",
-            "Tổ hợp – xác suất",
-            "Chứng minh toán học"
-        ],
-        "location": "Hà Nội, Việt Nam",
-        "date": "2025-08-25",
-        "experience_required": 1,
-        "level": "Xuất sắc",
-        "referral": true,
-        "referral_code": "HS2025MATH",
-        "company_description": "Chương trình dành cho học sinh có tố chất đặc biệt về tư duy logic và năng lực giải quyết vấn đề trừu tượng, được tuyển chọn với hỗ trợ phân tích AI năng lực toán học.",
-        "job_description": "Học sinh được kỳ vọng tham gia các dự án giải toán mở, thi học sinh giỏi, và ứng dụng tư duy toán vào khoa học dữ liệu, AI hoặc nghiên cứu mô hình.",
-        "responsibilities": [
-            "Giải toán nâng cao có tính ứng dụng hoặc học thuật.",
-            "Tham gia nhóm học sinh giỏi cấp tỉnh, quốc gia.",
-            "Viết luận toán, trình bày lập luận toán học rõ ràng.",
-            "Áp dụng toán vào mô hình dữ liệu, thuật toán tối ưu."
-        ],
-        "qualifications": [
-            "Điểm Toán học trung bình 9.5 trở lên trong 2 năm gần nhất.",
-            "Từng đạt giải hoặc tham gia kỳ thi Toán học cấp trường/trại hè học thuật.",
-            "Có đam mê học thuật thực sự về Toán và tư duy hệ thống."
-        ],
-        "additional_information": {
-            "tài_chính": ["Học bổng tài năng toán học", "Tài trợ tham dự kỳ thi toán quốc tế"],
-            "học_tập": ["Khóa học olympic toán", "Mentor học sinh giỏi quốc gia"],
-            "cộng_đồng": ["Câu lạc bộ Toán học nâng cao", "Trại hè tư duy logic"]
-        },
-        "hiring_manager": "TS. Nguyễn Hoài Nam (Cố vấn Học thuật Toán)",
-        "recruiter": "Trần Mỹ Hạnh (Điều phối viên Tuyển sinh Khoa học Cơ bản)"
-    },
-    {
-        "position": "Chương trình Truyền thông Sáng tạo & Nội dung số",
+        "position": "Tuyển sinh vào lớp 10 chuyên Văn",
         "skills_required": [
             "Ngữ văn: 9.0",
-            "Tin học: 8.5",
-            "Media Design",
-            "Kỹ năng viết nội dung",
-            "Storytelling",
-            "Premiere / Canva / CapCut"
+            "Lịch sử: 8.0",
+            "Địa lý: 7.5"
         ],
-        "location": "TP. Hồ Chí Minh, Việt Nam",
-        "date": "2025-08-25",
-        "experience_required": 1,
-        "level": "Tiềm năng sáng tạo",
+        "location": "Trường THPT Chuyên Lê Hồng Phong, TP. Hồ Chí Minh",
+        "date": "2025-06-15",
+        "level": "Giỏi",
         "referral": false,
-        "company_description": "Chương trình tuyển sinh dành cho học sinh có năng lực truyền đạt, tư duy sáng tạo và ứng dụng công nghệ vào kể chuyện, truyền thông, sản xuất nội dung.",
-        "job_description": "Học sinh được đào tạo bài bản về storytelling, thiết kế truyền thông số, sản xuất video ngắn, podcast và content cho nền tảng đa phương tiện.",
+        "referral_code": null,
+        "company_description": "Chương trình chuyên Văn nhằm phát triển năng khiếu văn học, khả năng phân tích và sáng tạo trong lĩnh vực ngôn ngữ và văn hóa. Mục tiêu là đào tạo những học sinh có tư duy phản biện và khả năng viết lách xuất sắc.",
+        "job_description": "Học sinh trúng tuyển sẽ được học các chuyên đề văn học nâng cao, rèn luyện kỹ năng viết luận, phân tích tác phẩm văn học và tham gia các hoạt động ngoại khóa liên quan đến văn học.",
         "responsibilities": [
-            "Xây dựng kịch bản nội dung truyền thông theo chủ đề xã hội.",
-            "Tạo video ngắn, poster, podcast bằng công cụ thiết kế cơ bản.",
-            "Tham gia chiến dịch truyền thông giáo dục.",
-            "Phối hợp nhóm thực hiện sản phẩm sáng tạo hàng tháng."
+            "Học các chuyên đề Văn học nâng cao theo định hướng chuyên sâu.",
+            "Thực hành viết luận, phân tích tác phẩm văn học.",
+            "Tham gia các kỳ thi học sinh giỏi Văn học, cuộc thi viết sáng tạo.",
+            "Tham dự chuyên đề, buổi thảo luận học thuật về Văn."
         ],
         "qualifications": [
-            "Có kỹ năng viết, trình bày rõ ràng, sáng tạo.",
-            "Sử dụng được công cụ cơ bản: Canva, CapCut, PowerPoint.",
-            "Tư duy hình ảnh, kể chuyện tốt, có portfolio là lợi thế."
-        ],
-        "additional_information": {
-            "tài_chính": ["Học bổng truyền thông sáng tạo", "Giải thưởng nội dung xã hội"],
-            "học_tập": ["Trại hè nội dung số", "Workshop viết luận & visual storytelling"],
-            "cộng_đồng": ["Câu lạc bộ podcast học sinh", "Studio sáng tạo truyền thông học đường"]
-        },
-        "hiring_manager": "Trịnh Thị Quỳnh (Phụ trách Tuyển sinh sáng tạo)",
-        "recruiter": "Ngô Thảo Vy (Mentor Nội dung & Kỹ năng truyền đạt)"
-    },
-    {
-        "position": "Chương trình Nghệ thuật Biểu diễn (Âm nhạc & Sân khấu)",
-        "skills_required": [
-            "Ngữ văn: 8.5",
-            "Âm nhạc: 9.0",
-            "Kỹ năng biểu cảm",
-            "Thanh nhạc / Nhạc cụ",
-            "Diễn xuất / Kịch nói",
-            "Thuyết trình / Làm chủ sân khấu"
-        ],
-        "location": "TP. Hồ Chí Minh, Việt Nam",
-        "date": "2025-08-28",
-        "experience_required": 1,
-        "level": "Tiềm năng biểu diễn",
-        "referral": false,
-        "company_description": "Chương trình tuyển sinh đặc biệt dành cho học sinh có năng lực biểu cảm, tư duy nghệ thuật và kỹ năng trình diễn, được đánh giá bởi AI Agent kết hợp huấn luyện viên chuyên môn.",
-        "job_description": "Học sinh được phát triển qua các module trình diễn, sân khấu hóa, thể hiện cảm xúc, sáng tạo tiết mục âm nhạc cá nhân hoặc nhóm và tham gia trình diễn tại các sự kiện học thuật nghệ thuật.",
-        "responsibilities": [
-            "Tập luyện và trình diễn tiết mục âm nhạc/sân khấu học đường.",
-            "Làm việc nhóm với học sinh nghệ thuật để xây dựng dự án biểu diễn.",
-            "Tham gia các sự kiện biểu diễn nội bộ hoặc công chúng.",
-            "Phối hợp cùng giáo viên mentor để nâng cao kỹ thuật & cảm xúc."
-        ],
-        "qualifications": [
-            "Có năng khiếu ca hát, diễn xuất hoặc chơi nhạc cụ.",
-            "Tư duy nghệ thuật và biểu đạt cảm xúc tốt.",
-            "Có tác phẩm/tiết mục biểu diễn hoặc giải thưởng là lợi thế.",
-            "Chủ động học tập, kỷ luật luyện tập và cộng tác nghệ thuật."
+            "Học sinh hoàn thành chương trình THCS với học lực Giỏi.",
+            "Điểm trung bình môn Ngữ văn từ 9.0 trở lên trong 2 năm gần nhất.",
+            "Ưu tiên học sinh từng đạt giải trong các kỳ thi Văn học.",
+            "Có tinh thần sáng tạo, đam mê với Văn học và khả năng tư duy tốt."
         ],
         "additional_information": {
             "tài_chính": [
-            "Học bổng biểu diễn nghệ thuật",
-            "Tài trợ biểu diễn và học nhạc cụ"
+                "Học bổng chuyên Văn theo kết quả đầu vào",
+                "Hỗ trợ chi phí ôn luyện chuyên đề"
             ],
             "phát_triển_nghề_nghiệp": [
-            "Mentor cá nhân về âm nhạc/sân khấu",
-            "Trại hè trình diễn nghệ thuật",
-            "Tư vấn hướng nghiệp ngành nghệ thuật & giải trí"
+                "Định hướng chuyên ngành Ngôn ngữ – Văn hóa",
+                "Kết nối với giáo viên và học sinh giỏi các khóa trước"
             ],
             "học_tập": [
-            "Workshop cảm xúc, giọng nói, sân khấu",
-            "Lớp học thanh nhạc, kỹ năng trình bày",
-            "Phối hợp sân khấu hóa nội dung giáo dục"
+                "Chuyên đề Phân tích tác phẩm – Viết sáng tạo nâng cao",
+                "Trại hè Văn học, hội thảo chuyên đề"
             ],
             "cân_bằng_học_tập_cuộc_sống": [
-            "Luyện tập vừa sức",
-            "Thời gian nghỉ ngơi tích hợp sau biểu diễn"
+                "Lịch học được thiết kế cân bằng giữa học và nghỉ",
+                "Tổ chức hoạt động ngoại khóa theo nhóm lớp"
             ],
             "sức_khoẻ": [
-            "Hướng dẫn thở, xử lý hồi hộp khi trình diễn",
-            "Chăm sóc giọng nói và thể lực biểu diễn"
+                "Chăm sóc học đường định kỳ",
+                "Tư vấn tâm lý học sinh"
             ],
             "cộng_đồng": [
-            "Câu lạc bộ âm nhạc/sân khấu học sinh",
-            "Sự kiện biểu diễn định kỳ",
-            "Mạng lưới nghệ thuật học đường"
+                "Câu lạc bộ Văn học học sinh",
+                "Diễn đàn học tập chuyên Văn",
+                "Hoạt động giao lưu với các trường chuyên khác"
             ]
         },
-        "hiring_manager": "Phạm Anh Vũ (Giám đốc nghệ thuật học sinh)",
-        "recruiter": "Vũ Thảo My (Mentor biểu diễn sân khấu & âm nhạc)"
+        "hiring_manager": "Trần Thị Mai (Tổ trưởng Văn)",
+        "recruiter": "Phạm Văn An (Phụ trách tuyển sinh chuyên Văn)"
     },
     {
-        "position": "Chương trình Thiết kế Game, AR/VR & Thực tế ảo",
+        "position": "Tuyển sinh vào lớp 10 chuyên Anh",
         "skills_required": [
-            "Tin học: 9.0",
-            "Công nghệ: 9.0",
-            "Toán học: 8.5",
-            "Unity / Unreal Engine",
-            "Mô hình 3D / ARKit",
-            "Kịch bản tương tác"
+            "Tiếng Anh: 9.0",
+            "Toán: 8.0",
+            "Vật lý: 7.0"
         ],
-        "location": "TP. Hồ Chí Minh, Việt Nam",
-        "date": "2025-08-30",
-        "experience_required": 1,
-        "level": "Tiềm năng sáng tạo số",
-        "referral": true,
-        "referral_code": "HS2025XRGAME",
-        "company_description": "Chương trình đào tạo học sinh có tư duy lập trình, mỹ thuật số và khả năng sáng tạo nội dung trong không gian ảo, kết hợp các yếu tố kỹ thuật – nghệ thuật – trải nghiệm người dùng trong môi trường học đường.",
-        "job_description": "Học sinh được hướng dẫn phát triển ý tưởng game tương tác, xây dựng mô hình 3D, lập trình trò chơi, ứng dụng AR/VR và thuyết trình sản phẩm tại showcase học sinh.",
-        "responsibilities": [
-            "Phát triển prototype game đơn giản bằng công cụ như Unity, Unreal.",
-            "Thiết kế nhân vật, môi trường tương tác trong thế giới ảo.",
-            "Viết kịch bản trải nghiệm người dùng trong game hoặc mô phỏng thực tế ảo.",
-            "Tham gia triển lãm sản phẩm sáng tạo số học sinh."
-        ],
-        "qualifications": [
-            "Có kiến thức cơ bản về lập trình và tư duy logic hình ảnh.",
-            "Đã từng thử làm game mini hoặc mô hình tương tác (Scratch, Roblox, Unity...).",
-            "Khả năng làm việc nhóm sáng tạo và kể chuyện bằng công nghệ.",
-            "Hiểu về UX/UI hoặc nghệ thuật số là lợi thế."
-        ],
-        "additional_information": {
-            "tài_chính": [
-            "Học bổng sáng tạo công nghệ số",
-            "Tài trợ tham gia cuộc thi Game / XR"
-            ],
-            "phát_triển_nghề_nghiệp": [
-            "Hướng dẫn từ chuyên gia thiết kế trò chơi",
-            "Liên kết với startup AR/VR trong cộng đồng công nghệ học sinh"
-            ],
-            "học_tập": [
-            "Trại hè thiết kế Game và XR",
-            "Workshop dựng 3D, lập trình cảnh tương tác"
-            ],
-            "cân_bằng_học_tập_cuộc_sống": [
-            "Lịch trình học theo dự án linh hoạt",
-            "Khuyến khích khám phá nghệ thuật số"
-            ],
-            "sức_khoẻ": [
-            "Hướng dẫn an toàn công nghệ XR",
-            "Chăm sóc mắt và tư thế khi làm việc với thiết bị ảo"
-            ],
-            "cộng_đồng": [
-            "Câu lạc bộ phát triển game học sinh",
-            "Studio sáng tạo số tại trường",
-            "Sân chơi AR/VR sáng tạo định kỳ"
-            ]
-        },
-        "hiring_manager": "Lương Hữu Phát (Trưởng nhóm tuyển sinh công nghệ tương tác)",
-        "recruiter": "Nguyễn Hải My (Mentor lập trình sáng tạo)"
-    },
-    {
-        "position": "Chương trình Thiết kế Giao diện & Trải nghiệm Người dùng (UI/UX)",
-        "skills_required": [
-            "Tin học: 8.5",
-            "Mỹ thuật: 8.5",
-            "Ngữ văn: 8.0",
-            "Figma",
-            "Design Thinking",
-            "HTML/CSS cơ bản",
-            "Kỹ năng trình bày trực quan"
-        ],
-        "location": "TP. Hồ Chí Minh, Việt Nam",
-        "date": "2025-08-28",
-        "experience_required": 1,
-        "level": "Tiềm năng sáng tạo",
+        "location": "Trường THPT Chuyên Lê Hồng Phong, TP. Hồ Chí Minh",
+        "date": "2025-06-20",
+        "level": "Giỏi",
         "referral": false,
-        "company_description": "Chương trình Tuyển sinh Thiết kế Giao diện & Trải nghiệm Người dùng hướng tới học sinh có tư duy thẩm mỹ, khả năng thiết kế số, và mong muốn tạo ra trải nghiệm học tập – công nghệ thân thiện, hiện đại. Chương trình được định hướng theo chuẩn UI/UX quốc tế và tích hợp đánh giá tiềm năng sáng tạo bằng AI Agent.",
-        "job_description": "Học sinh sẽ được hướng dẫn thiết kế giao diện phần mềm, sản phẩm học đường, và nội dung trực quan với tư duy người dùng làm trung tâm. Ngoài kỹ thuật, chương trình chú trọng cảm quan thẩm mỹ, khả năng kể chuyện trực quan và truyền đạt bằng công cụ thiết kế hiện đại.",
+        "referral_code": null,
+        "company_description": "Chương trình chuyên Anh nhằm phát triển năng lực ngôn ngữ, khả năng giao tiếp và tư duy phản biện trong tiếng Anh. Mục tiêu là đào tạo những học sinh có khả năng sử dụng tiếng Anh thành thạo và tự tin.",
+        "job_description": "Học sinh trúng tuyển sẽ được học các chuyên đề tiếng Anh nâng cao, rèn luyện kỹ năng nghe, nói, đọc, viết và tham gia các hoạt động ngoại khóa liên quan đến tiếng Anh.",
         "responsibilities": [
-            "Thiết kế bố cục, màu sắc, hình ảnh giao diện ứng dụng học sinh.",
-            "Sử dụng công cụ Figma, Canva để trình bày ý tưởng trực quan.",
-            "Tham gia dự án nhóm xây dựng giao diện học tập / truyền thông nội bộ.",
-            "Áp dụng tư duy Design Thinking trong phân tích vấn đề và thiết kế giải pháp.",
-            "Trình bày portfolio và phản biện thiết kế trước mentor."
+            "Học các chuyên đề Tiếng Anh nâng cao theo định hướng chuyên sâu.",
+            "Thực hành giao tiếp tiếng Anh trong các tình huống thực tế.",
+            "Tham gia các kỳ thi học sinh giỏi Tiếng Anh, cuộc thi hùng biện.",
+            "Tham dự chuyên đề, buổi thảo luận học thuật về Tiếng Anh."
         ],
         "qualifications": [
-            "Có khả năng sử dụng Figma hoặc công cụ thiết kế số cơ bản.",
-            "Kỹ năng tư duy hình ảnh, trình bày logic và sáng tạo.",
-            "Yêu thích mỹ thuật, giao diện số và trải nghiệm người dùng.",
-            "Tư duy người dùng và làm việc nhóm tốt là điểm cộng.",
-            "Có dự án thiết kế cá nhân hoặc sản phẩm UI cơ bản là lợi thế."
+            "Học sinh hoàn thành chương trình THCS với học lực Giỏi.",
+            "Điểm trung bình môn Tiếng Anh từ 9.0 trở lên trong 2 năm gần nhất.",
+            "Ưu tiên học sinh từng đạt giải trong các kỳ thi Tiếng Anh.",
+            "Có tinh thần giao tiếp, đam mê với Tiếng Anh và khả năng tư duy tốt."
         ],
         "additional_information": {
             "tài_chính": [
-            "Học bổng thiết kế sáng tạo",
-            "Thưởng dự án cá nhân hoặc nhóm có UX nổi bật"
+                "Học bổng chuyên Anh theo kết quả đầu vào",
+                "Hỗ trợ chi phí ôn luyện chuyên đề"
             ],
             "phát_triển_nghề_nghiệp": [
-            "Cố vấn UI/UX cá nhân",
-            "Kết nối mentor ngành Thiết kế Số",
-            "Thực tập học sinh tại startup thiết kế"
+                "Định hướng chuyên ngành Ngôn ngữ – Quốc tế",
+                "Kết nối với giáo viên và học sinh giỏi các khóa trước"
             ],
             "học_tập": [
-            "Khóa học UI cơ bản bằng Figma",
-            "Workshop thiết kế di động & trải nghiệm học đường",
-            "Phân tích giao diện thật và cải tiến UX"
+                "Chuyên đề Giao tiếp – Viết sáng tạo nâng cao",
+                "Trại hè Tiếng Anh, hội thảo chuyên đề"
             ],
             "cân_bằng_học_tập_cuộc_sống": [
-            "Dự án ngắn hạn phù hợp lịch học",
-            "Lịch trình thiết kế sáng tạo linh hoạt"
+                "Lịch học được thiết kế cân bằng giữa học và nghỉ",
+                "Tổ chức hoạt động ngoại khóa theo nhóm lớp"
             ],
             "sức_khoẻ": [
-            "Hướng dẫn cân bằng thị lực – tư thế làm việc thiết kế",
-            "Thư giãn tư duy sáng tạo tích cực"
+                "Chăm sóc học đường định kỳ",
+                "Tư vấn tâm lý học sinh"
             ],
             "cộng_đồng": [
-            "Câu lạc bộ UI/UX học sinh",
-            "Studio thiết kế giao diện nội bộ",
-            "Cuộc thi sáng tạo trải nghiệm học sinh"
+                "Câu lạc bộ Tiếng Anh học sinh",
+                "Diễn đàn học tập chuyên Anh",
+                "Hoạt động giao lưu với các trường chuyên khác"
             ]
         },
-        "hiring_manager": "Phạm Thị Minh Tâm (Giám đốc Tuyển sinh Thiết kế số)",
-        "recruiter": "Trần Bảo Khang (Mentor thiết kế giao diện học sinh)"
+        "hiring_manager": "Nguyễn Văn Hùng (Tổ trưởng Anh)",
+        "recruiter": "Trần Thị Lan (Phụ trách tuyển sinh chuyên Anh)"
+    },
+    {
+        "position": "Tuyển sinh vào lớp 10 chuyên Lý",
+        "skills_required": [
+            "Vật lý: 9.0",
+            "Toán: 8.5"
+        ],
+        "location": "Trường THPT Chuyên Lê Hồng Phong, TP. Hồ Chí Minh",
+        "date": "2025-06-25",
+        "level": "Giỏi",
+        "referral": false,
+        "referral_code": null,
+        "company_description": "Chương trình chuyên Lý nhằm phát triển năng lực tư duy khoa học, khả năng phân tích và giải quyết vấn đề trong lĩnh vực Vật lý. Mục tiêu là đào tạo những học sinh có khả năng nghiên cứu và ứng dụng Vật lý trong thực tiễn.",
+        "job_description": "Học sinh trúng tuyển sẽ được học các chuyên đề Vật lý nâng cao, rèn luyện kỹ năng thí nghiệm, phân tích số liệu và tham gia các hoạt động ngoại khóa liên quan đến Vật lý.",
+        "responsibilities": [
+            "Học các chuyên đề Vật lý nâng cao theo định hướng chuyên sâu.",
+            "Thực hành thí nghiệm, phân tích số liệu Vật lý.",
+            "Tham gia các kỳ thi học sinh giỏi Vật lý, cuộc thi sáng tạo khoa học.",
+            "Tham dự chuyên đề, buổi thảo luận học thuật về Vật lý."
+        ],
+        "qualifications": [
+            "Học sinh hoàn thành chương trình THCS với học lực Giỏi.",
+            "Điểm trung bình môn Vật lý từ 9.0 trở lên trong 2 năm gần nhất.",
+            "Ưu tiên học sinh từng đạt giải trong các kỳ thi Vật lý.",
+            "Có tinh thần nghiên cứu, đam mê với Vật lý và khả năng tư duy tốt."
+        ],
+        "additional_information": {
+            "tài_chính": [
+                "Học bổng chuyên Lý theo kết quả đầu vào",
+                "Hỗ trợ chi phí ôn luyện chuyên đề"
+            ],
+            "phát_triển_nghề_nghiệp": [
+                "Định hướng chuyên ngành Khoa học – Kỹ thuật",
+                "Kết nối với giáo viên và học sinh giỏi các khóa trước"
+            ],
+            "học_tập": [
+                "Chuyên đề Thí nghiệm – Phân tích số liệu – Ứng dụng Vật lý nâng cao",
+                "Trại hè Vật lý, hội thảo chuyên đề"
+            ],
+            "cân_bằng_học_tập_cuộc_sống": [
+                "Lịch học được thiết kế cân bằng giữa học và nghỉ",
+                "Tổ chức hoạt động ngoại khóa theo nhóm lớp"
+            ],
+            "sức_khoẻ": [
+                "Chăm sóc học đường định kỳ",
+                "Tư vấn tâm lý học sinh"
+            ],
+            "cộng_đồng": [
+                "Câu lạc bộ Vật lý học sinh",
+                "Diễn đàn học tập chuyên Lý",
+                "Hoạt động giao lưu với các trường chuyên khác"
+            ]
+        }
+    },
+    {
+        "position": "Tuyển sinh vào lớp 10 chuyên Hóa",
+        "skills_required": [
+            "Hóa học: 9.0",
+            "Toán: 8.5"
+        ],
+        "location": "Trường THPT Chuyên Lê Hồng Phong, TP. Hồ Chí Minh",
+        "date": "2025-06-30",
+        "level": "Giỏi",
+        "referral": false,
+        "referral_code": null,
+        "company_description": "Chương trình chuyên Hóa nhằm phát triển năng lực tư duy khoa học, khả năng phân tích và giải quyết vấn đề trong lĩnh vực Hóa học. Mục tiêu là đào tạo những học sinh có khả năng nghiên cứu và ứng dụng Hóa học trong thực tiễn.",
+        "job_description": "Học sinh trúng tuyển sẽ được học các chuyên đề Hóa học nâng cao, rèn luyện kỹ năng thí nghiệm, phân tích số liệu và tham gia các hoạt động ngoại khóa liên quan đến Hóa học.",
+        "responsibilities": [
+            "Học các chuyên đề Hóa học nâng cao theo định hướng chuyên sâu.",
+            "Thực hành thí nghiệm, phân tích số liệu Hóa học.",
+            "Tham gia các kỳ thi học sinh giỏi Hóa học, cuộc thi sáng tạo khoa học.",
+            "Tham dự chuyên đề, buổi thảo luận học thuật về Hóa học."
+        ],
+        "qualifications": [
+            "Học sinh hoàn thành chương trình THCS với học lực Giỏi.",
+            "Điểm trung bình môn Hóa học từ 9.0 trở lên trong 2 năm gần nhất.",
+            "Ưu tiên học sinh từng đạt giải trong các kỳ thi Hóa học.",
+            "Có tinh thần nghiên cứu, đam mê với Hóa học và khả năng tư duy tốt."
+        ],
+        "additional_information": {
+            "tài_chính": [
+                "Học bổng chuyên Hóa theo kết quả đầu vào",
+                "Hỗ trợ chi phí ôn luyện chuyên đề"
+            ],
+            "phát_triển_nghề_nghiệp": [
+                "Định hướng chuyên ngành Khoa học – Kỹ thuật",
+                "Kết nối với giáo viên và học sinh giỏi các khóa trước"
+            ],
+            "học_tập": [
+                "Chuyên đề Thí nghiệm – Phân tích số liệu – Ứng dụng Hóa học nâng cao",
+                "Trại hè Hóa học, hội thảo chuyên đề"
+            ],
+            "cân_bằng_học_tập_cuộc_sống": [
+                "Lịch học được thiết kế cân bằng giữa học và nghỉ",
+                "Tổ chức hoạt động ngoại khóa theo nhóm lớp"
+            ],
+            "sức_khoẻ": [
+                "Chăm sóc học đường định kỳ",
+                "Tư vấn tâm lý học sinh"
+            ],
+            "cộng_đồng": [
+                "Câu lạc bộ Hóa học học sinh",
+                "Diễn đàn học tập chuyên Hóa",
+                "Hoạt động giao lưu với các trường chuyên khác"
+            ]
+        },
+        "hiring_manager": "Nguyễn Thị Thu Hà (Tổ trưởng Hóa)",
+        "recruiter": "Lê Văn Bình (Phụ trách tuyển sinh chuyên Hóa)"
+    },
+    {
+        "position": "Tuyển sinh vào lớp 10 chuyên Sinh",
+        "skills_required": [
+            "Sinh học: 9.0",
+            "Hóa học: 8.5",
+            "Toán: 7.5"
+        ],
+        "location": "Trường THPT Chuyên Lê Hồng Phong, TP. Hồ Chí Minh",
+        "date": "2025-07-05",
+        "level": "Giỏi",
+        "referral": false,
+        "referral_code": null,
+        "company_description": "Chương trình chuyên Sinh nhằm phát triển năng lực tư duy khoa học, khả năng phân tích và giải quyết vấn đề trong lĩnh vực Sinh học. Mục tiêu là đào tạo những học sinh có khả năng nghiên cứu và ứng dụng Sinh học trong thực tiễn.",
+        "job_description": "Học sinh trúng tuyển sẽ được học các chuyên đề Sinh học nâng cao, rèn luyện kỹ năng thí nghiệm, phân tích số liệu và tham gia các hoạt động ngoại khóa liên quan đến Sinh học.",
+        "responsibilities": [
+            "Học các chuyên đề Sinh học nâng cao theo định hướng chuyên sâu.",
+            "Thực hành thí nghiệm, phân tích số liệu Sinh học.",
+            "Tham gia các kỳ thi học sinh giỏi Sinh học, cuộc thi sáng tạo khoa học.",
+            "Tham dự chuyên đề, buổi thảo luận học thuật về Sinh học."
+        ],
+        "qualifications": [
+            "Học sinh hoàn thành chương trình THCS với học lực Giỏi.",
+            "Điểm trung bình môn Sinh học từ 9.0 trở lên trong 2 năm gần nhất.",
+            "Ưu tiên học sinh từng đạt giải trong các kỳ thi Sinh học.",
+            "Có tinh thần nghiên cứu, đam mê với Sinh học và khả năng tư duy tốt."
+        ],
+        "additional_information": {
+            "tài_chính": [
+                "Học bổng chuyên Sinh theo kết quả đầu vào",
+                "Hỗ trợ chi phí ôn luyện chuyên đề"
+            ],
+            "phát_triển_nghề_nghiệp": [
+                "Định hướng chuyên ngành Khoa học – Kỹ thuật",
+                "Kết nối với giáo viên và học sinh giỏi các khóa trước"
+            ],
+            "học_tập": [
+                "Chuyên đề Thí nghiệm – Phân tích số liệu – Ứng dụng Sinh học nâng cao",
+                "Trại hè Sinh học, hội thảo chuyên đề"
+            ],
+            "cân_bằng_học_tập_cuộc_sống": [
+                "Lịch học được thiết kế cân bằng giữa học và nghỉ",
+                "Tổ chức hoạt động ngoại khóa theo nhóm lớp"
+            ],
+            "sức_khoẻ": [
+                "Chăm sóc học đường định kỳ",
+                "Tư vấn tâm lý học sinh"
+            ],
+            "cộng_đồng": [
+                "Câu lạc bộ Sinh học học sinh",
+                "Diễn đàn học tập chuyên Sinh",
+                "Hoạt động giao lưu với các trường chuyên khác"
+            ]
+        },
+        "hiring_manager": "Trần Văn Nam (Tổ trưởng Sinh)",
+        "recruiter": "Nguyễn Thị Lan (Phụ trách tuyển sinh chuyên Sinh)"
     }
 ]

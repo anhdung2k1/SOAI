@@ -30,11 +30,15 @@ class ApproverAgent(BaseAgent):
         # LLM-based CV Summary
         try:
             prompt = (
-                "You are assisting a technical recruiter by reviewing a candidate's profile.\n"
-                "Based on the information below, write a concise paragraph summarizing the candidate’s qualifications.\n"
-                "Include details about their professional experience, technical skills, tools or frameworks they've worked with, and any notable achievements or strengths.\n"
-                "The summary should be natural, readable, and written in plain English — not a list. Aim for 3–5 complete sentences.\n\n"
-                f"Candidate Profile:\n{state.parsed_cv}"
+                "You are a high school admissions officer. Based on the student's profile below, write a short summary **in Vietnamese** "
+                "to describe their academic strengths and potential.\n\n"
+                "Your summary (in Vietnamese) should include:\n"
+                "- Highlighted subject scores\n"
+                "- Academic achievements such as awards, competitions, or scholarships\n"
+                "- Thinking ability, self-learning or learning motivation (if mentioned)\n"
+                "- How well the student fits the specialized class (e.g., Math major)\n\n"
+                f"Student Profile:\n{state.parsed_cv}\n\n"
+                "Return only 3–5 sentences in natural Vietnamese. Do not explain anything. No formatting, no bullet points."
             )
 
             raw_response = self.llm.invoke(prompt)
