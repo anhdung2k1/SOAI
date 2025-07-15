@@ -45,7 +45,7 @@ class TestRecruitmentAPI(unittest.TestCase):
         log_info("Running post-test cleanup...")
         tester = cls()
         tester.admin_token = cls.admin_token
-        tester.postclean_candidate("Nguyễn Văn A", "Chương trình Khoa học Dữ liệu")
+        tester.postclean_candidate("Nguyễn Bảo Ngọc", "Tuyển sinh vào lớp 10 chuyên Văn")
 
     def preclean_candidate(self, candidate_name, position):
         """Clean up test data before each test."""
@@ -162,9 +162,9 @@ class TestRecruitmentAPI(unittest.TestCase):
         """Main working-path test: upload JD, upload CV, approve, schedule and complete interview."""
         log_info("TEST: " + inspect.currentframe().f_code.co_name)
 
-        name = "Nguyễn Văn A"
+        name = "Nguyễn Bảo Ngọc"
         email = "kudung053@gmail.com"
-        position = "Chương trình Khoa học Dữ liệu"
+        position = "Tuyển sinh vào lớp 10 chuyên Văn"
 
         try:
             self.preclean_candidate(name, position)
@@ -362,9 +362,9 @@ class TestRecruitmentAPI(unittest.TestCase):
         """Ensure USER role is not allowed to upload JD or approve CV."""
         log_info("TEST: " + inspect.currentframe().f_code.co_name)
 
-        name = "Nguyễn Văn A"
+        name = "Nguyễn Bảo Ngọc"
         email = "kudung053@gmail.com"
-        position = "Chương trình Khoa học Dữ liệu"
+        position = "Tuyển sinh vào lớp 10 chuyên Văn"
         unmatch_position = "Senior Fullstack Developer (Java+React)"
 
         self.preclean_candidate(name, position)

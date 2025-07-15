@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import "../../css/JobDetailDrawer.css";
-import EndavaLogo from "../../assets/images/endava-logo.png";
+import SmartRecruitmentLogo from "../../assets/images/smart-recruitment-admin-logo.png";
 import { uploadCV } from "../../api/cvApi";
 import { toast } from "react-toastify";
 
@@ -85,7 +85,7 @@ const JobDetailDrawer = ({ job, onClose }) => {
       <div className="drawer-content" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="drawer-header">
-          <img src={EndavaLogo} alt="Endava" className="drawer-logo" />
+          <img src={SmartRecruitmentLogo} alt="SmartRecruitment" className="drawer-logo" />
           <button className="drawer-close" onClick={onClose}>
             ✕
           </button>
@@ -97,7 +97,7 @@ const JobDetailDrawer = ({ job, onClose }) => {
             {job.position || job.title || "Untitled Position"}
           </h2>
           <p className="drawer-sub">
-            Endava • {job.level || "N/A"} •{" "}
+            Requirement Grade: {job.level || "N/A"} •{" "}
             <span className="job-ref">
               {job.referral_code || job.ref || "N/A"}
             </span>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllAccounts, deleteAccount, signup } from "../../api/authApi";
+import { getAllAccounts, deleteAccount } from "../../api/authApi";
 import { FaUserCircle } from "react-icons/fa";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { HiUser } from "react-icons/hi";

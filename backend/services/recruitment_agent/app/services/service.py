@@ -522,6 +522,7 @@ class RecruitmentService:
                 "candidate_name": cv.candidate_name,
                 "email": cv.email,
                 "matched_position": cv.matched_position,
+                "matched_score": cv.matched_score,
                 "status": cv.status,
             }
             for cv in pending_cvs
@@ -551,6 +552,7 @@ class RecruitmentService:
                 "candidate_name": cv.candidate_name,
                 "email": cv.email,
                 "matched_position": cv.matched_position,
+                "matched_score": cv.matched_score,
                 "status": cv.status,
             }
             for cv in approved_cvs
@@ -610,6 +612,7 @@ class RecruitmentService:
             "position": cv.matched_position,
             "skills": json.loads(cv.skills),
             "jd_skills": json.loads(cv.matched_jd_skills),
+            "matched_score": cv.matched_score,
             "status": cv.status,
             "parsed_cv": json.loads(cv.parsed_cv),
         }
@@ -630,6 +633,7 @@ class RecruitmentService:
                 "candidate_name": cv.candidate_name,
                 "email": cv.email,
                 "matched_position": cv.matched_position,
+                "matched_score": cv.matched_score,
                 "status": cv.status,
             }
             for cv in cvs

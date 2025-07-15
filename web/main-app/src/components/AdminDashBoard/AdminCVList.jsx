@@ -97,6 +97,7 @@ const AdminCVList = ({ actionsEnabled = true }) => {
             <th>Position</th>
             <th>Status</th>
             <th>Email</th>
+            <th>Score</th>
             {actionsEnabled && <th>Action</th>}
           </tr>
         </thead>
@@ -111,6 +112,7 @@ const AdminCVList = ({ actionsEnabled = true }) => {
                 </span>
               </td>
               <td>{cv.email || "N/A"}</td>
+              <td>{cv.matched_score ?? "N/A"}</td>
               {actionsEnabled && (
                 <td>
                   <div className="admin-cv-table__action-group">
@@ -161,6 +163,7 @@ const AdminCVList = ({ actionsEnabled = true }) => {
             <p><strong>Email:</strong> {selectedCV.email}</p>
             <p><strong>Position:</strong> {selectedCV.matched_position}</p>
             <p><strong>Status:</strong> {selectedCV.status}</p>
+            <p><strong>Score:</strong> {selectedCV.matched_score ?? "N/A"}</p>
             <div className="admin-cv-preview__iframe-container" style={{ marginTop: "1rem" }}>
               <iframe
                 src={getCVPreviewUrl(selectedCV.id)}
@@ -198,6 +201,16 @@ const AdminCVList = ({ actionsEnabled = true }) => {
                   value={editCV.email}
                   onChange={(e) =>
                     setEditCV({ ...editCV, email: e.target.value })
+                  }
+                />
+              </label>
+              <label>
+                Score:
+                <input
+                  type="number"
+                  value={editCV.matched_score}
+                  onChange={(e) =>
+                    setEditCV({ ...editCV, matched_score: parseInt(e.target.value, 10) })
                   }
                 />
               </label>

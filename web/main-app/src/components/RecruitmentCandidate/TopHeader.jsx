@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../../css/TopHeader.css";
 import { getUserByUserName, getTokenPayload, logout } from "../../api/authApi";
-import EndavaLogo from "../../assets/images/endava-logo.png";
+import SmartRecruitmentLogo from "../../assets/images/smart-recruitment-admin-logo.png";
 
 const TopHeader = () => {
   const [open, setOpen] = useState(false);
@@ -54,7 +54,7 @@ const TopHeader = () => {
     <header className="top-header">
       <div className="header-left">
         <Link to="/">
-          <img src={EndavaLogo} alt="Endava Logo" className="header-logo" />
+          <img src={SmartRecruitmentLogo} alt="Endava Logo" className="header-logo" />
         </Link>
       </div>
       <nav className="header-center">
