@@ -65,6 +65,7 @@ from metrics.prometheus_metrics import (
     interview_question_count,
     jd_count
 )
+from celery_tasks.pipeline import process_cv_pipeline
 
 logger = AppLogger(__name__)
 
@@ -90,7 +91,6 @@ class RecruitmentService:
     def upload_and_process_cv(
         self,
         file,
-        db: Session,
         override_email: Optional[str] = None,
         position_applied_for: Optional[str] = None,
     ):
@@ -120,68 +120,82 @@ class RecruitmentService:
                         raise RuntimeError("Failed to convert CV to PDF.")
                 else:
                     pdf_filename = file.filename
-
-                pipeline = build_recruitment_graph_matching(db)
-                state = RecruitmentState(cv_file_path=os.path.join(cv_dir, pdf_filename))
-
-                if override_email:
-                    state.override_email = override_email
-                if position_applied_for:
-                    state.position_applied_for = position_applied_for
-
-                updated_state = pipeline.invoke(state.model_dump())
-                final_state = RecruitmentState(**updated_state)
-                final_state.parsed_cv["cv_file_name"] = pdf_filename
-
-                if not final_state.matched_jd:
-                    return CVUploadResponseSchema(message="No suitable JD match found for this CV.")
-
-                email_to_check = final_state.override_email or final_state.parsed_cv.get("email")
-                existing_cv = (
-                    db.query(CVApplication)
-                    .filter(
-                        CVApplication.candidate_name == final_state.parsed_cv.get("name"),
-                        CVApplication.email == email_to_check,
-                        CVApplication.matched_position == final_state.matched_jd.get("position"),
-                        CVApplication.status.in_([FinalDecisionStatus.PENDING.value, FinalDecisionStatus.ACCEPTED.value])
-                    ).first()
-                )
-
-                if existing_cv:
-                    return CVUploadResponseSchema(message="CV already uploaded and matched successfully. Pending approval.")
-
-                # Validate experience
-                candidate_experience = final_state.parsed_cv.get("experience_years", 0)
-                jd_experience_required = final_state.matched_jd.get("experience_required", 0)
-
-                if abs(candidate_experience - jd_experience_required) > 1:
-                    return CVUploadResponseSchema(
-                        message=f"{FinalDecisionStatus.REJECTED.value}: Candidate experience does not match JD requirements."
-                    )
-
-                # Save CV
-                cv_application = CVApplication(
-                    candidate_name=final_state.parsed_cv.get("name"),
-                    email=email_to_check,
-                    matched_position=final_state.matched_jd.get("position"),
-                    status=FinalDecisionStatus.PENDING.value,
-                    skills=json.dumps(final_state.parsed_cv.get("skills", [])),
-                    matched_jd_skills=json.dumps(final_state.matched_jd.get("skills_required", [])),
-                    matched_jd_experience_required=jd_experience_required,
-                    experience_years=candidate_experience,
-                    is_matched=True,
-                    parsed_cv=json.dumps(final_state.parsed_cv)
-                )
-                db.add(cv_application)
-                db.commit()
-                cv_upload_total.inc()
-
-                return CVUploadResponseSchema(message="CV uploaded and matched successfully. Pending approval.")
+                full_path = os.path.join(cv_dir, pdf_filename)
+                process_cv_pipeline.delay(full_path, override_email, position_applied_for)
+                return CVUploadResponseSchema(message="CV received and is being processed.")
 
         except Exception as e:
             logger.exception(f"Error processing CV: {e}")
             cv_processing_failed_total.inc()
             return CVUploadResponseSchema(message=f"Error processing CV: {str(e)}")
+        
+    def upload_cv_from_file_path(
+        self,
+        cv_file_path: str,
+        override_email: str,
+        position_applied_for: str,
+        db: Session,
+    ):
+        logger.info(f"[Worker] Processing CV: {cv_file_path}")
+        pipeline = build_recruitment_graph_matching(db)
+        state = RecruitmentState(
+            cv_file_path=cv_file_path
+        )
+        
+        if override_email:
+            state.override_email = override_email
+        if position_applied_for:
+            state.position_applied_for = position_applied_for
+
+        updated_state = pipeline.invoke(state.model_dump())
+        final_state = RecruitmentState(**updated_state)
+
+        parsed_cv = final_state.parsed_cv or {}
+        candidate_name = parsed_cv.get("name", "Unknown Candidate")
+        matched = final_state.matched_jd or {}
+        email_to_check = final_state.override_email or parsed_cv.get("email")
+        final_state.parsed_cv["cv_file_name"] = os.path.basename(cv_file_path)
+
+        if not matched:
+            return "No suitable JD match found."
+
+        candidate_experience = parsed_cv.get("experience_years", 0)
+        jd_experience_required = matched.get("experience_required", 0)
+
+        if abs(candidate_experience - jd_experience_required) > 1:
+            return f"{FinalDecisionStatus.REJECTED.value}: Experience mismatch with JD requirements."
+
+        existing = db.query(CVApplication).filter(
+            CVApplication.candidate_name == candidate_name,
+            CVApplication.email == email_to_check,
+            CVApplication.matched_position == matched.get("position"),
+            CVApplication.status.in_([
+                FinalDecisionStatus.PENDING.value,
+                FinalDecisionStatus.ACCEPTED.value
+            ])
+        ).first()
+
+        if existing:
+            logger.info("CV already exists in DB. Skipping.")
+            return "CV already exists in DB. Skipping."
+
+        cv = CVApplication(
+            candidate_name=candidate_name,
+            email=email_to_check,
+            matched_position=matched.get("position", position_applied_for),
+            status=FinalDecisionStatus.PENDING.value,
+            skills=json.dumps(parsed_cv.get("skills", [])),
+            matched_jd_skills=json.dumps(matched.get("skills_required", [])),
+            matched_jd_experience_required=jd_experience_required,
+            experience_years=candidate_experience,
+            parsed_cv=json.dumps(parsed_cv),
+            is_matched=True,
+        )
+        db.add(cv)
+        db.commit()
+        cv_upload_total.inc()
+        logger.info("CV saved to database.")
+        return f"CV processed successfully for candidate name: {candidate_name}"
 
     def approve_cv(self, candidate_id: int, db: Session):
         """Approve a pending CV based on skills and experience."""
@@ -249,9 +263,7 @@ class RecruitmentService:
             f"CV status updated to {cv_application.status} for candidate: {cv_application.candidate_name}"
         )
 
-        return CVUploadResponseSchema(
-            message=f"CV approval result: {final_state.final_decision}"
-        )
+        return f"CV approval result: {final_state.final_decision}"
 
     def upload_jd(self, jd_data_list: list, db: Session):
         """Upload multiple JD entries into database."""
@@ -384,8 +396,8 @@ class RecruitmentService:
             )
 
             if not interview:
-                logger.warning("Interview not found.")
-                return CVUploadResponseSchema(message="Interview not found.")
+                logger.warn("Interview not found.")
+                return "Interview not found."
 
             logger.debug(f"Interview found: {interview}")
             logger.debug(f"Interview CV application ID: {interview.cv_application_id}")
@@ -400,8 +412,8 @@ class RecruitmentService:
                 # Step 2: Fetch associated CV
                 cv = db.query(CVApplication).filter_by(id=interview.cv_application_id).first()
                 if not cv:
-                    logger.warning("Associated CV not found for this interview.")
-                    return CVUploadResponseSchema(message="Associated CV not found.")
+                    logger.warn("Associated CV not found for this interview.")
+                    return "Associated CV not found."
 
                 logger.info(f"Triggering InterviewQuestionAgent for candidate: {cv.candidate_name} (CV ID={cv.id})")
 
@@ -425,7 +437,7 @@ class RecruitmentService:
 
                 if not questions:
                     question_generation_failed_total.inc()
-                    logger.warning("No interview questions were generated by the agent.")
+                    logger.warn("No interview questions were generated by the agent.")
                 else:
                     interview_questions_generated_total.inc()
                     logger.info(f"Generated {len(questions)} questions for CV ID={cv.id}")
@@ -436,7 +448,7 @@ class RecruitmentService:
                     question_text = q.get("question", "")
                     answer = "\n".join(q.get("answers", []))
                     if not question_text:
-                        logger.warning("Generated question is empty, skipping storage.")
+                        logger.warn("Generated question is empty, skipping storage.")
                         continue
                     logger.debug(f"Storing question: {question_text} with answer: {answer}")
                     if not answer:
@@ -452,9 +464,7 @@ class RecruitmentService:
                 db.commit()
                 logger.info(f"{len(questions)} interview questions stored in DB for CV ID={cv.id}.")
 
-            return CVUploadResponseSchema(
-                message=f"Interview accepted. Generated {len(questions)} questions for CV ID={cv.id}."
-            )
+            return f"Interview accepted. Generated {len(questions)} questions for CV ID={cv.id}."
 
         except Exception as e:
             db.rollback()
@@ -767,7 +777,7 @@ class RecruitmentService:
 
         if not questions:
             regenerate_questions_failed_total.inc()
-            logger.warning("No questions generated, keeping existing questions")
+            logger.warn("No questions generated, keeping existing questions")
             return []
 
         interview_questions_regenerated_total.inc()
@@ -779,7 +789,7 @@ class RecruitmentService:
             # Get question text
             question_text = q.get("question") or q.get("original_question") or ""
             if not question_text.strip():
-                logger.warning("Generated question is empty or invalid, skipping.")
+                logger.warn("Generated question is empty or invalid, skipping.")
                 continue
 
             # Handle answers: can be list or string
@@ -845,7 +855,9 @@ class RecruitmentService:
             raise HTTPException(status_code=404, detail="CV not found.")
 
         parsed_cv = json.loads(cv.parsed_cv)
+        logger.debug(f"preview_cv_file(): parsed_cv={parsed_cv}")
         filename = parsed_cv.get("cv_file_name") or f"{cv.candidate_name.replace(' ', '_')}.pdf"
+        logger.debug(f"preview_cv_file(): filename={filename}")
         file_path = os.path.join("./cv_uploads", filename)
 
         if not os.path.exists(file_path):

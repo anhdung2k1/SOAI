@@ -29,12 +29,12 @@ const JobCard = ({ job, logo, onClick }) => {
   return (
     <div className="job-card" onClick={() => onClick?.(job)}>
       <div className="job-header">
-        <img src={logo} alt="Endava Logo" className="job-logo" />
+        <img src={logo} alt="SmartRecruitment Logo" className="job-logo" />
 
         <div className="job-info">
           <h3 className="job-title">{displayTitle}</h3>
           <p className="job-subtitle">
-            Endava <span className="dot">•</span> Full-time{" "}
+            SmartRecruitment <span className="dot">•</span> Full-time{" "}
             <span className="dot">•</span>{" "}
             <span className="job-ref">{displayRef}</span>
           </p>

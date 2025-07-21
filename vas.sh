@@ -325,7 +325,7 @@ ensure_network() {
 ##
 run_image() {
     test -n "$__name" || die "Module name required"
-    image_name="soai-$__name"
+    image_name="soai-${__name_override:-$__name}"
     container_name="soai_$__name"
     version=$(get_version)
     full_image="$DOCKER_REGISTRY/$image_name:$version"

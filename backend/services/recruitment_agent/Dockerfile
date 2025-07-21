@@ -12,7 +12,7 @@ WORKDIR /app
 # Copy requirements and install Python packages into isolated folder
 COPY --chmod=0755 --chown=${USER_ID}:0 requirements.txt ./
 COPY --chmod=0755 --chown=${USER_ID}:0 .env ./
-RUN pip install --upgrade pip && pip install --prefix=/install -r requirements.txt
+RUN pip install --upgrade pip && pip install --prefix=/install --no-cache-dir -r requirements.txt
 
 # Copy source code
 COPY --chmod=0755 --chown=${USER_ID}:0 app/ ./app/
@@ -22,6 +22,7 @@ FROM python:3.12-slim
 
 ARG USER_ID=1001
 ENV HOME=/home/soai_user
+ENV PYTHONPATH=/app/app
 WORKDIR /app
 
 # Install system dependencies and LibreOffice

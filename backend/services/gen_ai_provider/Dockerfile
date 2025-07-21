@@ -9,7 +9,7 @@ WORKDIR /app
 
 # Copy requirements and install to custom prefix
 COPY --chmod=0755 --chown=${USER_ID}:0 requirements.txt ./
-RUN pip install --upgrade pip && pip install --prefix=/install -r requirements.txt
+RUN pip install --upgrade pip && pip install --prefix=/install --no-cache-dir -r requirements.txt
 
 # Copy app code
 COPY --chmod=0755 --chown=${USER_ID}:0 app/ ./app/

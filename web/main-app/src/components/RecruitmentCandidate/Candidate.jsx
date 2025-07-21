@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import "../../css/RecruitmentCandidate.css";
-import EndavaLogo from "../../assets/images/endava-logo.png";
+import SmartRecruitmentLogo from "../../assets/images/smart-recruitment-admin-logo.png";
 import NotificationIcon from "../../assets/icons/notification.png";
 import FilterIcon from "../../assets/icons/filter.png";
 import JobCard from "./JobCard";
@@ -267,7 +267,7 @@ const Candidate = () => {
             <p className="no-result">No job found for this REF code.</p>
           ) : (
             visibleJobs.map((job, idx) => (
-              <JobCard key={idx} job={job} logo={EndavaLogo} onClick={setSelectedJob} />
+              <JobCard key={idx} job={job} logo={SmartRecruitmentLogo} onClick={setSelectedJob} />
             ))
           )}
         </div>
