@@ -25,7 +25,8 @@ export const getAllJD = async (position = "") => {
   const query = position ? `?position=${encodeURIComponent(position)}` : "";
   const url = `${API_BASE_URL}/recruitment/jds${query}`;
   const response = await fetch(url, {
-    method: "GET"
+    method: "GET",
+    headers: { "Authorization": `Bearer ${getToken()}`}
   });
   return (await handleResponse(response)) || [];
 };

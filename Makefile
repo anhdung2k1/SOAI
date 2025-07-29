@@ -132,6 +132,7 @@ run-genai:
 	@echo "Run GenAI Provider Container"
 	$(TOP_DIR)/vas.sh run_image \
 		--name=gen_ai_provider \
+		--mount=$(TOP_DIR)/backend/services/gen_ai_provider:/app \
 		--port=8004:8004 \
 		--env="CONSUL_HOST=soai_consul:8500 \
 			SERVICE_NAME=soai_gen_ai_provider \
@@ -149,6 +150,7 @@ run-recruitment: wait-mysql wait-authentication wait-genai
 	@echo "Run Recruitment Agent Container"
 	$(TOP_DIR)/vas.sh run_image \
 		--name=recruitment_agent \
+		--mount=$(TOP_DIR)/backend/services/recruitment_agent:/app \
 		--port=8003:8003 \
 		--env="CONSUL_HOST=soai_consul:8500 \
 			GENAI_HOST=soai_gen_ai_provider:8004 \
@@ -172,6 +174,7 @@ run-recruitment-celery-worker:
 	$(TOP_DIR)/vas.sh run_image \
 		--name=recruitment_agent-celery-worker \
 		--name_override=recruitment_agent \
+		--mount=$(TOP_DIR)/backend/services/recruitment_agent:/app \
 		--env="CONSUL_HOST=soai_consul:8500 \
 			GENAI_HOST=soai_gen_ai_provider:8004 \
 			SERVICE_NAME=soai_recruitment_agent \

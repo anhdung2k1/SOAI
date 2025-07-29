@@ -5,9 +5,11 @@ import {
   approveCV,
   updateCV,
   getCVPreviewUrl,
+  getProofImages,
 } from "../../api/cvApi";
 import { FaTrash, FaPen, FaEye } from "react-icons/fa";
 import "../../css/AdminCVList.css";
+import { API_HOST } from "../../constants/constants";
 
 const AdminCVList = ({ actionsEnabled = true }) => {
   const [cvs, setCVs] = useState([]);
@@ -16,8 +18,10 @@ const AdminCVList = ({ actionsEnabled = true }) => {
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editCV, setEditCV] = useState(null);
-  const [sortByScore, setSortByScore] = useState(false);
+  const [sortByScore, setSortByScore] = useState("desc");
   const [minScore, setMinScore] = useState("");
+  const [positionFilter, setPositionFilter] = useState("");
+  const [proofs, setProofs] = useState({});
 
   useEffect(() => {
     fetchCVs();
@@ -27,9 +31,24 @@ const AdminCVList = ({ actionsEnabled = true }) => {
     try {
       const data = await listCVsByPosition(query);
       setCVs(data || []);
+
+      const proofMap = {};
+      for (const cv of data || []) {
+        try {
+          const urls = await getProofImages(cv.id);
+          proofMap[cv.id] = urls;
+        } catch {
+          proofMap[cv.id] = [];
+        }
+      }
+      setProofs(proofMap);
     } catch (error) {
       console.error("Không thể tải danh sách CV:", error);
     }
+  };
+
+  const toggleSortOrder = () => {
+    setSortByScore((prev) => (prev === "desc" ? "asc" : "desc"));
   };
 
   const handleApprove = async (id) => {
@@ -65,24 +84,27 @@ const AdminCVList = ({ actionsEnabled = true }) => {
     }
   };
 
+  const uniquePositions = [...new Set(cvs.map((cv) => cv.matched_position).filter(Boolean))];
+
   const filteredCVs = cvs
-  .filter((cv) => {
-    try {
-      const regex = new RegExp(search, "i");
-      const matchesName = regex.test(cv.candidate_name);
-      const meetsMinScore =
-        minScore === "" || (cv.matched_score ?? 0) >= parseFloat(minScore);
-      return matchesName && meetsMinScore;
-    } catch (err) {
-      return true;
-    }
-  })
-  .sort((a, b) => {
-    if (sortByScore) {
-      return (b.matched_score || 0) - (a.matched_score || 0);
-    }
-    return 0;
-  });
+    .filter((cv) => {
+      try {
+        const regex = new RegExp(search, "i");
+        const matchesName = regex.test(cv.candidate_name);
+        const meetsMinScore =
+          minScore === "" || (cv.matched_score ?? 0) >= parseFloat(minScore);
+        const matchesPosition =
+          !positionFilter || cv.matched_position === positionFilter;
+        return matchesName && meetsMinScore && matchesPosition;
+      } catch (err) {
+        return true;
+      }
+    })
+    .sort((a, b) => {
+      const scoreA = a.matched_score ?? 0;
+      const scoreB = b.matched_score ?? 0;
+      return sortByScore === "asc" ? scoreA - scoreB : scoreB - scoreA;
+    });
 
   return (
     <div className="admin-cv-table">
@@ -96,10 +118,10 @@ const AdminCVList = ({ actionsEnabled = true }) => {
         <div className="admin-cv-table__header-right">
           <button
             className="admin-cv-table__approve-btn"
-            style={{ marginLeft: '12px' }}
-            onClick={() => setSortByScore(!sortByScore)}
+            style={{ marginLeft: "12px" }}
+            onClick={toggleSortOrder}
           >
-            Sắp xếp theo điểm {sortByScore ? '▲' : '▼'}
+            Sắp xếp {sortByScore === "asc" ? "tăng ▲" : "giảm ▼"}
           </button>
           <input
             type="text"
@@ -115,6 +137,18 @@ const AdminCVList = ({ actionsEnabled = true }) => {
             value={minScore}
             onChange={(e) => setMinScore(e.target.value)}
           />
+          <select
+            className="admin-cv-table__select-position"
+            value={positionFilter}
+            onChange={(e) => setPositionFilter(e.target.value)}
+          >
+            <option value="">-- Tất cả chuyên đề --</option>
+            {uniquePositions.map((pos) => (
+              <option key={pos} value={pos}>
+                {pos}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -144,32 +178,17 @@ const AdminCVList = ({ actionsEnabled = true }) => {
               {actionsEnabled && (
                 <td>
                   <div className="admin-cv-table__action-group">
-                    <button
-                      className="admin-cv-table__icon-btn"
-                      onClick={() => handleView(cv)}
-                      title="Xem"
-                    >
+                    <button className="admin-cv-table__icon-btn" onClick={() => handleView(cv)} title="Xem">
                       <FaEye />
                     </button>
-                    <button
-                      className="admin-cv-table__icon-btn"
-                      onClick={() => handleEdit(cv)}
-                      title="Chỉnh sửa"
-                    >
+                    <button className="admin-cv-table__icon-btn" onClick={() => handleEdit(cv)} title="Chỉnh sửa">
                       <FaPen />
                     </button>
-                    <button
-                      className="admin-cv-table__icon-btn delete"
-                      onClick={() => handleDelete(cv.id)}
-                      title="Xóa"
-                    >
+                    <button className="admin-cv-table__icon-btn delete" onClick={() => handleDelete(cv.id)} title="Xóa">
                       <FaTrash />
                     </button>
                     {cv.status === "Pending" && (
-                      <button
-                        onClick={() => handleApprove(cv.id)}
-                        className="admin-cv-table__approve-btn"
-                      >
+                      <button onClick={() => handleApprove(cv.id)} className="admin-cv-table__approve-btn">
                         Duyệt hồ sơ
                       </button>
                     )}
@@ -181,7 +200,6 @@ const AdminCVList = ({ actionsEnabled = true }) => {
         </tbody>
       </table>
 
-      {/* View Modal */}
       {showModal && selectedCV && actionsEnabled && (
         <div className="admin-cv-modal__overlay" onClick={() => setShowModal(false)}>
           <div className="admin-cv-modal__content" onClick={(e) => e.stopPropagation()}>
@@ -190,7 +208,10 @@ const AdminCVList = ({ actionsEnabled = true }) => {
             <p><strong>Họ tên:</strong> {selectedCV.candidate_name}</p>
             <p><strong>Email:</strong> {selectedCV.email}</p>
             <p><strong>Vị trí:</strong> {selectedCV.matched_position}</p>
-            <p><strong>Trạng thái:</strong> {selectedCV.status === "Accepted" ? "Đã duyệt" : selectedCV.status === "Rejected" ? "Từ chối" : "Đang chờ"}</p>
+            <p><strong>Trạng thái:</strong> {
+              selectedCV.status === "Accepted" ? "Đã duyệt" :
+              selectedCV.status === "Rejected" ? "Từ chối" : "Đang chờ"
+            }</p>
             <p><strong>Điểm:</strong> {selectedCV.matched_score ?? "N/A"}</p>
             <div className="admin-cv-preview__iframe-container" style={{ marginTop: "1rem" }}>
               <iframe
@@ -201,11 +222,31 @@ const AdminCVList = ({ actionsEnabled = true }) => {
                 style={{ border: "1px solid #ccc" }}
               />
             </div>
+            {proofs[selectedCV.id]?.length > 0 && (
+              <div style={{ marginTop: "1.5rem" }}>
+                <h4>Minh chứng đã tải lên:</h4>
+                <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                  {proofs[selectedCV.id].map((url, index) => (
+                    <img
+                      key={index}
+                      src={`${API_HOST}${url}`}
+                      alt={`proof-${selectedCV.id}-${index}`}
+                      style={{
+                        width: "120px",
+                        height: "auto",
+                        borderRadius: "6px",
+                        border: "1px solid #ccc",
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
 
-      {/* Edit Modal */}
       {editMode && editCV && actionsEnabled && (
         <div className="admin-cv-modal__overlay" onClick={() => setEditMode(false)}>
           <div className="admin-cv-modal__content" onClick={(e) => e.stopPropagation()}>
@@ -217,9 +258,7 @@ const AdminCVList = ({ actionsEnabled = true }) => {
                 <input
                   type="text"
                   value={editCV.candidate_name}
-                  onChange={(e) =>
-                    setEditCV({ ...editCV, candidate_name: e.target.value })
-                  }
+                  onChange={(e) => setEditCV({ ...editCV, candidate_name: e.target.value })}
                 />
               </label>
               <label>
@@ -227,9 +266,7 @@ const AdminCVList = ({ actionsEnabled = true }) => {
                 <input
                   type="email"
                   value={editCV.email}
-                  onChange={(e) =>
-                    setEditCV({ ...editCV, email: e.target.value })
-                  }
+                  onChange={(e) => setEditCV({ ...editCV, email: e.target.value })}
                 />
               </label>
               <label>
@@ -237,9 +274,7 @@ const AdminCVList = ({ actionsEnabled = true }) => {
                 <input
                   type="number"
                   value={editCV.matched_score}
-                  onChange={(e) =>
-                    setEditCV({ ...editCV, matched_score: parseInt(e.target.value, 10) })
-                  }
+                  onChange={(e) => setEditCV({ ...editCV, matched_score: parseFloat(e.target.value) })}
                 />
               </label>
               <label>
@@ -247,18 +282,14 @@ const AdminCVList = ({ actionsEnabled = true }) => {
                 <input
                   type="text"
                   value={editCV.matched_position}
-                  onChange={(e) =>
-                    setEditCV({ ...editCV, matched_position: e.target.value })
-                  }
+                  onChange={(e) => setEditCV({ ...editCV, matched_position: e.target.value })}
                 />
               </label>
               <label>
                 Trạng thái:
                 <select
                   value={editCV.status}
-                  onChange={(e) =>
-                    setEditCV({ ...editCV, status: e.target.value })
-                  }
+                  onChange={(e) => setEditCV({ ...editCV, status: e.target.value })}
                 >
                   <option value="Pending">Đang chờ</option>
                   <option value="Accepted">Đã duyệt</option>

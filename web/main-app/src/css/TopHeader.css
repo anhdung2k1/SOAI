@@ -108,3 +108,14 @@
   background: #eee;
   margin: 8px 0;
 }
+
+.header-link {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  margin: 0 12px;
+}
+
+.header-link:hover {
+  text-decoration: underline;
+}

@@ -68,6 +68,7 @@ from metrics.prometheus_metrics import (
 from datetime import date
 from urllib.parse import quote
 from celery_tasks.pipeline import process_cv_pipeline
+from fastapi import UploadFile
 
 logger = AppLogger(__name__)
 
@@ -95,6 +96,7 @@ class RecruitmentService:
         file,
         override_email: Optional[str] = None,
         position_applied_for: Optional[str] = None,
+        username: Optional[str] = None
     ):
         logger.info("Uploading and processing CV file.")
         try:
@@ -124,7 +126,7 @@ class RecruitmentService:
                     pdf_filename = file.filename
 
                 full_path = os.path.join(cv_dir, pdf_filename)
-                process_cv_pipeline.delay(full_path, override_email, position_applied_for)
+                process_cv_pipeline.delay(full_path, override_email, position_applied_for, username)
                 return CVUploadResponseSchema(message="Đang xử lý CV. Vui lòng kiểm tra sau.")
 
         except Exception as e:
@@ -137,6 +139,7 @@ class RecruitmentService:
         cv_file_path: str,
         override_email: str,
         position_applied_for: str,
+        username: str,
         db: Session,
     ):
         logger.info(f"[Worker] Processing CV from file path: {cv_file_path}")
@@ -175,6 +178,7 @@ class RecruitmentService:
         # Save CV
         cv_application = CVApplication(
             candidate_name=final_state.parsed_cv.get("name"),
+            username=username,
             email=email_to_check,
             matched_position=matched_position,
             status=FinalDecisionStatus.PENDING.value,
@@ -637,6 +641,7 @@ class RecruitmentService:
         return {
             "id": cv.id,
             "candidate_name": cv.candidate_name,
+            "username": cv.username,
             "email": cv.email,
             "position": cv.matched_position,
             "skills": json.loads(cv.skills),
@@ -645,6 +650,33 @@ class RecruitmentService:
             "status": cv.status,
             "parsed_cv": json.loads(cv.parsed_cv),
         }
+
+    def get_cv_application_by_username(self, username: str, db: Session):
+        logger.debug(f"[DEBUG] Bắt đầu truy vấn CV với username = '{username}'")
+
+        cvs = db.query(CVApplication).filter(CVApplication.username == username).all()
+        logger.info(f"Đã truy xuất {len(cvs)} hồ sơ ứng tuyển cho user '{username}'")
+
+        result = []
+        for cv in cvs:
+            try:
+                logger.debug(f"[DEBUG] Xử lý CV ID={cv.id} - Tên: {cv.candidate_name}")
+                result.append({
+                    "id": cv.id,
+                    "candidate_name": cv.candidate_name or "",
+                    "username": cv.username or "",
+                    "email": cv.email or "",
+                    "matched_position": cv.matched_position or "",
+                    "matched_score": float(cv.matched_score) if cv.matched_score is not None else 0.0,
+                    "status": cv.status or "UNKNOWN",
+                    "datetime": cv.datetime if cv.datetime else None,
+                })
+            except Exception as e:
+                logger.error(f"[ERROR] Lỗi khi xử lý CV ID={cv.id}: {e}", exc_info=True)
+                continue
+
+        logger.debug(f"[DEBUG] Trả về {len(result)} hồ sơ sau khi xử lý")
+        return result
 
 
     def list_all_cv_applications(self, db: Session, position: Optional[str] = None):
@@ -662,6 +694,7 @@ class RecruitmentService:
             {
                 "id": cv.id,
                 "candidate_name": cv.candidate_name,
+                "username": cv.username,
                 "email": cv.email,
                 "matched_position": cv.matched_position,
                 "matched_score": cv.matched_score,
@@ -925,3 +958,42 @@ class RecruitmentService:
                 "Content-Disposition": f"inline; filename*=UTF-8''{quote(filename)}"
             }
         )
+        
+    def list_proof_images(self, cv_id: int) -> List[str]:
+        """
+        Trả về danh sách URL ảnh minh chứng đã upload cho một CV,
+        bao gồm prefix /api/v1/recruitment/static/... để hoạt động đúng qua reverse proxy hoặc frontend API.
+        """
+        folder_path = os.path.join("cv_uploads", f"cv_{cv_id}", "proofs")
+        if not os.path.exists(folder_path):
+            logger.info(f"[list_proof_images] Thư mục {folder_path} không tồn tại.")
+            return []
+
+        files = sorted(os.listdir(folder_path))
+        image_urls = [
+            f"{API_PREFIX}/static/cv_{cv_id}/proofs/{file}"
+            for file in files
+            if file.lower().endswith((".png", ".jpg", ".jpeg", ".webp"))
+        ]
+
+        logger.info(f"[list_proof_images] CV {cv_id} có {len(image_urls)} ảnh minh chứng.")
+        return image_urls
+
+    def upload_proof_images(self, cv_id: int, files: List[UploadFile]) -> CVUploadResponseSchema:
+        """
+        Upload các hình ảnh minh chứng vào thư mục của hồ sơ tương ứng.
+        """
+        folder_path = os.path.join("cv_uploads", f"cv_{cv_id}", "proofs")
+        os.makedirs(folder_path, exist_ok=True)
+
+        saved_files = []
+        for file in files:
+            if not file.filename.lower().endswith((".png", ".jpg", ".jpeg", ".webp")):
+                continue
+            save_path = os.path.join(folder_path, file.filename)
+            with open(save_path, "wb") as f:
+                shutil.copyfileobj(file.file, f)
+            saved_files.append(file.filename)
+
+        logger.info(f"[upload_proof_images] Đã upload {len(saved_files)} ảnh cho CV ID={cv_id}")
+        return CVUploadResponseSchema(message=f"Đã upload {len(saved_files)} ảnh minh chứng.")

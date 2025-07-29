@@ -13,6 +13,7 @@ import AdminLayout from "./components/AdminDashBoard/AdminLayout";
 
 import { isAuthenticated, getUserRole } from "./components/authUtils";
 import "react-toastify/dist/ReactToastify.css";
+import CandidateApplication from "./components/RecruitmentCandidate/CandidateApplication";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -32,6 +33,17 @@ const AppRoutes = () => {
         element={
           auth && role === "USER" ? (
             <RecruitmentCandidatePage />
+          ) : (
+            <Navigate to="/signin" replace />
+          )
+        }
+      />
+
+      <Route
+        path="/my-applications"
+        element={
+          auth && role === "USER" ? (
+            <CandidateApplication />
           ) : (
             <Navigate to="/signin" replace />
           )

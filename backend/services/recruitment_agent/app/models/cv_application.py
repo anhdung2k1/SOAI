@@ -11,12 +11,13 @@ class CVApplication(DeclarativeBase):
 
     id = Column(Integer, primary_key=True, index=True)
     candidate_name = Column(String(255), nullable=False)  # Candidate full name
+    username = Column(String(100), nullable=False, index=True)  # username từ hệ thống đăng nhập
     matched_position = Column(String(255), nullable=True)  # Matched Job Position
     status = Column(String(50), default="Pending")  # CV status: Pending / Approved / Rejected
     email = Column(String(255), nullable=True)  # Candidate email address
     skills = Column(Text, nullable=True)  # List of skills extracted from CV (stored as JSON string)
-    matched_jd_skills = Column(Text, nullable=True) # JD Match with candidate's skills
+    matched_jd_skills = Column(Text, nullable=True)  # JD Match with candidate's skills
     is_matched = Column(Boolean, default=False)  # Whether candidate matched any JD
     parsed_cv = Column(Text, nullable=True)  # Full parsed CV content as JSON string
-    matched_score = Column(Integer, nullable=False, default=0) # LLM Score after Matching
-    datetime = Column(Date(), default=date.today ,nullable=True)
+    matched_score = Column(Integer, nullable=False, default=0)  # LLM Score after Matching
+    datetime = Column(Date(), default=date.today, nullable=True)

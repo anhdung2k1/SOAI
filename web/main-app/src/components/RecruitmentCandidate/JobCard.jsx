@@ -34,7 +34,7 @@ const JobCard = ({ job, logo, onClick }) => {
         <div className="job-info">
           <h3 className="job-title">{displayTitle}</h3>
           <p className="job-subtitle">
-            Endava <span className="dot">•</span> Full-time{" "}
+            Tuyển sinh <span className="dot">•</span> Cấp 3{" "}
             <span className="dot">•</span>{" "}
             <span className="job-ref">{displayRef}</span>
           </p>

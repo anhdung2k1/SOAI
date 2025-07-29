@@ -42,7 +42,7 @@ class JWTService:
     security = CustomHTTPBearer()
 
     @classmethod
-    def verify_jwt(cls, credentials: HTTPAuthorizationCredentials = Security(security)):
+    async def verify_jwt(cls, credentials: HTTPAuthorizationCredentials = Security(security)):
         """Verifies the JWT token and returns the payload if valid."""
         token = credentials.credentials
         jwt_verification_total.inc()  #  Count every verification attempt

@@ -6,7 +6,7 @@ from config.log_config import AppLogger
 logger = AppLogger(__name__)
 
 @celery.task(name="celery_tasks.process_cv_pipeline", bind=True, max_retries=3)
-def process_cv_pipeline(self, cv_file_path: str, email: str, position: str):
+def process_cv_pipeline(self, cv_file_path: str, email: str, position: str, username: str):
     """
     Celery task to process a CV file (already uploaded to disk) and run the matching pipeline.
     """
@@ -19,6 +19,7 @@ def process_cv_pipeline(self, cv_file_path: str, email: str, position: str):
             cv_file_path=cv_file_path,
             override_email=email,
             position_applied_for=position,
+            username=username,
             db=db
         )
 

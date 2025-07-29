@@ -9,7 +9,7 @@ from schemas.interview_schema import (
 )
 import json
 from schemas.jd_schema import JobDescriptionUploadSchema
-from schemas.cv_schema import CVUploadResponseSchema
+from schemas.cv_schema import CVUploadResponseSchema, CVBasicSchema
 from services.jwt_service import JWTService
 from config.log_config import AppLogger
 from schemas.interview_question_schema import InterviewQuestionSchema
@@ -33,13 +33,20 @@ def get_db():
 async def upload_cv(
     file: UploadFile = File(...),
     override_email: Optional[str] = Form(None),
-    position_applied_for: str = Form(...)
+    position_applied_for: str = Form(...),
+    get_current_user: dict = Depends(JWTService.verify_jwt)
 ):
+    username = get_current_user.get("sub")
+    role = get_current_user.get("role")
+    logger.debug(
+        f"USER '{username}' [{role}] is calling POST /cvs/upload endpoint."
+    )
     logger.debug(f"Uploading CV for position: {position_applied_for}")
     return recruitment_service.upload_and_process_cv(
         file,
         override_email=override_email,
         position_applied_for=position_applied_for,
+        username=username
     )
     
 @router.get("/cvs/{cv_id}/preview")
@@ -94,12 +101,18 @@ async def create_jd(
         logger.error(f"Error creating JD: {e}")
         return CVUploadResponseSchema(message=f"Failed to create JD: {str(e)}")
 
-# Candidate can get job descriptions list without authentication
+# Candidate can get job descriptions list authentication
 @router.get("/jds")
 async def get_jds(
     position: Optional[str] = Query(None, description="Optional position filter"),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    get_current_user: dict = Depends(JWTService.verify_jwt)
 ):
+    username = get_current_user.get("sub")
+    role = get_current_user.get("role")
+    logger.debug(
+        f"USER '{username}' [{role}] is calling GET /jd endpoint."
+    )
     logger.debug(f"Fetching job descriptions with position filter: {position}")
     return recruitment_service.get_all_jds(db, position=position)
 
@@ -355,15 +368,50 @@ async def list_all_cvs(
     )
     return recruitment_service.list_all_cv_applications(db, position)
 
-# Only administrator can get specific CV
+# User can get own CV applied
+@router.get("/cvs/me", response_model=List[CVBasicSchema])
+async def get_cv_by_username(
+    db: Session = Depends(get_db),
+    get_current_user: dict = Depends(JWTService.verify_jwt)
+):
+    username = get_current_user.get('sub')
+    role = get_current_user.get('role')
+    logger.debug(f"USER '{username}' with role {role} is calling GET /cvs/me")
+
+    return recruitment_service.get_cv_application_by_username(username=username, db=db)
+
+
+# User can get specific CV
 @router.get("/cvs/{cv_id}")
 async def get_cv_by_id(
     cv_id: int,
     db: Session = Depends(get_db),
-    get_current_user: dict = JWTService.require_role("ADMIN"),
+    get_current_user: dict = Depends(JWTService.verify_jwt),
 ):
-    logger.debug(f"USER '{get_current_user.get('sub')}' is calling GET /cv/{cv_id}")
+    logger.debug(f"USER '{get_current_user.get('sub')}' is calling GET /cvs/{cv_id}")
     try:
         return recruitment_service.get_cv_application_by_id(cv_id, db)
     except ValueError as e:
         return {"error": str(e)}
+
+@router.get("/cvs/{cv_id}/proofs", response_model=List[str])
+async def list_proof_images(
+    cv_id: int,
+    get_current_user: dict = Depends(JWTService.verify_jwt)
+):
+    """
+    Trả về danh sách URL của các ảnh minh chứng đã upload cho hồ sơ ứng tuyển.
+    """
+    logger.debug(f"USER '{get_current_user.get('sub')}' is calling GET /cvs/{cv_id}/proofs")
+    return recruitment_service.list_proof_images(cv_id=cv_id)
+
+@router.post("/cvs/{cv_id}/proofs/upload", response_model=CVUploadResponseSchema)
+async def upload_proof_images(
+    cv_id: int,
+    files: List[UploadFile] = File(...),
+    get_current_user: dict = Depends(JWTService.verify_jwt)
+):
+    """
+    Upload ảnh minh chứng (chứng chỉ, bảng điểm...) cho hồ sơ ứng tuyển.
+    """
+    return recruitment_service.upload_proof_images(cv_id=cv_id, files=files)
