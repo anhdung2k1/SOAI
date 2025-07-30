@@ -22,6 +22,10 @@ const AdminCVList = ({ actionsEnabled = true }) => {
   const [minScore, setMinScore] = useState("");
   const [positionFilter, setPositionFilter] = useState("");
   const [proofs, setProofs] = useState({});
+  // Justification modal state
+  const [showJustificationModal, setShowJustificationModal] = useState(false);
+  const [justificationContent, setJustificationContent] = useState("");
+  const [justificationCV, setJustificationCV] = useState(null);
 
   useEffect(() => {
     fetchCVs();
@@ -82,6 +86,12 @@ const AdminCVList = ({ actionsEnabled = true }) => {
     } catch (err) {
       console.error("Cập nhật CV thất bại:", err);
     }
+  };
+
+  const handleScoreClick = (cv) => {
+    setJustificationCV(cv);
+    setJustificationContent(cv.justification || "");
+    setShowJustificationModal(true);
   };
 
   const uniquePositions = [...new Set(cvs.map((cv) => cv.matched_position).filter(Boolean))];
@@ -174,7 +184,15 @@ const AdminCVList = ({ actionsEnabled = true }) => {
                 </span>
               </td>
               <td>{cv.email || "N/A"}</td>
-              <td>{cv.matched_score ?? "N/A"}</td>
+              <td>
+                <span
+                  className="admin-cv-table__score-link"
+                  title="Bấm để xem đánh giá AI"
+                  onClick={() => handleScoreClick(cv)}
+                >
+                  {cv.matched_score ?? "N/A"}
+                </span>
+              </td>
               {actionsEnabled && (
                 <td>
                   <div className="admin-cv-table__action-group">
@@ -302,6 +320,40 @@ const AdminCVList = ({ actionsEnabled = true }) => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Justification Modal */}
+      {showJustificationModal && (
+        <div className="admin-cv-modal__overlay" onClick={() => setShowJustificationModal(false)}>
+          <div
+            className="admin-cv-modal__content admin-cv-modal__justification-content"
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: 540, minWidth: 300 }}
+          >
+            <button
+              className="admin-cv-modal__close"
+              onClick={() => setShowJustificationModal(false)}
+            >
+              ×
+            </button>
+            <h3>Đánh giá về hồ sơ</h3>
+            <div className="admin-cv-modal__justification">
+              {justificationContent
+                ? justificationContent.split("\n").map((line, idx) => (
+                    <span key={idx}>
+                      {line}
+                      <br />
+                    </span>
+                  ))
+                : <span className="admin-cv-table__justification-missing">Không có đánh giá</span>
+              }
+            </div>
+            <div style={{marginTop: 6, color: "#6c757d", fontSize: ".97em"}}>
+              <b>Họ tên:</b> {justificationCV?.candidate_name} &nbsp;|&nbsp;
+              <b>Vị trí:</b> {justificationCV?.matched_position}
+            </div>
           </div>
         </div>
       )}

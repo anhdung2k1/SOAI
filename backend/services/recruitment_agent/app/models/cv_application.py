@@ -21,3 +21,4 @@ class CVApplication(DeclarativeBase):
     parsed_cv = Column(Text, nullable=True)  # Full parsed CV content as JSON string
     matched_score = Column(Integer, nullable=False, default=0)  # LLM Score after Matching
     datetime = Column(Date(), default=date.today, nullable=True)
+    justification = Column(Text, nullable=True)  # Justification for matching decision

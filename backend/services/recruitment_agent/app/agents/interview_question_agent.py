@@ -20,11 +20,10 @@ class InterviewQuestionAgent:
         matched_jd = state.matched_jd or {}
 
         name = parsed_cv.get("name", "học sinh")
-        skills = parsed_cv.get("skills", [])
         match_score = matched_jd.get("match_score", 80)  # fallback
-
-        position = matched_jd.get("position", "chương trình chuyên")
-        subject = self._extract_major_subject(matched_jd.get("skills_required", []))
+        position = matched_jd.get("position", "")
+        logger.debug(f"[InterviewQuestionAgent] Candidate: {name}, Match Score: {match_score}, Position: {position}")
+        subject = self._extract_major_subject_llm(parsed_cv=parsed_cv, matched_jd=matched_jd)
 
         # Determine number of questions based on match_score
         if match_score >= 90:
@@ -135,11 +134,39 @@ Return only valid JSON. No explanation or markdown.
         state.interview_questions = qa_pairs
         return state
 
-    def _extract_major_subject(self, skills_required: list) -> str:
-        """Try to extract the main subject from skills_required"""
-        if not skills_required:
+    def _extract_major_subject_llm(self, parsed_cv: dict, matched_jd: dict) -> str:
+        """
+        Use LLM to extract the most appropriate major subject for the interview, based on candidate CV and JD.
+        Returns subject name, e.g.: "Mathematics", "Physics", "Chemistry", "Biology", "Informatics", etc.
+        """
+        prompt = f"""
+Given the candidate profile and job description information below, identify the **single most appropriate major subject** (e.g., "Mathematics", "Physics", "Chemistry", "Biology", "Informatics", etc.) for the specialized interview.
+
+Candidate info:
+{json.dumps(parsed_cv, ensure_ascii=False, indent=2)}
+
+Job description info:
+{json.dumps(matched_jd, ensure_ascii=False, indent=2)}
+
+Only return the subject name (one word or short phrase). Do not explain, do not use markdown, and do not include any special characters.
+Support both Vietnamese and English subjects, but prefer Vietnamese if available based on the candidate's CV.
+""".strip()
+        logger.debug(f"[InterviewQuestionAgent] Prompt sent to LLM for subject extraction:\n{prompt}")
+        try:
+            response = self.llm.invoke(prompt)
+            if isinstance(response, dict):
+                subject = response.get("data", "")
+            elif hasattr(response, "text"):
+                subject = response.text
+            elif isinstance(response, bytes):
+                subject = response.decode("utf-8")
+            elif not isinstance(response, str):
+                subject = str(response)
+            subject = subject.strip().strip('"').strip("'")
+            # Filter to get only the subject (cut off any extra text if LLM returns wrong format)
+            subject = re.split(r"[^\wÀ-ỹA-Za-z]+", subject)[0] if subject else ""
+            logger.info(f"[InterviewQuestionAgent] LLM returned subject: {subject}")
+            return subject
+        except Exception as e:
+            logger.error(f"[InterviewQuestionAgent] LLM subject extraction failed: {e}")
             return ""
-        for s in skills_required:
-            if isinstance(s, str) and ":" in s:
-                return s.split(":")[0]
-        return skills_required[0] if isinstance(skills_required[0], str) else ""

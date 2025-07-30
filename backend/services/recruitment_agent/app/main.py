@@ -37,6 +37,12 @@ app = FastAPI(
 )
 
 # === Mount static folder (cho file ảnh minh chứng) ===
+upload_path = "cv_uploads"
+if not os.path.exists(upload_path):
+    os.makedirs(upload_path)
+    logger.info(f"[Startup] Created upload folder: {upload_path}")
+else:
+    logger.debug(f"[Startup] Upload folder already exists: {upload_path}")
 app.mount(f"{API_PREFIX}/static", StaticFiles(directory="cv_uploads"), name="static")
 
 # === OpenTelemetry ===

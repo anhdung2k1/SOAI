@@ -71,6 +71,8 @@ server:
     httpsPort: "8433"
     httpNodePort: "30803"
     httpsNodePort: "30833"
+    worker:
+      name: recruitment-worker
 
   genai:
     name: genai

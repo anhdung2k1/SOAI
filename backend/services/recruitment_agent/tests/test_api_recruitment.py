@@ -368,7 +368,7 @@ class TestRecruitmentAPI(unittest.TestCase):
         name = "Nguyễn Bảo Ngọc"
         email = "kudung053@gmail.com"
         position = "Tuyển sinh vào lớp 10 chuyên Văn"
-        unmatch_position = "Senior Fullstack Developer (Java+React)"
+        unmatch_position = "Tuyển sinh vào lớp 10 chuyên Toán"
 
         self.preclean_candidate(name, position)
 

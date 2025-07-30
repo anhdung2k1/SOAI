@@ -15,11 +15,18 @@ from config.log_config import AppLogger
 from schemas.interview_question_schema import InterviewQuestionSchema
 from celery_tasks.pipeline import *
 
+from metrics.prometheus_metrics import (
+    cv_upload_total, cv_approved_total, cv_rejected_total, cv_deleted_total,
+    jd_upload_total, jd_deleted_total,
+    interview_scheduled_total, interview_accepted_total, interview_rejected_total, interview_deleted_total,
+    interview_questions_generated_total, interview_questions_regenerated_total,
+    pending_cv_count, scheduled_interview_count, interview_question_count, jd_count,
+    cv_processing_duration_seconds, jd_upload_duration_seconds, interview_scheduling_duration_seconds
+)
+
 logger = AppLogger(__name__)
 router = APIRouter()
-
 recruitment_service = RecruitmentService()
-
 
 def get_db():
     db = DatabaseSession()
@@ -42,13 +49,15 @@ async def upload_cv(
         f"USER '{username}' [{role}] is calling POST /cvs/upload endpoint."
     )
     logger.debug(f"Uploading CV for position: {position_applied_for}")
-    return recruitment_service.upload_and_process_cv(
-        file,
-        override_email=override_email,
-        position_applied_for=position_applied_for,
-        username=username
-    )
-    
+    with cv_processing_duration_seconds.time():
+        cv_upload_total.inc()
+        return recruitment_service.upload_and_process_cv(
+            file,
+            override_email=override_email,
+            position_applied_for=position_applied_for,
+            username=username
+        )
+
 @router.get("/cvs/{cv_id}/preview")
 async def preview_cv_file(
     cv_id: int,
@@ -78,7 +87,9 @@ async def upload_jd(
     logger.debug(f"USER '{username}' [{role}] is calling /jd/upload endpoint.")
     content = await file.read()
     jd_list = json.loads(content)
-    return recruitment_service.upload_jd(jd_list, db)
+    with jd_upload_duration_seconds.time():
+        jd_upload_total.inc()
+        return recruitment_service.upload_jd(jd_list, db)
 
 @router.post("/jds", response_model=CVUploadResponseSchema)
 async def create_jd(
@@ -114,7 +125,9 @@ async def get_jds(
         f"USER '{username}' [{role}] is calling GET /jd endpoint."
     )
     logger.debug(f"Fetching job descriptions with position filter: {position}")
-    return recruitment_service.get_all_jds(db, position=position)
+    result = recruitment_service.get_all_jds(db, position=position)
+    jd_count.set(len(result))
+    return result
 
 # Only administrator can edit the Job Description
 @router.put("/jds/{jd_id}", response_model=CVUploadResponseSchema)
@@ -135,6 +148,7 @@ async def delete_jd(
     get_current_user: dict = JWTService.require_role("ADMIN"),
 ):
     logger.debug(f"USER '{get_current_user.get('sub')}' is calling DELETE /jds/{jd_id}")
+    jd_deleted_total.inc()
     return recruitment_service.delete_jd(jd_id, db)
 
 # Only Administrator can delete all JDs
@@ -158,8 +172,9 @@ async def schedule_interview(
     logger.debug(
         f"USER '{username}' [{role}] is calling POST /interviews/schedule endpoint."
     )
-    return recruitment_service.schedule_interview(interview_data, db)
-
+    with interview_scheduling_duration_seconds.time():
+        interview_scheduled_total.inc()
+        return recruitment_service.schedule_interview(interview_data, db)
 
 # Only administrator can get interview list
 @router.get("/interviews")
@@ -177,9 +192,11 @@ async def get_interviews(
         username = get_current_user.get("sub")
         role = get_current_user.get("role")
         logger.debug(f"USER '{username}' [{role}] is calling GET /interviews endpoint.")
-        return recruitment_service.get_all_interviews(
+        result = recruitment_service.get_all_interviews(
             db, interview_date=interview_date, candidate_name=candidate_name
         )
+        scheduled_interview_count.set(len(result))
+        return result
     except ValueError as e:
         return {"error": str(e)}
 
@@ -193,6 +210,7 @@ async def delete_interview(
     logger.debug(
         f"USER '{get_current_user.get('sub')}' is calling DELETE /interviews/{interview_id}"
     )
+    interview_deleted_total.inc()
     return recruitment_service.delete_interview(interview_id, db)
 
 # Only administrator can delete all interviews
@@ -218,7 +236,9 @@ async def accept_interview(
     logger.debug(
         f"USER '{username}' [{role}] is calling POST /interviews/accept endpoint."
     )
+    interview_accepted_total.inc()
     accept_interview_task.delay(interview_accept_data.dict())
+    interview_questions_generated_total.inc()
     return CVUploadResponseSchema(message="Interview acceptance is being processed.")
 
 # Only administrator can update the interview scheduler
@@ -244,6 +264,7 @@ async def cancel_interview(
     logger.debug(
         f"USER '{get_current_user.get('sub')}' is calling POST /interviews/{interview_id}/cancel"
     )
+    interview_rejected_total.inc()
     return recruitment_service.cancel_interview(interview_id, db)
 
 # === Interview question ===
@@ -256,7 +277,9 @@ async def get_questions_for_cv(
     get_current_user: dict = JWTService.require_role("ADMIN")
 ):
     logger.debug(f"USER '{get_current_user.get('sub')}' is calling GET /interview-questions/{cv_id}/questions")
-    return recruitment_service.get_interview_questions(cv_id, db)
+    questions = recruitment_service.get_interview_questions(cv_id, db)
+    interview_question_count.set(len(questions))
+    return questions
 
 # Only TA can edit the questions
 @router.put("/interview-questions/{question_id}/edit")
@@ -279,6 +302,7 @@ async def regenerate_questions(
     get_current_user: dict = JWTService.require_role("ADMIN")
 ):
     logger.debug(f"USER '{get_current_user.get('sub')}' is calling POST /interview-questions/{cv_id}/questions/regenerate")
+    interview_questions_regenerated_total.inc()
     return recruitment_service.regenerate_interview_questions(cv_id, db)
 
 # ==== CV Applications ====
@@ -294,14 +318,16 @@ async def approve_cv(
     logger.debug(f"USER '{username}' [{role}] is calling /cvs/approve endpoint.")
 
     try:
+        cv_approved_total.inc()
         approve_cv_task.delay(candidate_id)
         return CVUploadResponseSchema(message="CV Approval is being processed")
     except ValueError as e:
+        cv_rejected_total.inc()
         return CVUploadResponseSchema(message="Value error.")
     except Exception as e:
         logger.error(f"Error approving CV: {e}")
+        cv_rejected_total.inc()
         return CVUploadResponseSchema(message="Internal server error.")
-
 
 # Only administrator can get pending list CVs
 @router.get("/cvs/pending")
@@ -315,7 +341,9 @@ async def get_pending_cv_list(
     username = get_current_user.get("sub")
     role = get_current_user.get("role")
     logger.debug(f"USER '{username}' [{role}] is calling GET /cvs/pending endpoint.")
-    return recruitment_service.get_pending_cvs(db, candidate_name=candidate_name)
+    result = recruitment_service.get_pending_cvs(db, candidate_name=candidate_name)
+    pending_cv_count.set(len(result))
+    return result
 
 # Only administrator can get approved list CVs
 @router.get("/cvs/approved")
@@ -329,7 +357,8 @@ async def get_approved_cv_list(
     username = get_current_user.get("sub")
     role = get_current_user.get("role")
     logger.debug(f"USER '{username}' [{role}] is calling GET /cvs/approved endpoint.")
-    return recruitment_service.get_approved_cvs(db, candidate_name=candidate_name)
+    result = recruitment_service.get_approved_cvs(db, candidate_name=candidate_name)
+    return result
 
 # Only administrator can update the CV
 @router.put("/cvs/{cv_id}", response_model=CVUploadResponseSchema)
@@ -352,6 +381,7 @@ async def delete_cv(
     get_current_user: dict = JWTService.require_role("ADMIN"),
 ):
     logger.debug(f"USER '{get_current_user.get('sub')}' is calling DELETE /cvs/{cv_id}")
+    cv_deleted_total.inc()
     return recruitment_service.delete_cv_application(cv_id, db)
 
 # Only administrator can get all CVs filtered with position
@@ -377,9 +407,7 @@ async def get_cv_by_username(
     username = get_current_user.get('sub')
     role = get_current_user.get('role')
     logger.debug(f"USER '{username}' with role {role} is calling GET /cvs/me")
-
     return recruitment_service.get_cv_application_by_username(username=username, db=db)
-
 
 # User can get specific CV
 @router.get("/cvs/{cv_id}")

@@ -25,46 +25,6 @@ from config.log_config import AppLogger
 from config.constants import *
 from agents.interview_question_agent import InterviewQuestionAgent
 from services.genai import GenAI
-from metrics.prometheus_metrics import (
-    # CV Counter
-    cv_upload_total,
-    cv_approved_total,
-    cv_rejected_total,
-    cv_deleted_total,
-    cv_processing_failed_total,
-    cv_approval_failed_total,
-    # JD Counter
-    jd_upload_total,
-    jd_deleted_total,
-    jd_upload_failed_total,
-    # Interview Counter
-    interview_scheduled_total,
-    interview_accepted_total,
-    interview_rejected_total,
-    interview_deleted_total,
-    interview_bulk_deleted_total,
-    interview_schedule_failed_total,
-    interview_acceptance_failed_total,
-    # Interview Question Counter
-    interview_questions_generated_total,
-    interview_questions_regenerated_total,
-    question_generation_failed_total,
-    regenerate_questions_failed_total,
-    # Histogram CV
-    cv_processing_duration_seconds,
-    cv_approval_duration_seconds,
-    # Histogration JD
-    jd_upload_duration_seconds,
-    # Histogram Interview Schedule/Question
-    interview_scheduling_duration_seconds,
-    interview_acceptance_duration_seconds,
-    interview_question_generation_duration_seconds,
-    # Gauge metricss
-    pending_cv_count,
-    scheduled_interview_count,
-    interview_question_count,
-    jd_count
-)
 from datetime import date
 from urllib.parse import quote
 from celery_tasks.pipeline import process_cv_pipeline
@@ -100,38 +60,35 @@ class RecruitmentService:
     ):
         logger.info("Uploading and processing CV file.")
         try:
-            with cv_processing_duration_seconds.time():
-                cv_dir = "./cv_uploads"
-                os.makedirs(cv_dir, exist_ok=True)
+            cv_dir = "./cv_uploads"
+            os.makedirs(cv_dir, exist_ok=True)
 
-                original_path = os.path.join(cv_dir, file.filename)
-                with open(original_path, "wb") as f:
-                    shutil.copyfileobj(file.file, f)
+            original_path = os.path.join(cv_dir, file.filename)
+            with open(original_path, "wb") as f:
+                shutil.copyfileobj(file.file, f)
 
-                # Convert to PDF if needed
-                if not file.filename.lower().endswith(".pdf"):
-                    try:
-                        subprocess.run([
-                            "libreoffice", "--headless", "--convert-to", "pdf",
-                            "--outdir", cv_dir, original_path
-                        ], check=True)
-                        pdf_filename = file.filename.rsplit(".", 1)[0] + ".pdf"
-                        pdf_path = os.path.join(cv_dir, pdf_filename)
-                        if not os.path.exists(pdf_path):
-                            raise RuntimeError("PDF conversion failed.")
-                    except Exception as e:
-                        logger.error(f"LibreOffice conversion failed: {e}")
-                        raise RuntimeError("Không thể chuyển đổi CV sang PDF.")
-                else:
-                    pdf_filename = file.filename
+            # Convert to PDF if needed
+            if not file.filename.lower().endswith(".pdf"):
+                try:
+                    subprocess.run([
+                        "libreoffice", "--headless", "--convert-to", "pdf",
+                        "--outdir", cv_dir, original_path
+                    ], check=True)
+                    pdf_filename = file.filename.rsplit(".", 1)[0] + ".pdf"
+                    pdf_path = os.path.join(cv_dir, pdf_filename)
+                    if not os.path.exists(pdf_path):
+                        raise RuntimeError("PDF conversion failed.")
+                except Exception as e:
+                    logger.error(f"LibreOffice conversion failed: {e}")
+                    raise RuntimeError("Không thể chuyển đổi CV sang PDF.")
+            else:
+                pdf_filename = file.filename
 
-                full_path = os.path.join(cv_dir, pdf_filename)
-                process_cv_pipeline.delay(full_path, override_email, position_applied_for, username)
-                return CVUploadResponseSchema(message="Đang xử lý CV. Vui lòng kiểm tra sau.")
-
+            full_path = os.path.join(cv_dir, pdf_filename)
+            process_cv_pipeline.delay(full_path, override_email, position_applied_for, username)
+            return CVUploadResponseSchema(message="Đang xử lý CV. Vui lòng kiểm tra sau.")
         except Exception as e:
             logger.exception(f"Error processing CV: {e}")
-            cv_processing_failed_total.inc()
             return CVUploadResponseSchema(message="Đã xảy ra lỗi trong quá trình xử lý hồ sơ. Vui lòng thử lại sau.")
 
     def upload_cv_from_file_path(
@@ -161,6 +118,7 @@ class RecruitmentService:
         matched_position = matched_jd.get("position") or position_applied_for or "Không xác định"
         matched_score = matched_jd.get("match_score", 0)
         matched_skills = matched_jd.get("skills_required", [])
+        matched_justification = matched_jd.get("justification", "")
 
         existing_cv = (
             db.query(CVApplication)
@@ -187,11 +145,11 @@ class RecruitmentService:
             matched_score=matched_score,
             is_matched=True,
             parsed_cv=json.dumps(final_state.parsed_cv),
-            datetime=date.today()
+            datetime=date.today(),
+            justification=matched_justification
         )
         db.add(cv_application)
         db.commit()
-        cv_upload_total.inc()
 
         if matched_score >= 50:
             return (
@@ -236,7 +194,6 @@ class RecruitmentService:
             )
         except Exception as e:
             logger.error(f"Lỗi khi xử lý dữ liệu từ DB: {e}")
-            cv_approval_failed_total.inc()
             raise RuntimeError("Không thể đọc dữ liệu hồ sơ hoặc yêu cầu chuyên đề.")
 
         state = RecruitmentState(
@@ -249,24 +206,20 @@ class RecruitmentService:
         )
 
         try:
-            with cv_approval_duration_seconds.time():
-                updated_state = pipeline.invoke(state.model_dump())
-                final_state = RecruitmentState(**updated_state)
-                logger.info(f"[approve_cv] final_state: {final_state}")
+            updated_state = pipeline.invoke(state.model_dump())
+            final_state = RecruitmentState(**updated_state)
+            logger.info(f"[approve_cv] final_state: {final_state}")
         except Exception as e:
             logger.error(f"Lỗi trong quá trình xét duyệt: {e}")
-            cv_approval_failed_total.inc()
             raise RuntimeError("Đã xảy ra lỗi khi thực thi quá trình xét duyệt.")
 
         if final_state.final_decision and final_state.final_decision.startswith(
             FinalDecisionStatus.ACCEPTED.value
         ):
             cv_application.status = FinalDecisionStatus.ACCEPTED.value
-            cv_approved_total.inc()
             decision_message = "Hồ sơ đã được duyệt thành công. Học sinh phù hợp với chuyên đề."
         else:
             cv_application.status = FinalDecisionStatus.REJECTED.value
-            cv_rejected_total.inc()
             decision_message = "Hồ sơ không đáp ứng yêu cầu và đã bị từ chối bởi hệ thống đánh giá."
 
         db.commit()
@@ -281,65 +234,60 @@ class RecruitmentService:
         logger.info("Đang tải danh sách chuyên đề.")
 
         for jd_data in jd_data_list:
-            with jd_upload_duration_seconds.time():
-                jd_validated = JobDescriptionUploadSchema(**jd_data)
-                logger.debug(f"Xác thực chuyên đề: {jd_validated}")
-                normalized_skills = json.dumps(sorted(jd_validated.skills_required))
-                logger.debug(f"Kỹ năng chuẩn hóa: {normalized_skills}")
+            jd_validated = JobDescriptionUploadSchema(**jd_data)
+            logger.debug(f"Xác thực chuyên đề: {jd_validated}")
+            normalized_skills = json.dumps(sorted(jd_validated.skills_required))
+            logger.debug(f"Kỹ năng chuẩn hóa: {normalized_skills}")
 
-                # Bỏ qua nếu thiếu thông tin bắt buộc
-                if not jd_validated.position:
-                    logger.warn("Chuyên đề không có tiêu đề. Bỏ qua.")
-                    continue
-                if not jd_validated.skills_required:
-                    logger.warn("Chuyên đề không có yêu cầu kỹ năng. Bỏ qua.")
-                    continue
-                if not jd_validated.level:
-                    logger.warn("Không có cấp độ chuyên đề. Gán mặc định là 'Trung bình'.")
-                    jd_validated.level = "Trung bình"
+            # Bỏ qua nếu thiếu thông tin bắt buộc
+            if not jd_validated.position:
+                logger.warn("Chuyên đề không có tiêu đề. Bỏ qua.")
+                continue
+            if not jd_validated.skills_required:
+                logger.warn("Chuyên đề không có yêu cầu kỹ năng. Bỏ qua.")
+                continue
+            if not jd_validated.level:
+                logger.warn("Không có cấp độ chuyên đề. Gán mặc định là 'Trung bình'.")
+                jd_validated.level = "Trung bình"
 
-                # Kiểm tra trùng
-                existing = (
-                    db.query(JobDescription)
-                    .filter_by(
-                        position=jd_validated.position,
-                        skills_required=normalized_skills,
-                        level=jd_validated.level,
-                    )
-                    .first()
-                )
-                if existing:
-                    logger.warn(
-                        f"Chuyên đề '{jd_validated.position}' với kỹ năng tương ứng đã tồn tại. Bỏ qua."
-                    )
-                    continue
-
-                # Thêm mới
-                jd = JobDescription(
+            # Kiểm tra trùng
+            existing = (
+                db.query(JobDescription)
+                .filter_by(
                     position=jd_validated.position,
                     skills_required=normalized_skills,
-                    location=jd_validated.location,
-                    datetime=jd_validated.datetime,
                     level=jd_validated.level,
-                    referral=jd_validated.referral,
-                    referral_code=jd_validated.referral_code,
-                    company_description=jd_validated.company_description,
-                    job_description=jd_validated.job_description,
-                    responsibilities=jd_validated.responsibilities,
-                    qualifications=jd_validated.qualifications,
-                    additional_information=jd_validated.additional_information,
-                    hiring_manager=jd_validated.hiring_manager,
-                    recruiter=jd_validated.recruiter,
                 )
-                logger.debug(f"Thêm mới chuyên đề vào DB: {jd}")
-                db.add(jd)
-                jd_upload_total.inc()
+                .first()
+            )
+            if existing:
+                logger.warn(
+                    f"Chuyên đề '{jd_validated.position}' với kỹ năng tương ứng đã tồn tại. Bỏ qua."
+                )
+                continue
 
-        # Commit sau cùng
+            # Thêm mới
+            jd = JobDescription(
+                position=jd_validated.position,
+                skills_required=normalized_skills,
+                location=jd_validated.location,
+                datetime=jd_validated.datetime,
+                level=jd_validated.level,
+                referral=jd_validated.referral,
+                referral_code=jd_validated.referral_code,
+                company_description=jd_validated.company_description,
+                job_description=jd_validated.job_description,
+                responsibilities=jd_validated.responsibilities,
+                qualifications=jd_validated.qualifications,
+                additional_information=jd_validated.additional_information,
+                hiring_manager=jd_validated.hiring_manager,
+                recruiter=jd_validated.recruiter,
+            )
+            logger.debug(f"Thêm mới chuyên đề vào DB: {jd}")
+            db.add(jd)
         try:
             db.commit()
         except Exception as e:
-            jd_upload_failed_total.inc()
             logger.error(f"Lỗi khi lưu chuyên đề vào DB: {e}")
             return CVUploadResponseSchema(message="Không thể lưu chuyên đề vào hệ thống.")
 
@@ -349,46 +297,42 @@ class RecruitmentService:
     def schedule_interview(self, interview_data, db: Session):
         """Lên lịch phỏng vấn cho học sinh đã nộp hồ sơ."""
         logger.info(f"Đang lên lịch phỏng vấn cho học sinh: {interview_data.candidate_name}")
-        with interview_scheduling_duration_seconds.time():
-            # Kiểm tra hồ sơ ứng viên
-            cv = (
-                db.query(CVApplication)
-                .filter_by(candidate_name=interview_data.candidate_name)
-                .first()
-            )
-            if not cv:
-                interview_schedule_failed_total.inc()
-                return CVUploadResponseSchema(message="Không tìm thấy hồ sơ của học sinh.")
+        # Kiểm tra hồ sơ ứng viên
+        cv = (
+            db.query(CVApplication)
+            .filter_by(candidate_name=interview_data.candidate_name)
+            .first()
+        )
+        if not cv:
+            return CVUploadResponseSchema(message="Không tìm thấy hồ sơ của học sinh.")
 
-            if not cv.is_matched:
-                interview_schedule_failed_total.inc()
-                return CVUploadResponseSchema(
-                    message="Học sinh chưa được ghép nối với bất kỳ chuyên đề nào. Không thể lên lịch phỏng vấn."
-                )
-
-            # Kiểm tra trùng lịch
-            existing = (
-                db.query(InterviewSchedule)
-                .filter_by(candidate_name=interview_data.candidate_name)
-                .first()
+        if not cv.is_matched:
+            return CVUploadResponseSchema(
+                message="Học sinh chưa được ghép nối với bất kỳ chuyên đề nào. Không thể lên lịch phỏng vấn."
             )
-            if existing:
-                return CVUploadResponseSchema(
-                    message="Học sinh đã có lịch phỏng vấn được sắp xếp trước đó."
-                )
 
-            # Tạo lịch phỏng vấn
-            interview = InterviewSchedule(
-                candidate_name=interview_data.candidate_name,
-                interviewer_name=interview_data.interviewer_name,
-                interview_datetime=interview_data.interview_datetime,
-                status=FinalDecisionStatus.PENDING.value,
-                cv_application_id=cv.id
+        # Kiểm tra trùng lịch
+        existing = (
+            db.query(InterviewSchedule)
+            .filter_by(candidate_name=interview_data.candidate_name)
+            .first()
+        )
+        if existing:
+            return CVUploadResponseSchema(
+                message="Học sinh đã có lịch phỏng vấn được sắp xếp trước đó."
             )
-            db.add(interview)
-            db.commit()
-            interview_scheduled_total.inc()
-            logger.info(f"Phỏng vấn được lên lịch thành công cho học sinh: {interview_data.candidate_name}")
+
+        # Tạo lịch phỏng vấn
+        interview = InterviewSchedule(
+            candidate_name=interview_data.candidate_name,
+            interviewer_name=interview_data.interviewer_name,
+            interview_datetime=interview_data.interview_datetime,
+            status=FinalDecisionStatus.PENDING.value,
+            cv_application_id=cv.id
+        )
+        db.add(interview)
+        db.commit()
+        logger.info(f"Phỏng vấn được lên lịch thành công cho học sinh: {interview_data.candidate_name}")
 
         return CVUploadResponseSchema(message="Phỏng vấn đã được lên lịch thành công.")
 
@@ -410,63 +354,57 @@ class RecruitmentService:
             logger.debug(f"Tìm thấy lịch phỏng vấn: {interview}")
             logger.debug(f"Liên kết với hồ sơ ID: {interview.cv_application_id}")
 
-            with interview_acceptance_duration_seconds.time():
-                # Bước 2: Xác nhận phỏng vấn
-                interview.status = FinalDecisionStatus.ACCEPTED.value
-                db.commit()
-                interview_accepted_total.inc()
-                logger.info("Học sinh đã xác nhận phỏng vấn.")
+            # Bước 2: Xác nhận phỏng vấn
+            interview.status = FinalDecisionStatus.ACCEPTED.value
+            db.commit()
+            logger.info("Học sinh đã xác nhận phỏng vấn.")
 
-                # Bước 3: Lấy hồ sơ liên kết
-                cv = db.query(CVApplication).filter_by(id=interview.cv_application_id).first()
-                if not cv:
-                    logger.warn("Không tìm thấy hồ sơ liên kết.")
-                    return "Không tìm thấy hồ sơ liên kết với phỏng vấn."
+            # Bước 3: Lấy hồ sơ liên kết
+            cv = db.query(CVApplication).filter_by(id=interview.cv_application_id).first()
+            if not cv:
+                logger.warn("Không tìm thấy hồ sơ liên kết.")
+                return "Không tìm thấy hồ sơ liên kết với phỏng vấn."
 
-                logger.info(f"Khởi tạo sinh câu hỏi cho học sinh: {cv.candidate_name} (CV ID={cv.id})")
+            logger.info(f"Khởi tạo sinh câu hỏi cho học sinh: {cv.candidate_name} (CV ID={cv.id})")
 
-                parsed_cv = json.loads(cv.parsed_cv)
-                matched_jd = {
-                    "position": cv.matched_position,
-                    "skills_required": json.loads(cv.matched_jd_skills)
-                }
+            parsed_cv = json.loads(cv.parsed_cv)
+            matched_jd = {
+                "position": cv.matched_position,
+                "skills_required": json.loads(cv.matched_jd_skills)
+            }
 
-                # Bước 4: Sinh câu hỏi phỏng vấn từ AI
-                agent = InterviewQuestionAgent(GenAI(model=DEFAULT_MODEL))
-                state = RecruitmentState(parsed_cv=parsed_cv, matched_jd=matched_jd)
+            # Bước 4: Sinh câu hỏi phỏng vấn từ AI
+            agent = InterviewQuestionAgent(GenAI(model=DEFAULT_MODEL))
+            state = RecruitmentState(parsed_cv=parsed_cv, matched_jd=matched_jd)
 
-                with interview_question_generation_duration_seconds.time():
-                    result = agent.run(state)
-                    questions = result.interview_questions or []
+            result = agent.run(state)
+            questions = result.interview_questions or []
 
-                if not questions:
-                    question_generation_failed_total.inc()
-                    logger.warn("Không tạo được câu hỏi từ AI.")
-                else:
-                    interview_questions_generated_total.inc()
-                    logger.info(f"Đã tạo {len(questions)} câu hỏi cho CV ID={cv.id}")
+            if not questions:
+                logger.warn("Không tạo được câu hỏi từ AI.")
+            else:
+                logger.info(f"Đã tạo {len(questions)} câu hỏi cho CV ID={cv.id}")
 
-                # Bước 5: Ghi câu hỏi vào DB
-                db.query(InterviewQuestion).filter_by(cv_application_id=cv.id).delete()
-                for q in questions:
-                    question_text = q.get("question", "")
-                    answer = "\n".join(q.get("answers", []))
-                    if not question_text:
-                        logger.warn("Câu hỏi trống, bỏ qua.")
-                        continue
-                    if not answer:
-                        answer = "Chưa có câu trả lời."
+            # Bước 5: Ghi câu hỏi vào DB
+            db.query(InterviewQuestion).filter_by(cv_application_id=cv.id).delete()
+            for q in questions:
+                question_text = q.get("question", "")
+                answer = "\n".join(q.get("answers", []))
+                if not question_text:
+                    logger.warn("Câu hỏi trống, bỏ qua.")
+                    continue
+                if not answer:
+                    answer = "Chưa có câu trả lời."
 
-                    db.add(InterviewQuestion(
-                        cv_application_id=cv.id,
-                        original_question=question_text,
-                        answer=answer,
-                        source=DEFAULT_MODEL
-                    ))
+                db.add(InterviewQuestion(
+                    cv_application_id=cv.id,
+                    original_question=question_text,
+                    answer=answer,
+                    source=DEFAULT_MODEL
+                ))
 
-                db.commit()
-                logger.info(f"{len(questions)} câu hỏi phỏng vấn đã được lưu cho CV ID={cv.id}")
-
+            db.commit()
+            logger.info(f"{len(questions)} câu hỏi phỏng vấn đã được lưu cho CV ID={cv.id}")
             return f"Học sinh đã xác nhận phỏng vấn. Hệ thống đã tạo {len(questions)} câu hỏi để chuẩn bị."
 
         except Exception as e:
@@ -511,8 +449,6 @@ class RecruitmentService:
         else:
             interviews = db.query(InterviewSchedule).all()
 
-        # Cập nhật chỉ số Prometheus
-        scheduled_interview_count.set(len(interviews))
         logger.info(f"Đã truy xuất {len(interviews)} lịch phỏng vấn.")
 
         return interviews
@@ -528,8 +464,6 @@ class RecruitmentService:
         else:
             jds = db.query(JobDescription).all()
 
-        # Cập nhật chỉ số Prometheus
-        jd_count.set(len(jds))
         logger.info(f"Đã truy xuất {len(jds)} chuyên đề.")
 
         return jds
@@ -548,9 +482,6 @@ class RecruitmentService:
             )
 
         pending_cvs = query.all()
-
-        # Cập nhật Prometheus Gauge
-        pending_cv_count.set(len(pending_cvs))
 
         result = [
             {
@@ -626,7 +557,6 @@ class RecruitmentService:
 
         db.delete(cv)
         db.commit()
-        cv_deleted_total.inc()  # Ghi nhận metric
 
         logger.info("Hồ sơ đã được xóa khỏi hệ thống.")
         return CVUploadResponseSchema(message="Hồ sơ đã được xóa thành công.")
@@ -649,6 +579,7 @@ class RecruitmentService:
             "matched_score": cv.matched_score,
             "status": cv.status,
             "parsed_cv": json.loads(cv.parsed_cv),
+            "justification": cv.justification or ""
         }
 
     def get_cv_application_by_username(self, username: str, db: Session):
@@ -670,6 +601,7 @@ class RecruitmentService:
                     "matched_score": float(cv.matched_score) if cv.matched_score is not None else 0.0,
                     "status": cv.status or "UNKNOWN",
                     "datetime": cv.datetime if cv.datetime else None,
+                    "justification": cv.justification or "",
                 })
             except Exception as e:
                 logger.error(f"[ERROR] Lỗi khi xử lý CV ID={cv.id}: {e}", exc_info=True)
@@ -699,6 +631,7 @@ class RecruitmentService:
                 "matched_position": cv.matched_position,
                 "matched_score": cv.matched_score,
                 "status": cv.status,
+                "justification": cv.justification or "",
             }
             for cv in cvs
         ]
@@ -726,7 +659,6 @@ class RecruitmentService:
             raise ValueError("Không tìm thấy lịch phỏng vấn.")
         interview.status = FinalDecisionStatus.REJECTED.value
         db.commit()
-        interview_rejected_total.inc()
         logger.info("Lịch phỏng vấn đã bị hủy.")
         return CVUploadResponseSchema(message="Lịch phỏng vấn đã được hủy.")
 
@@ -751,7 +683,6 @@ class RecruitmentService:
             raise ValueError("Không tìm thấy chuyên đề cần xóa.")
         db.delete(jd)
         db.commit()
-        jd_deleted_total.inc()
         logger.info("Chuyên đề đã bị xóa.")
         return CVUploadResponseSchema(message="Chuyên đề đã được xóa thành công.")
 
@@ -760,14 +691,12 @@ class RecruitmentService:
         logger.info("Đang xóa tất cả chuyên đề.")
         deleted_count = db.query(JobDescription).delete(synchronize_session=False)
         db.commit()
-        jd_deleted_total.inc(deleted_count)
         return CVUploadResponseSchema(message=f"Đã xóa {deleted_count} chuyên đề.")
     
     def get_interview_questions(self, cv_id: int, db: Session) -> List[InterviewQuestionSchema]:
         logger.info(f"Lấy câu hỏi phỏng vấn cho CV ID={cv_id}")
         try:
             questions = db.query(InterviewQuestion).filter_by(cv_application_id=cv_id).all()
-            interview_question_count.set(len(questions))
             logger.info(f"Tìm thấy {len(questions)} câu hỏi.")
             return [InterviewQuestionSchema.model_validate(q) for q in questions]
         except Exception as e:
@@ -799,7 +728,6 @@ class RecruitmentService:
         logger.info(f"Đang tạo lại câu hỏi phỏng vấn cho CV ID={cv_id}")
         cv = db.query(CVApplication).filter_by(id=cv_id).first()
         if not cv:
-            regenerate_questions_failed_total.inc()
             raise ValueError("Không tìm thấy hồ sơ học sinh.")
 
         parsed_cv = json.loads(cv.parsed_cv)
@@ -807,19 +735,15 @@ class RecruitmentService:
             "position": cv.matched_position,
             "skills_required": json.loads(cv.matched_jd_skills)
         }
-
-        with interview_question_generation_duration_seconds.time():
-            agent = InterviewQuestionAgent(GenAI(model=DEFAULT_MODEL))
-            state = RecruitmentState(parsed_cv=parsed_cv, matched_jd=matched_jd)
-            result = agent.run(state)
-            questions = result.interview_questions or []
+        agent = InterviewQuestionAgent(GenAI(model=DEFAULT_MODEL))
+        state = RecruitmentState(parsed_cv=parsed_cv, matched_jd=matched_jd)
+        result = agent.run(state)
+        questions = result.interview_questions or []
 
         if not questions:
-            regenerate_questions_failed_total.inc()
             logger.warn("Không tạo được câu hỏi mới.")
             return []
 
-        interview_questions_regenerated_total.inc()
         db.query(InterviewQuestion).filter_by(cv_application_id=cv_id).delete()
 
         for q in questions:
@@ -854,7 +778,6 @@ class RecruitmentService:
             raise ValueError("Không tìm thấy lịch phỏng vấn.")
         db.delete(interview)
         db.commit()
-        interview_deleted_total.inc()
         logger.info("Lịch phỏng vấn đã được xóa.")
         return CVUploadResponseSchema(message="Lịch phỏng vấn đã được xóa.")
 
@@ -865,7 +788,6 @@ class RecruitmentService:
             query = query.filter(InterviewSchedule.candidate_name.ilike(f"%{candidate_name}%"))
         deleted_count = query.delete(synchronize_session=False)
         db.commit()
-        interview_bulk_deleted_total.inc()
         logger.info(f"Đã xóa {deleted_count} lịch phỏng vấn.")
         return CVUploadResponseSchema(message=f"Đã xóa {deleted_count} lịch phỏng vấn.")
 

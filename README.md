@@ -1,130 +1,78 @@
-# SOAI Project Developing Multiple AI-AGENTs.
+## Hệ thống tuyển sinh thông minh đánh giá hồ sơ năng lực học sinh
 
-![ReactJS](https://img.shields.io/badge/-ReactJs-61DAFB?logo=react&logoColor=white&style=for-the-badge)
-![Redux](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Apache Maven](https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-F2F4F9?style=for-the-badge&logo=spring-boot)
-![MySQL](https://img.shields.io/badge/MySQL-blue?style=for-the-badge&logo=MYSQL&logoColor=white)
-![JWT](https://img.shields.io/badge/JWT-green?style=for-the-badge&logo=spring-boot&logoColor=white)
+### Chuẩn bị cần thiết:
+  1. Môi trường: Linux >= 18.0.4
+  2. Cài đặt Docker:
+  ```bash
+  $ sudo apt-get update
+  $ sudo apt-get install ca-certificates curl
+  $ sudo install -m 0755 -d /etc/apt/keyrings
+  $ sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+  $ sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-SOAI repository works as MCP AI Agent connection within microservices running on Kubernetes environment. This repository based on the LangGraph Agent, with Generative AI.
+  $ echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+      $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+  $ sudo apt-get update
+  ```
+  3. Cấp quyền cho docker và tạo docker group
+  ```bash
+  $ sudo groupadd docker
+  $ sudo usermod -aG docker $USER
+  $ newgrp docker
+  ```
 
----
-The repository 
+### Khởi chạy dự án 
+1. Truy cập vào thư mục cha `soai/`.
+2. Khởi động docker container và build docker image
+  ```bash
+  $ docker compose up -d --build
+  ```
+3. Chờ lệnh chạy xong và mở ra 2 trình duyệt bình thường và ẩn danh.
+**Notes**: Trình duyệt ẩn danh giúp không lưu cache và cookie nên mở riêng biệt ra để đăng nhập tài khoản cho USER để vào page nộp hồ sơ tuyển dụng: `localhost:8080`.
+- Tạo tài khoản: `user/User@123`.
 
-## Contents
+![Signup](doc/images/signup.png)
 
-- [SOAI Project](#soai-project-developing-multiple-ai-agent)
-  - [Contents](#contents)
-  - [Developer's Guide](#developers-guide)
-    - [Getting Started](#getting-started)
-      - [Development Environment](#development-environment)
-      - [How to use](#how-to-use)
+Mở 1 trình duyệt ẩn danh
+- Đăng nhập bằng tài khoản admin: `admin/Admin@123`
 
-## Developer's Guide
+![Signin](doc/images/signin.png)
 
-### Getting Started
+4. Mở trang ADMIN đã đăng nhập lên và tiến hành tải mô tả thông tin tuyển sinh ở `backend/services/recruitment_agent/tests/test_data/jd_sample.json`.
 
-#### Development Environment
+![UploadJD](doc/images/uploadJD.png)
 
-The recommend standard development environment is Ubuntu 18.04 LTS or later. You must install Docker, K8s Cluster Resource or minikube, Helm. 
+Thông tin toàn bộ mô tả được hiển thị trên trang USER để nộp hồ sơ năng lực học sinh.
 
-### Recruitment Agent
-#### Documentation and Workplace
-Please view at [Recruitment Agent]("https://gitlab.endava.com/cuong.quang.nguyen/soai/-/tree/main/backend/services/recruitment_agent?ref_type=heads")
-#### Local Development
-1. All the docker container started by docker-compose.yml for development. Hot reloading are enabled and will apply the changes with the host mounted between local
-and docker container.
-To start all the components
-```bash
-$ docker compose up -d
-```
-This will install dependencies and recruitment docker container start for you. This will run authentication for JWT verification and MySQL database for storing database.
+![UploadCV](doc/images/uploadCV.png)
 
-2. For recruitment agent.
-The repository used `sqlachemy` to automate create tables and structure all SQL database for you. So don't need to create tables manually. Check the database is created with
-```bash
-$ docker exec -it soai_mysql mysql -usoai_user -psoai_password;
-$ use soai_db;
-$ show tables;
-```
-3. Recruitment API Endpoint Summary
+5. Tiến hành nộp hồ sơ năng lực học sinh ở thư mục `backend/services/recruitment_agent/tests/`
 
-| Endpoint                                                       | Method | Description                                      | Request Parameters / Body                                                                 | Auth Required | Role Access        |
-|----------------------------------------------------------------|--------|--------------------------------------------------|--------------------------------------------------------------------------------------------|---------------|---------------------|
-| `/cvs/upload`                                                  | POST   | Upload and parse candidate CV                    | FormData: `file`, `override_email` (optional), `position_applied_for`                      | Yes           | All authenticated   |
-| `/jds/upload`                                                  | POST   | Upload job descriptions (JSON format)            | FormData: `file` (JSON array of JDs)                                                       | Yes           | ADMIN only          |
-| `/cvs/{candidate_id}/approve`                                  | POST   | Approve a candidate’s CV                         | Path: `candidate_id`                                                                       | Yes           | ADMIN only          |
-| `/cvs/pending`                                                 | GET    | Get list of CVs with `PENDING` status            | Query: `candidate_name` (optional)                                                         | Yes           | ADMIN only          |
-| `/cvs/{cv_id}`                                                 | PUT    | Update a CV application                          | Path: `cv_id`, JSON Body: fields to update                                                 | Yes           | ADMIN only          |
-| `/cvs/{cv_id}`                                                 | DELETE | Delete a CV application                          | Path: `cv_id`                                                                              | Yes           | ADMIN only          |
-| `/cvs/position`                                                | GET    | List all CVs (optionally filter by position)     | Query: `position` (optional)                                                               | Yes           | ADMIN only          |
-| `/cvs/{cv_id}`                                                 | GET    | Get CV detail by ID                              | Path: `cv_id`                                                                              | Yes           | ADMIN only          |
-| `/interviews/schedule`                                         | POST   | Schedule an interview                            | JSON Body: `InterviewScheduleCreateSchema`                                                 | Yes           | ADMIN only          |
-| `/interviews/{interview_id}`                                   | PUT    | Update an interview                              | JSON Body: fields to update                                                                | Yes           | ADMIN only          |
-| `/interviews/{interview_id}/cancel`                            | POST   | Candidate cancels an interview                   | Path: `interview_id`                                                                       | Yes           | All authenticated   |
-| `/interviews`                                                  | GET    | Get list of interviews                           | Query: `interview_date`, `candidate_name` (optional)                                       | Yes           | ADMIN only          |
-| `/interviews/accept`                                           | POST   | Candidate accepts an interview                   | JSON Body: `InterviewAcceptSchema`                                                         | Yes           | All authenticated   |
-| `/interviews/{interview_id}`                                   | DELETE | Delete a specific interview                      | Path: `interview_id`                                                                       | Yes           | ADMIN only          |
-| `/interviews`                                                  | DELETE | Delete all interviews (optionally by candidate)  | Query: `candidate_name` (optional)                                                         | Yes           | ADMIN only          |
-| `/jds`                                                         | GET    | Get list of job descriptions                     | Query: `position` (optional)                                                               | Yes           | All authenticated   |
-| `/jds/{jd_id}`                                                 | PUT    | Update a job description                         | JSON Body: fields to update                                                                | Yes           | ADMIN only          |
-| `/jds/{jd_id}`                                                 | DELETE | Delete a job description                         | Path: `jd_id`                                                                              | Yes           | ADMIN only          |
-| `/interview-questions/{cv_id}/questions`                       | GET    | Get generated interview questions for a CV       | Path: `cv_id`                                                                              | Yes           | ADMIN only          |
-| `/interview-questions/{question_id}/edit`                      | PUT    | Edit a specific interview question               | Body: `{ "new_question": "..." }`                                                          | Yes           | ADMIN only          |
-| `/interview-questions/{cv_id}/questions/regenerate`            | POST   | Regenerate interview questions for a CV          | Path: `cv_id`                                                                              | Yes           | ADMIN only          |
+![UploadingCV](doc/images/uploadingCV.png)
 
-4. If you want to test APIs, run the test files in [Test Recruitment]("https://gitlab.endava.com/cuong.quang.nguyen/soai/-/tree/main/backend/services/recruitment_agent/tests?ref_type=heads") (Updating)
-```
-$ make test-recruitment
-```
+Hồ sơ nộp được xử lý. Quản trị viên có thể xem và xem ứng viên có phù hợp với mô tả tuyển sinh hay không.
 
-## Pushing the docker image to registry and release helm chart (Updating)
-### Prepare
-1. To release the docker images and helm chart. Check out `vas.sh` and `Makefile` script.
-Set the `RELEASE` variable to true
-```bash
-$ export RELEASE=true
-```
-2. Create release version. This can be done via `Makefile`.
-To check the version release. The version will change based on commit hash and number of commit pushed.
-```bash
-$ ./vas.sh get_version
-```
-3. Change the docker registry properly via env variable `DOCKER_REGISTRY`.
-```bash
-$ export DOCKER_REGISTRY=<your-docker-registry>
-```
-4. Create drop version.
-```bash
-$ make clean init image push
-```
-This will sent and push the drop version to docker registry. Helm will manage to push to registry also.
-5. Create tag version after release the drop tag version of docker images and helm chart.
-```bash
-$ make git-tag
-```
-This will create the git tag and push to git.
-## Deploy helm chart to k8s cluster
-### Prepare
-```bash
-$ make package-helm
-```
-The helm build will locate at `build/helm-build/soai-application/` folder
-You can preview the helm chart by
-```bash
-$ helm template soai-app build/helm-build/soai-application/soai-application/
-```
-```bash
-$ helm -n <namespace> install soai-app build/helm-build/soai-application/soai-application-<version>.tgz --set <values> --debug --create-namespace
-```
-This will install SOAI helm chart to k8s cluster.
-The TLS certificate was used by `cert-manager` you can install it in `test/athena_chart`.
-```bash
-$ ./deploy.sh -n monitoring
-```
-You can install the cert-manager, prometheus, grafana to monitor and create `cert-manaager` CRDs in order to deploy TLS certificates in SOAI-application.
-### License
-This repository is proprietary and confidential. Usage is subject to internal policies. Contact maintainers for access or usage rights.
+![AdminCVList](doc/images/adminCVList.png)
+
+Hồ sơ ứng viên có thể bổ sung chứng chỉ và chứng minh thông qua phần hồ sơ của tôi.
+
+![UserProfile](doc/images/userProfile.png)
+
+6. Quản trị viên có thể đặt lịch phỏng vấn với ứng viên khi mà chưa đủ chỉ tiêu
+
+![AdminInterview](doc/images/adminInterview.png)
+
+![AdminInterviewPending](doc/images/adminInterviewPending.png)
+
+7. Khi ứng viên chấp nhận phỏng vấn và câu hỏi sẽ được tự động sinh ra cho phần lịch hẹn được suôn sẻ hơn.
+
+![AdminQuestion](doc/images/adminQuestion.png)
+
+8. Khi quản trị viên chấp nhận hồ sơ và email được gửi về cho ứng viên.
+
+![CandidateApprove](doc/images/candidateApproved.png)
+
+![CandidateEmail](doc/images/candidateEmail.png)
+

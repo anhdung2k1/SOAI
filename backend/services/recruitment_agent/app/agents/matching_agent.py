@@ -144,15 +144,26 @@ class MatchingAgent(BaseAgent):
                 best_match = jd
                 best_jd_skills = jd_skills_raw
 
+        # After selecting best match, request justification from LLM
+        justification = ""
+        if best_match:
+            try:
+                prompt = self.build_justification_prompt(parsed_cv, best_match, int(best_score))
+                justification = self.query_llm_justification(prompt)
+            except Exception as e:
+                logger.error(f"[MatchingAgent] LLM justification failed: {e}")
+                justification = ""
+
         state.matched_jd = {
             "position": best_match.get("position") if best_match else state.position_applied_for or "Unknown",
             "skills_required": best_jd_skills if best_match else [],
             "level": best_match.get("level") if best_match else "Unknown",
-            "match_score": int(best_score)
+            "match_score": int(best_score),
+            "justification": justification,
         }
 
         if best_match:
-            logger.info(f"[MatchingAgent] Best match: {best_match.get('position')} (match_score={best_score:.2f}%)")
+            logger.info(f"[MatchingAgent] Best match: {best_match.get('position')} (match_score={best_score:.2f}%)\nJustification: {justification}")
         else:
             logger.info(f"[MatchingAgent] Không tìm thấy chuyên đề phù hợp. Fallback score: {best_score:.2f}")
 
@@ -175,9 +186,9 @@ CV Content:
 Return only a single integer number, like: 85
 """.strip()
 
-    def build_llm_match_prompt(self, parsed_cv: dict, jd: dict) -> str:
+    def build_justification_prompt(self, parsed_cv: dict, jd: dict, match_score: int) -> str:
         return f"""
-You are an admissions evaluator. Based on the student's CV and the Job Description (exam requirements), evaluate how well the student meets the subject and skill criteria.
+You are an admissions evaluator. The student below is applying for the following position.
 
 ## Job Description
 Position: {jd.get('position')}
@@ -189,14 +200,14 @@ Name: {parsed_cv.get('name')}
 Subjects and Scores: {parsed_cv.get('skills')}
 Other Info: {parsed_cv.get('email')}
 
-Evaluate:
-- Do subject scores meet or exceed requirements?
-- Are there related subjects that compensate?
-- Are there strong academic or logical thinking traits?
+The system has calculated a match score of {match_score} out of 100.
 
-Return a JSON object with:
-- "match_score" (0-100, integer)
-- "justification" (short explanation)
+Please briefly justify this score, considering:
+- Which subject requirements were fully/partially met
+- Any outstanding academic or personal achievements
+- Gaps or weaknesses, if any
+
+Return your explanation in Vietnamese.
 """.strip()
 
     def query_llm_score(self, prompt: str) -> float:
@@ -204,8 +215,21 @@ Return a JSON object with:
             response = self.llm.invoke(prompt)
             content = response.json()["data"]
             if content.startswith("```") and content.endswith("```"):
-                content = content.strip("```").strip()
+                content = content.strip("`").strip()
             return min(max(float(content), 0.0), 100.0)
         except Exception as e:
             logger.error(f"[MatchingAgent] LLM score failed: {e}")
             return 0.0
+
+    def query_llm_justification(self, prompt: str) -> str:
+        try:
+            response = self.llm.invoke(prompt)
+            content = response.json()["data"]
+            # If LLM wraps text in code block, strip it out
+            if content.startswith("```") and content.endswith("```"):
+                content = content.strip("`").strip()
+            # Optionally clean up response, e.g. removing extra lines
+            return content.strip()
+        except Exception as e:
+            logger.error(f"[MatchingAgent] LLM justification failed: {e}")
+            return ""

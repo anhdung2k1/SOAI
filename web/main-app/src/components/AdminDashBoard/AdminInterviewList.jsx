@@ -24,7 +24,7 @@ import {
   FaTimesCircle,
   FaCommentDots,
   FaRedoAlt,
-  FaSpinner
+  FaSpinner,
 } from "react-icons/fa";
 import { Dialog } from "@headlessui/react";
 import { toast, ToastContainer } from "react-toastify";
@@ -50,6 +50,7 @@ const AdminInterviewList = ({ actionsEnabled = true }) => {
   useEffect(() => {
     fetchInterviews();
     if (actionsEnabled) fetchApprovedCVs();
+    // eslint-disable-next-line
   }, [actionsEnabled]);
 
   const fetchInterviews = async () => {
@@ -156,15 +157,19 @@ const AdminInterviewList = ({ actionsEnabled = true }) => {
         let parsedContent;
         try {
           const tryParse = JSON.parse(q.original_question);
-          if (typeof tryParse === 'object' && tryParse.question && tryParse.answers) {
+          if (
+            typeof tryParse === "object" &&
+            tryParse.question &&
+            tryParse.answers
+          ) {
             parsedContent = tryParse;
           } else {
-            throw new Error('Not valid format');
+            throw new Error("Not valid format");
           }
         } catch {
           parsedContent = {
             question: q.original_question,
-            answers: q.answer ? [q.answer] : []
+            answers: q.answer ? [q.answer] : [],
           };
         }
         return parsedContent;
@@ -187,15 +192,19 @@ const AdminInterviewList = ({ actionsEnabled = true }) => {
         let parsedContent;
         try {
           const tryParse = JSON.parse(q.original_question);
-          if (typeof tryParse === 'object' && tryParse.question && tryParse.answers) {
+          if (
+            typeof tryParse === "object" &&
+            tryParse.question &&
+            tryParse.answers
+          ) {
             parsedContent = tryParse;
           } else {
-            throw new Error('Not valid format');
+            throw new Error("Not valid format");
           }
         } catch {
           parsedContent = {
             question: q.original_question,
-            answers: q.answer ? [q.answer] : []
+            answers: q.answer ? [q.answer] : [],
           };
         }
         return parsedContent;
@@ -210,6 +219,20 @@ const AdminInterviewList = ({ actionsEnabled = true }) => {
     }
   };
 
+  // === FILTER LOGIC: Remove CVs that have already been scheduled an interview ===
+  const cvidField = "cv_application_id"; // If interview object has this field to link CV and interview
+  // If you must match by candidate_name, replace logic accordingly!
+
+  const availableCVs = approvedCVs.filter(
+    (cv) =>
+      !interviews.some(
+        (interview) =>
+          interview[cvidField]
+            ? interview[cvidField] === cv.id
+            : interview.candidate_name === cv.candidate_name
+      )
+  );
+
   return (
     <div className="admin-interview-list">
       <ToastContainer position="top-right" autoClose={3000} />
@@ -222,7 +245,9 @@ const AdminInterviewList = ({ actionsEnabled = true }) => {
         {interviews.map((interview) => (
           <li key={interview.id} className="admin-interview-list__item">
             <div>
-              <p className="admin-interview-list__candidate">{interview.candidate_name}</p>
+              <p className="admin-interview-list__candidate">
+                {interview.candidate_name}
+              </p>
               <p className="admin-interview-list__date">
                 {new Date(interview.interview_datetime).toLocaleString()}
               </p>
@@ -236,44 +261,94 @@ const AdminInterviewList = ({ actionsEnabled = true }) => {
             <div className="admin-interview-list__actions">
               {actionsEnabled ? (
                 <>
-                  <button title="Edit" onClick={() => openEditModal(interview)}><FaRegEdit /></button>
-                  <button title="Delete" onClick={() => handleDelete(interview.id)}><FaTrashAlt /></button>
-                  <button title="View Questions" onClick={() => openQuestionsModal(interview.cv_application_id)}><FaQuestionCircle /></button>
+                  <button
+                    title="Edit"
+                    onClick={() => openEditModal(interview)}
+                  >
+                    <FaRegEdit />
+                  </button>
+                  <button
+                    title="Delete"
+                    onClick={() => handleDelete(interview.id)}
+                  >
+                    <FaTrashAlt />
+                  </button>
+                  <button
+                    title="View Questions"
+                    onClick={() =>
+                      openQuestionsModal(interview.cv_application_id)
+                    }
+                  >
+                    <FaQuestionCircle />
+                  </button>
                   <button
                     title="Regenerate Questions"
-                    onClick={() => handleRegenerateConfirm(interview.cv_application_id)}
+                    onClick={() =>
+                      handleRegenerateConfirm(interview.cv_application_id)
+                    }
                     disabled={regeneratingId === interview.cv_application_id}
                   >
-                    {regeneratingId === interview.cv_application_id ? <FaSpinner className="spin" /> : <FaRedoAlt />}
+                    {regeneratingId === interview.cv_application_id ? (
+                      <FaSpinner className="spin" />
+                    ) : (
+                      <FaRedoAlt />
+                    )}
                   </button>
 
-                  <Dialog open={confirmDialogOpen} onClose={() => setConfirmDialogOpen(false)} className="confirm-dialog">
-                    <div className="confirm-dialog__backdrop" aria-hidden="true" />
+                  <Dialog
+                    open={confirmDialogOpen}
+                    onClose={() => setConfirmDialogOpen(false)}
+                    className="confirm-dialog"
+                  >
+                    <div
+                      className="confirm-dialog__backdrop"
+                      aria-hidden="true"
+                    />
                     <div className="confirm-dialog__panel">
-                      <Dialog.Title className="confirm-dialog__title">Xác nhận tái tạo</Dialog.Title>
+                      <Dialog.Title className="confirm-dialog__title">
+                        Xác nhận tái tạo
+                      </Dialog.Title>
                       <Dialog.Description className="confirm-dialog__desc">
-                        Bạn có chắc chắn muốn tái tạo và ghi đè các câu hỏi phỏng vấn hiện có không?
+                        Bạn có chắc chắn muốn tái tạo và ghi đè các câu hỏi
+                        phỏng vấn hiện có không?
                       </Dialog.Description>
                       <div className="confirm-dialog__actions">
-                        <button onClick={() => setConfirmDialogOpen(false)} className="confirm-dialog__cancel">Hủy</button>
+                        <button
+                          onClick={() => setConfirmDialogOpen(false)}
+                          className="confirm-dialog__cancel"
+                        >
+                          Hủy
+                        </button>
                         <button
                           onClick={confirmRegeneration}
                           className="confirm-dialog__confirm"
                           disabled={regeneratingId === pendingRegenerationCvId}
                         >
-                          {regeneratingId === pendingRegenerationCvId ? <FaSpinner className="spin" /> : "Có, Tái tạo"}
+                          {regeneratingId === pendingRegenerationCvId ? (
+                            <FaSpinner className="spin" />
+                          ) : (
+                            "Có, Tái tạo"
+                          )}
                         </button>
                       </div>
                     </div>
                   </Dialog>
                 </>
-              ) : (
-                interview.status === "Accepted" ? null : (
-                  <>
-                    <button title="Accept" onClick={() => handleAccept(interview)}><FaCheck /></button>
-                    <button title="Cancel" onClick={() => handleCancel(interview.id)}><FaTimes /></button>
-                  </>
-                )
+              ) : interview.status === "Accepted" ? null : (
+                <>
+                  <button
+                    title="Accept"
+                    onClick={() => handleAccept(interview)}
+                  >
+                    <FaCheck />
+                  </button>
+                  <button
+                    title="Cancel"
+                    onClick={() => handleCancel(interview.id)}
+                  >
+                    <FaTimes />
+                  </button>
+                </>
               )}
             </div>
           </li>
@@ -283,16 +358,24 @@ const AdminInterviewList = ({ actionsEnabled = true }) => {
       {actionsEnabled && (
         <>
           <div className="admin-interview-list__header">
-            <FaPlus style={{ marginRight: "8px", marginTop: "32px" }} /> Đặt lịch phỏng vấn
+            <FaPlus style={{ marginRight: "8px", marginTop: "32px" }} /> Đặt
+            lịch phỏng vấn
           </div>
           <ul className="admin-interview-list__items">
-            {approvedCVs.map((cv) => (
+            {availableCVs.map((cv) => (
               <li key={cv.id} className="admin-interview-list__item">
                 <div>
-                  <p className="admin-interview-list__candidate">{cv.candidate_name}</p>
-                  <p className="admin-interview-list__position">{cv.matched_position}</p>
+                  <p className="admin-interview-list__candidate">
+                    {cv.candidate_name}
+                  </p>
+                  <p className="admin-interview-list__position">
+                    {cv.matched_position}
+                  </p>
                 </div>
-                <button className="admin-interview-list__schedule-btn" onClick={() => openModal(cv)}>
+                <button
+                  className="admin-interview-list__schedule-btn"
+                  onClick={() => openModal(cv)}
+                >
                   <FaPlus /> Lên lịch phỏng vấn
                 </button>
               </li>
@@ -302,19 +385,66 @@ const AdminInterviewList = ({ actionsEnabled = true }) => {
       )}
 
       {showModal && selectedCV && (
-        <div className="admin-interview-list__modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="admin-interview-list__modal" onClick={(e) => e.stopPropagation()}>
-            <button className="admin-interview-list__close" onClick={() => setShowModal(false)}>
+        <div
+          className="admin-interview-list__modal-overlay"
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            className="admin-interview-list__modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="admin-interview-list__close"
+              onClick={() => setShowModal(false)}
+            >
               <FaTimesCircle />
             </button>
-            <h3>{editMode ? "Edit Interview" : `Schedule Interview for ${selectedCV.candidate_name}`}</h3>
-            <form onSubmit={handleScheduleOrUpdate} className="admin-interview-list__form">
+            <h3>
+              {editMode
+                ? "Edit Interview"
+                : `Schedule Interview for ${selectedCV.candidate_name}`}
+            </h3>
+            <form
+              onSubmit={handleScheduleOrUpdate}
+              className="admin-interview-list__form"
+            >
               <label>Người phỏng vấn</label>
-              <input type="text" value={formData.interviewer_name} onChange={(e) => setFormData({ ...formData, interviewer_name: e.target.value })} required />
+              <input
+                type="text"
+                value={formData.interviewer_name}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    interviewer_name: e.target.value,
+                  })
+                }
+                required
+              />
               <label>Ngày & Giờ phỏng vấn</label>
-              <input type="datetime-local" value={formData.interview_datetime} onChange={(e) => setFormData({ ...formData, interview_datetime: e.target.value })} required />
-              <button type="submit" className="admin-interview-list__submit-btn">
-                {editMode ? <><FaRegEdit /> Cập nhật</> : <><FaPlus /> Đặt lịch</>}
+              <input
+                type="datetime-local"
+                value={formData.interview_datetime}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    interview_datetime: e.target.value,
+                  })
+                }
+                required
+              />
+              <button
+                type="submit"
+                className="admin-interview-list__submit-btn"
+              >
+                {editMode ? (
+                  <>
+                    <FaRegEdit /> Cập nhật
+                  </>
+                ) : (
+                  <>
+                    <FaPlus /> Đặt lịch
+                  </>
+                )}
               </button>
             </form>
           </div>
@@ -322,36 +452,50 @@ const AdminInterviewList = ({ actionsEnabled = true }) => {
       )}
 
       {questionModal && (
-        <div className="admin-interview-list__modal-overlay" onClick={() => setQuestionModal(false)}>
-            <div className="admin-interview-list__modal admin-interview-list__question-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="admin-interview-list__close" onClick={() => setQuestionModal(false)}>
-                <FaTimesCircle />
+        <div
+          className="admin-interview-list__modal-overlay"
+          onClick={() => setQuestionModal(false)}
+        >
+          <div
+            className="admin-interview-list__modal admin-interview-list__question-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="admin-interview-list__close"
+              onClick={() => setQuestionModal(false)}
+            >
+              <FaTimesCircle />
             </button>
             <h3 className="admin-interview-list__question-title">
-                <FaGraduationCap style={{ marginRight: "6px" }} /> Câu hỏi phỏng vấn đã được tạo
+              <FaGraduationCap style={{ marginRight: "6px" }} /> Câu hỏi phỏng
+              vấn đã được tạo
             </h3>
             <div className="admin-interview-list__question-list">
-                {interviewQuestions.length > 0 ? (
+              {interviewQuestions.length > 0 ? (
                 interviewQuestions.map((q, index) => (
-                    <div key={index} className="admin-question-block">
+                  <div key={index} className="admin-question-block">
                     <p className="admin-question">
-                        <FaQuestionCircle />
-                        <span>Câu hỏi {index + 1}: {q.question || q.original_question}</span>
+                      <FaQuestionCircle />
+                      <span>
+                        Câu hỏi {index + 1}: {q.question || q.original_question}
+                      </span>
                     </p>
-                    {(q.answers || (q.answer ? [q.answer] : [])).map((ans, i) => (
+                    {(q.answers || (q.answer ? [q.answer] : [])).map(
+                      (ans, i) => (
                         <p key={i} className="admin-answer">
-                        <FaCommentDots /> {ans}
+                          <FaCommentDots /> {ans}
                         </p>
-                    ))}
-                    </div>
+                      )
+                    )}
+                  </div>
                 ))
-                ) : (
+              ) : (
                 <p>Không có câu hỏi nào có sẵn.</p>
-                )}
+              )}
             </div>
-            </div>
+          </div>
         </div>
-        )}
+      )}
     </div>
   );
 };

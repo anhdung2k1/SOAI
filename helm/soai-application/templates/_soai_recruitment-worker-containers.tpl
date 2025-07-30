@@ -5,7 +5,7 @@
   image: {{ template "soai-application.imagePath" (merge (dict "imageName" "soai-recruitment") $top) }}
   imagePullPolicy: {{ template "soai-application.imagePullPolicy" $top }}
   command: ["celery"]
-  args: ["-A", "celery_worker", "worker", "--loglevel=info", "--concurrency=4"]
+  args: ["-A", "celery_worker", "worker", "--loglevel=info", "--concurrency=2"]
   securityContext:
     allowPrivilegeEscalation: false
     privileged: false

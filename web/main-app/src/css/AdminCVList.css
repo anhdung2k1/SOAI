@@ -239,3 +239,38 @@
     transform: translateY(0);
   }
 }
+
+.admin-cv-table__score-link {
+  cursor: pointer;
+  color: #0070f3;
+  text-decoration: underline;
+  font-weight: 600;
+  transition: color 0.18s;
+}
+.admin-cv-table__score-link:hover {
+  color: #0056a3;
+}
+
+.admin-cv-modal__justification-content {
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  border-radius: 8px;
+  background: #fff;
+  min-height: 120px;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.13);
+  max-width: 560px;
+  font-size: 1.04em;
+}
+.admin-cv-modal__justification {
+  background: #f6faff;
+  padding: 12px 15px;
+  border-radius: 6px;
+  font-size: 1.03em;
+  color: #223040;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  white-space: pre-line;
+}
+.admin-cv-modal__justification-missing {
+  color: #999;
+  font-style: italic;
+}
