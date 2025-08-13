@@ -111,11 +111,13 @@ create_git_tag() {
         return 0
     fi
 
-    echo "Creating Git tag: $version"
-    git tag -a "$version" -m "Release version $version" || die "Failed to create git tag $version"
-    git push origin "$version" || die "Failed to push git tag $version to origin"
+    if [ "$RELEASE" == "true" ]; then
+        echo "Creating Git tag: $version"
+        git tag -a "$version" -m "Release version $version" || die "Failed to create git tag $version"
+        git push origin "$version" || die "Failed to push git tag $version to origin"
 
-    echo "Git tag $version created and pushed successfully."
+        echo "Git tag $version created and pushed successfully."
+    fi
 }
 
 ## get_user_id
@@ -179,14 +181,14 @@ build_image() {
     if [ $__name == "web" ]; then
         target_dir="$VAS_GIT/$__name"
     fi
-
-    # Ensure buildx builder exists
-    docker buildx inspect multiarch-builder >/dev/null 2>&1 || docker buildx create --name multiarch-builder --use
-
     echo "Building image [$image_name:$version]"
 
     # Support build image with multi-architecture amd64/arm64 when set RELEASE
     if [ "$RELEASE" == "true" ]; then
+        # Ensure buildx builder exists
+        docker buildx inspect multiarch-builder >/dev/null 2>&1 || docker buildx create --name multiarch-builder --driver docker-container
+        docker buildx use multiarch-builder
+        docker buildx inspect --bootstrap >/dev/null 2>&1
         docker buildx build "$target_dir" \
             --file "$target_dir/Dockerfile" \
             --tag "$DOCKER_REGISTRY/$image_name:$version" \
