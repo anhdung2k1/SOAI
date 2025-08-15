@@ -55,8 +55,7 @@ package-helm: generate-ca
 image: 	image-authentication \
 		image-recruitment \
 		image-genai \
-		image-web \
-		git-tag
+		image-web
 
 image-authentication:
 	@echo "build authentication Image"

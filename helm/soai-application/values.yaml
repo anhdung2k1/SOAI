@@ -177,7 +177,7 @@ seccompProfile:
   #   type:
   #   localhostProfile:
 imageCredentials:
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 # pullSecret:
 
 appArmorProfile:

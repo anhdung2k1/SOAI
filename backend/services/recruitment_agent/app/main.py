@@ -16,6 +16,8 @@ import models.interview_question
 # === Prometheus metrics ===
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 from starlette.responses import Response
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
 # === OpenTelemetry setup ===
 from metrics.otel_setup import setup_otel
 
@@ -33,6 +35,12 @@ app = FastAPI(
     redoc_url=f"{API_PREFIX}/redoc",
     openapi_url=f"{API_PREFIX}/openapi.json"
 )
+
+# Mount static folder
+UPLOAD_DIR = Path("cv_uploads")
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+app.mount(f"{API_PREFIX}/static", StaticFiles(directory=UPLOAD_DIR), name="static")
+
 # Setup OpenTelemetry
 setup_otel(app=app, service_name=SERVICE_NAME, engine=engine)
 
