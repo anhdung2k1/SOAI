@@ -17,7 +17,7 @@ const AdminSidebar = () => {
 
   const handleLogout = () => {
     logout(); // clear cookies or token
-    navigate("/admin/signin");
+    navigate("/signin");
   };
 
   return (

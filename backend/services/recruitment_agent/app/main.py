@@ -13,9 +13,6 @@ import models.job_description
 import models.cv_application
 import models.interview_schedule
 import models.interview_question
-# === Prometheus metrics ===
-from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
-from starlette.responses import Response
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 # === OpenTelemetry setup ===
@@ -52,10 +49,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-@app.get("/metrics")
-def metrics():
-    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
 # Mount router
 app.include_router(router, prefix=API_PREFIX, tags=["Recruitment"])

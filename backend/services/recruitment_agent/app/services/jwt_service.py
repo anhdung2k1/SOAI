@@ -3,10 +3,6 @@ import base64
 from fastapi import HTTPException, Security, Depends, status, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from config.log_config import AppLogger
-from metrics.prometheus_metrics import (
-    jwt_verification_total,
-    jwt_verification_failed_total
-)
 
 logger = AppLogger(__name__)
 
@@ -45,7 +41,6 @@ class JWTService:
     def verify_jwt(cls, credentials: HTTPAuthorizationCredentials = Security(security)):
         """Verifies the JWT token and returns the payload if valid."""
         token = credentials.credentials
-        jwt_verification_total.inc()  #  Count every verification attempt
         try:
             logger.info(f"Decoding token: {token}")
             decoded_key = base64.b64decode(cls.SECRET_KEY_ENCODED)
@@ -56,7 +51,6 @@ class JWTService:
             logger.info(f"User '{username}' authenticated with role '{role}'")
             return payload
         except JWTError as e:
-            jwt_verification_failed_total.inc()  #  Count verification failures
             logger.error(f"[JWT ERROR] {e}")
             raise HTTPException(status_code=401, detail="Invalid or expired token")
 

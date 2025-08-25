@@ -22,8 +22,7 @@ requests==2.31.0
 python-dotenv==1.0.1
 celery==5.5.3
 redis==6.2.0
-# Prometheus
-prometheus_client==0.22.1
+watchdog===6.0.0
 
 # OpenTelemetry
 opentelemetry-api==1.23.0

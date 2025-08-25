@@ -33,13 +33,17 @@ def get_db():
 async def upload_cv(
     file: UploadFile = File(...),
     override_email: Optional[str] = Form(None),
-    position_applied_for: str = Form(...)
+    position_applied_for: str = Form(...),
+    get_current_user: dict = Depends(JWTService.verify_jwt)
 ):
-    logger.debug(f"Uploading CV for position: {position_applied_for}")
+    username = get_current_user.get("sub")
+    role = get_current_user.get("role")
+    logger.debug(f"USER '{username}' [{role}] is calling /cvs/upload endpoint.")
     return recruitment_service.upload_and_process_cv(
         file,
         override_email=override_email,
         position_applied_for=position_applied_for,
+        username=username
     )
     
 @router.get("/cvs/{cv_id}/preview")
@@ -367,3 +371,28 @@ async def get_cv_by_id(
         return recruitment_service.get_cv_application_by_id(cv_id, db)
     except ValueError as e:
         return {"error": str(e)}
+
+# Candidate can get the proof images
+@router.get("/cvs/{cv_id}/proofs", response_model=List[str])
+async def list_proof_images(
+    cv_id: int,
+    get_current_user: dict = Depends(JWTService.verify_jwt)
+):
+    """
+    Returns a list of URLs for the proof images uploaded for the application.
+    """
+    logger.debug(f"USER '{get_current_user.get('sub')}' is calling GET /cvs/{cv_id}/proofs")
+    return recruitment_service.list_proof_images(cv_id=cv_id)
+
+# Candidate can upload the proof images
+@router.post("/cvs/{cv_id}/proofs/upload", response_model=CVUploadResponseSchema)
+async def upload_proof_images(
+    cv_id: int,
+    files: List[UploadFile] = File(...),
+    get_current_user: dict = Depends(JWTService.verify_jwt)
+):
+    """
+    Upload proof images (certificates, transcripts...) for the application.
+    """
+    logger.debug(f"USER '{get_current_user.get('sub')}' is calling POST /cvs/{cv_id}/proofs/upload")
+    return recruitment_service.upload_proof_images(cv_id=cv_id, files=files)

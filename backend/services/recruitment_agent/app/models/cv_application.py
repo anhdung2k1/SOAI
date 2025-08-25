@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, Boolean, Text
+from sqlalchemy import Column, Integer, String, Boolean, Text, Date
 from config.database import DeclarativeBase
+from datetime import date
 
 class CVApplication(DeclarativeBase):
     """
@@ -10,6 +11,7 @@ class CVApplication(DeclarativeBase):
 
     id = Column(Integer, primary_key=True, index=True)
     candidate_name = Column(String(255), nullable=False)  # Candidate full name
+    username = Column(String(100), nullable=False, index=True) # Username from the login system
     matched_position = Column(String(255), nullable=True)  # Matched Job Position
     status = Column(String(50), default="Pending")  # CV status: Pending / Approved / Rejected
     email = Column(String(255), nullable=True)  # Candidate email address
@@ -19,3 +21,6 @@ class CVApplication(DeclarativeBase):
     experience_years = Column(Integer, nullable=True)  # Candidate's years of experience
     is_matched = Column(Boolean, default=False)  # Whether candidate matched any JD
     parsed_cv = Column(Text, nullable=True)  # Full parsed CV content as JSON string
+    matched_score = Column(Integer, nullable=False, default=0) # LLM Score after Matching
+    datetime = Column(Date(), default=date.today, nullable=True)
+    justification = Column(Text, nullable=True)

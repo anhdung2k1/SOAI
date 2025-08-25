@@ -27,7 +27,34 @@ export const uploadCV = async (file, position_applied_for, override_email = null
 
   const response = await fetch(`${API_BASE_URL}/recruitment/cvs/upload`, {
     method: "POST",
+    headers: authHeaders(),
     body: formData,
+  });
+  return await handleResponse(response);
+};
+
+export const getOwnCVApplied = async() => {
+  const response = await fetch(`${API_BASE_URL}/recruitment/cvs/me`, {
+    headers: authHeaders()
+  });
+  return await handleResponse(response);
+};
+
+export const uploadProofImages = async (cvId, files) => {
+  const formData = new FormData();
+  files.forEach(file => formData.append("files", file));
+
+  const response = await fetch(`${API_BASE_URL}/recruitment/cvs/${cvId}/proofs/upload`, {
+    method: "POST",
+    headers: authHeaders(),
+    body: formData
+  });
+  return await handleResponse(response);
+};
+
+export const getProofImages = async (cvId) => {
+  const response = await fetch(`${API_BASE_URL}/recruitment/cvs/${cvId}/proofs`, {
+    headers: authHeaders()
   });
   return await handleResponse(response);
 };

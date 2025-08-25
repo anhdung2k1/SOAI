@@ -149,7 +149,7 @@ services:
     build:
       context: ./backend/services/recruitment_agent
       dockerfile: ./Dockerfile
-    command: ["celery", "-A", "celery_worker", "worker", "--loglevel=info", "--concurrency=4"]
+    command: ["watchmedo", "auto-restart", "--directory=/app", "--pattern=*.py", "--signal=SIGTERM", "--recursive", "--", "celery", "-A", "celery_worker", "worker", "--loglevel=debug", "--concurrency=4"]
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
@@ -168,7 +168,6 @@ services:
       - SERVICE_NAME=soai_recruitment_agent_worker
       - SERVICE_PORT=8003
       - OTEL_ENDPOINT=otel-collector:4317
-      - LOG_LEVEL=DEBUG
     volumes:
       - ./backend/services/recruitment_agent:/app
     depends_on:

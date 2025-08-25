@@ -181,6 +181,12 @@ build_image() {
     if [ $__name == "web" ]; then
         target_dir="$VAS_GIT/$__name"
     fi
+    # Decide target registry path
+    if [ "$RELEASE" == "true" ]; then
+        target="$DOCKER_REGISTRY/$image_name:$version"
+    else
+        target="$DOCKER_REGISTRY/staging/$image_name:$version"
+    fi
     echo "Building image [$image_name:$version]"
 
     # Support build image with multi-architecture amd64/arm64 when set RELEASE
@@ -286,7 +292,12 @@ push_image() {
     image_name=soai-$__name
     version=$(get_version)
 
-    target="$DOCKER_REGISTRY/$image_name:$version"
+    # Decide target registry path
+    if [ "$RELEASE" == "true" ]; then
+        target="$DOCKER_REGISTRY/$image_name:$version"
+    else
+        target="$DOCKER_REGISTRY/staging/$image_name:$version"
+    fi
     # Check if the image exists locally
     if docker image inspect "$target" >/dev/null 2>&1; then
         echo "Pushing image: $target"

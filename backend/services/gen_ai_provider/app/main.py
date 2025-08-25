@@ -5,8 +5,6 @@ from config.service_registration import ServiceRegistration
 from config.log_config import LoggingConfig, AppLogger
 import uvicorn
 from config.constants import *
-from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
-from starlette.responses import Response
 # === OpenTelemetry setup ===
 from metrics.otel_setup import setup_otel
 
@@ -33,10 +31,6 @@ app.add_middleware(
 )
 # Setup OpenTelemetry
 setup_otel(app=app, service_name=SERVICE_NAME)
-
-@app.get("/metrics")
-def metrics():
-    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
 # Include all routers
 app.include_router(router, prefix="/api/v1/gen-ai", tags=["gen-ai"])
