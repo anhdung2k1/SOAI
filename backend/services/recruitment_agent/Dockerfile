@@ -29,7 +29,7 @@ WORKDIR /app
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     libreoffice \
-    libglib2.0-0 libsm6 libxext6 libxrender-dev curl && \
+    libglib2.0-0 libsm6 libxext6 libxrender-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Create user with real home directory

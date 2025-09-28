@@ -23,11 +23,6 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# Install curl for healthchecks only
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
 # Define the runtime user manually
 RUN echo "${USER_ID}:x:${USER_ID}:${USER_ID}:soai-genai:/nonexistent:/bin/false" > /etc/passwd && \
     echo "${USER_ID}:!::0:::::" > /etc/shadow
