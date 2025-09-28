@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../../css/TopHeader.css";
-import { getUserByUserName, getTokenPayload, logout } from "../../api/authApi";
+import { getTokenPayload, logout } from "../../api/authApi";
 import SmartRecruitmentLogo from "../../assets/images/smart-recruitment-admin-logo.png";
+import { getUserSub } from "../authUtils";
 
 const TopHeader = () => {
   const [open, setOpen] = useState(false);
@@ -15,11 +16,8 @@ const TopHeader = () => {
     const payload = getTokenPayload();
     const userName = payload?.sub;
     if (userName) {
-      getUserByUserName(userName)
-        .then((data) => {
-          setUser(Array.isArray(data) ? data[0] : data);
-        })
-        .catch(() => setUser(null));
+      const user = getUserSub();
+      setUser(user);
     }
   }, []);
 
@@ -54,13 +52,12 @@ const TopHeader = () => {
     <header className="top-header">
       <div className="header-left">
         <Link to="/">
-          <img src={SmartRecruitmentLogo} alt="SmartRecruitment Logo" className="header-logo" />
+          <img src={SmartRecruitmentLogo} alt="Smart Recruitment" className="header-logo" />
         </Link>
       </div>
       <nav className="header-center">
-        <a href="#jobs">JOBS</a>
-        <a href="#my-applications">MY APPLICATIONS</a>
-        <a href="#my-referals">MY REFERRALS</a>
+        <span className="header-link" onClick={() => navigate("/")}>JOBS</span>
+        <span className="header-link" onClick={() => navigate("/my-applications")}>MY APPLICATIONS</span>
       </nav>
       <div className="header-right" ref={avatarRef}>
         <div

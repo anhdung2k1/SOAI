@@ -9,7 +9,7 @@ from schemas.interview_schema import (
 )
 import json
 from schemas.jd_schema import JobDescriptionUploadSchema
-from schemas.cv_schema import CVUploadResponseSchema
+from schemas.cv_schema import CVUploadResponseSchema, CVApplicationResponse
 from services.jwt_service import JWTService
 from config.log_config import AppLogger
 from schemas.interview_question_schema import InterviewQuestionSchema
@@ -358,6 +358,17 @@ async def list_all_cvs(
         f"USER '{get_current_user.get('sub')}' is calling GET /cvs/position with position={position}"
     )
     return recruitment_service.list_all_cv_applications(db, position)
+
+# User can get own CV applied
+@router.get("/cvs/me", response_model=List[CVApplicationResponse])
+async def get_cv_by_username(
+    db: Session = Depends(get_db),
+    get_current_user: dict = Depends(JWTService.verify_jwt)
+):
+    username = get_current_user.get('sub')
+    role = get_current_user.get('role')
+    logger.debug(f"USER '{username}' with role {role} is calling GET /cvs/me")
+    return recruitment_service.get_cv_application_by_username(username=username, db=db)
 
 # Only administrator can get specific CV
 @router.get("/cvs/{cv_id}")

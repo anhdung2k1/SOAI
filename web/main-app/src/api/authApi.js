@@ -119,30 +119,6 @@ export const getUserByUserId = async (userId) => {
     }
 }
 
-export const getUserByUserName = async (username) => {
-    try {
-        const response = await fetch(
-            `${AUTH_BASE_URL}/authentications/users/search?userName=${encodeURIComponent(username)}`,
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${getToken()}`
-                }
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error("Failed to fetch user data by username");
-        }
-
-        return await handleResponse(response);
-    } catch (error) {
-        console.error('Error fetching user data by username:', error);
-        throw error;
-    }
-}
-
 export const getAllUsers = async () => {
     try {
         const response = await fetch(`${AUTH_BASE_URL}/authentications/users`, {

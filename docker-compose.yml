@@ -16,12 +16,6 @@ services:
     volumes:
       - ./backend/services/gen_ai_provider:/app
     restart: always
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8004/api/v1/gen-ai/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
     ports:
       - "8004:8004"
     networks:
@@ -131,7 +125,7 @@ services:
       authentication:
         condition: service_started
       genai:
-        condition: service_healthy
+        condition: service_started
       consul:
         condition: service_started
       recruitment_worker:

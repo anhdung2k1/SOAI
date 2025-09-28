@@ -584,6 +584,8 @@ class RecruitmentService:
                 "status": cv.status,
                 "parsed_cv": json.loads(cv.parsed_cv) if cv.parsed_cv else {},
             })
+        logger.debug(f"Found {len(result)} CV(s) for username '{username}'")
+        return result
 
     def list_all_cv_applications(self, db: Session, position: Optional[str] = None):
         if not position or position.lower() == "null":

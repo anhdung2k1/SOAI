@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import TopHeader from "./TopHeader";
 import SmartRecruitmentLogo from "../../assets/images/smart-recruitment-admin-logo.png";
-import { FaMapMarkerAlt, FaCalendarAlt, FaUpload } from "react-icons/fa";
+import {
+  FaMapMarkerAlt,
+  FaCalendarAlt,
+  FaUpload,
+  FaClock,
+  FaCheckCircle,
+  FaTimesCircle,
+} from "react-icons/fa";
 import {
   getOwnCVApplied,
   uploadProofImages,
@@ -59,6 +66,31 @@ const CandidateApplication = () => {
     }
   };
 
+  const renderStatusBadge = (status) => {
+    switch (status.toLowerCase()) {
+      case "pending":
+        return (
+          <span className="cv-badge status-pending">
+            <FaClock /> Pending
+          </span>
+        );
+      case "approved":
+        return (
+          <span className="cv-badge status-approved">
+            <FaCheckCircle /> Approved
+          </span>
+        );
+      case "rejected":
+        return (
+          <span className="cv-badge status-rejected">
+            <FaTimesCircle /> Rejected
+          </span>
+        );
+      default:
+        return <span className="cv-badge">{status}</span>;
+    }
+  };
+
   return (
     <>
       <TopHeader />
@@ -71,23 +103,25 @@ const CandidateApplication = () => {
           <div className="cv-card-list">
             {cvList.map((cv) => (
               <div key={cv.id} className="cv-card">
-                <div className="cv-card-grid">
-                  {/* Left section */}
-                  <div className="cv-card-left">
-                    <img
-                      src={SmartRecruitmentLogo}
-                      alt="Logo"
-                      className="cv-logo"
-                    />
+                <div className="cv-card-header">
+                  {/* Left: CV Info */}
+                  <div className="cv-left">
+                    <div className="cv-logo-wrapper">
+                      <img
+                        src={SmartRecruitmentLogo}
+                        alt="Logo"
+                        className="cv-logo"
+                      />
+                    </div>
                     <div className="cv-info">
                       <h3 className="cv-position">{cv.matched_position}</h3>
-                      <p className="cv-sub">Recruitment • Candidate • N/A</p>
+                      <p className="cv-sub">Recruitment • Candidate</p>
                       <p className="cv-location">
                         <FaMapMarkerAlt className="cv-icon" />
-                        Candidate Location • Ho Chi Minh City
+                        Ho Chi Minh City
                       </p>
                       <p className="cv-label">
-                        Candidate Name: <span>{cv.candidate_name}</span>
+                        Candidate: <span>{cv.candidate_name}</span>
                       </p>
                       <p className="cv-label">
                         Email: <span>{cv.email}</span>
@@ -95,48 +129,50 @@ const CandidateApplication = () => {
                     </div>
                   </div>
 
-                  {/* Right section */}
-                  <div className="cv-card-right">
-                    <p className="cv-date-text">
+                  {/* Right: Date + Status + Upload */}
+                  <div className="cv-right">
+                    <p className="cv-date">
                       <FaCalendarAlt className="cv-icon" />
-                      {new Date(cv.datetime).toLocaleDateString("en-US", {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      })}
+                      {cv.datetime
+                        ? new Date(cv.datetime).toLocaleDateString("en-US", {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                          })
+                        : "N/A"}
                     </p>
-                    <div className={`cv-badge ${cv.status.toLowerCase()}`}>
-                      {cv.status}
-                    </div>
+                    {renderStatusBadge(cv.status)}
+
+                    <label
+                      htmlFor={`proof-upload-${cv.id}`}
+                      className="upload-btn"
+                    >
+                      <FaUpload /> Upload Proof
+                    </label>
+                    <input
+                      id={`proof-upload-${cv.id}`}
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={(e) => handleUpload(e, cv.id)}
+                      hidden
+                    />
                   </div>
                 </div>
 
-                {/* Proof Upload */}
-                <div className="cv-upload-section">
-                  <label htmlFor={`proof-upload-${cv.id}`} className="upload-label">
-                    <FaUpload className="cv-icon" />
-                    Upload Proof
-                  </label>
-                  <input
-                    id={`proof-upload-${cv.id}`}
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={(e) => handleUpload(e, cv.id)}
-                  />
-                  {proofImages[cv.id]?.length > 0 && (
-                    <div className="upload-preview">
-                      {proofImages[cv.id].map((url, index) => (
-                        <img
-                          key={index}
-                          src={`${API_HOST}${url}`}
-                          alt={`proof-${cv.id}-${index}`}
-                          className="preview-image"
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
+                {/* Proof gallery */}
+                {proofImages[cv.id]?.length > 0 && (
+                  <div className="proof-gallery">
+                    {proofImages[cv.id].map((url, index) => (
+                      <img
+                        key={index}
+                        src={`${API_HOST}${url}`}
+                        alt={`proof-${cv.id}-${index}`}
+                        className="proof-image"
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>

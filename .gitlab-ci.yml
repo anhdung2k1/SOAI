@@ -90,6 +90,7 @@ functional-test:
   script:
     - make run-ci # Need to run docker container first
     - make check-health # Check docker container healthy
+    - docker ps -a # Ensure the container is running
     - make test # This for test when docker container is up
   artifacts:
     when: always 

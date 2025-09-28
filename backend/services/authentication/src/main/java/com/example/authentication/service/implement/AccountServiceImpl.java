@@ -17,7 +17,6 @@ import com.example.authentication.config.JwtService;
 import com.example.authentication.entity.AccountEntity;
 import com.example.authentication.entity.AuthenticationResponse;
 import com.example.authentication.entity.Role;
-import com.example.authentication.entity.UserEntity;
 import com.example.authentication.model.Accounts;
 import com.example.authentication.model.mapper.AccountMapper;
 import com.example.authentication.repository.AccountRepository;

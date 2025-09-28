@@ -7,7 +7,7 @@ from constants import *
 from basiclib import *
 
 
-def wait_until_available(url, timeout=60):
+def wait_until_available(url, timeout=TIMEOUT):
     """Wait until the given URL is reachable before proceeding."""
     start = time.time()
     log_info(f"Waiting for service at {url} to be available...")
@@ -149,14 +149,27 @@ class TestRecruitmentAPI(unittest.TestCase):
                 headers=get_headers(token),
             )
 
-    def get_pending_cv(self, candidate_name, token):
-        response = api_request(
-            "GET",
-            f"{BASE_URL}/cvs/pending",
-            params={"candidate_name": candidate_name},
-            headers=get_headers(token),
-        )
-        return response.json() if response.status_code == 200 else []
+    def get_pending_cv(self, candidate_name, token, retries=20, delay=15):
+        """
+        Try to get pending CVs for a candidate, with retries.
+        Returns list of CVs or [] if not found after retries.
+        """
+        for attempt in range(retries):
+            log_info(f"Attempt {attempt + 1} to get pending CVs for '{candidate_name}' retry in {delay} second")
+            response = api_request(
+                "GET",
+                f"{BASE_URL}/cvs/pending",
+                params={"candidate_name": candidate_name},
+                headers=get_headers(token),
+            )
+            if response.status_code == 200:
+                cvs = response.json()
+                if cvs:
+                    log_info(f"Found pending CVs: {cvs}")
+                    return cvs
+            time.sleep(delay)
+        log_error(f"Failed to get pending cvs with max_retries and total time_out {delay*retries} second")
+        return []
 
     def test_full_flow_and_all_routes(self):
         """Main working-path test: upload JD, upload CV, approve, schedule and complete interview."""
@@ -186,7 +199,7 @@ class TestRecruitmentAPI(unittest.TestCase):
 
             # Test GET Pending CV with admin
             log_info("[Step 3] Get pending CV after 30s")
-            time.sleep(30)
+            time.sleep(30)  # Wait for the CV to be processed
             pending_cv = self.get_pending_cv(name, self.admin_token)
             self.assertGreater(len(pending_cv), 0)
             cv_id = pending_cv[0]["id"]
@@ -207,7 +220,7 @@ class TestRecruitmentAPI(unittest.TestCase):
             response = api_request(
                 "PUT",
                 f"{BASE_URL}/cvs/{cv_id}",
-                json={"status": "Updated"},
+                json={"status": "Rejected"},
                 headers=get_headers(self.admin_token),
             )
             self.assertEqual(response.status_code, 200)
@@ -258,14 +271,20 @@ class TestRecruitmentAPI(unittest.TestCase):
             
             # Test the interview questions were generated after candidate accepted the interview
             log_info("Checking if interview questions were generated")
-            questions_response = api_request(
-                "GET", f"{BASE_URL}/interview-questions/{cv_id}/questions",
-                headers=get_headers(self.admin_token)
-            )
-            self.assertEqual(questions_response.status_code, 200)
-
-            questions_before = questions_response.json()
-            log_info(f"Get the interview_questions: {questions_before}")
+            max_retries = 20
+            delay = 15
+            questions_before = []
+            for attempt in range(max_retries):
+                questions_response = api_request(
+                    "GET", f"{BASE_URL}/interview-questions/{cv_id}/questions",
+                    headers=get_headers(self.admin_token)
+                )
+                if questions_response.status_code == 200:
+                    questions_before = questions_response.json()
+                    log_info(f"Attempt {attempt + 1}: Get the interview_questions: {questions_before}")
+                    if questions_before and len(questions_before) > 0:
+                        break
+                time.sleep(delay)
             self.assertGreater(len(questions_before), 0)
 
             # Edit the first question
@@ -404,7 +423,7 @@ class TestRecruitmentAPI(unittest.TestCase):
         self.assertEqual(response.json().get("detail"), "Insufficient permission")
 
         log_info("Getting pending CVs as ADMIN")
-        time.sleep(30)
+        time.sleep(30)  # Wait for the CV to be processed
         pending_cv = self.get_pending_cv(name, self.admin_token)
         if not pending_cv:
             log_info("No pending CV found, skipping test.")

@@ -25,6 +25,19 @@ export function getUserRole() {
   }
 }
 
+export function getUserSub() {
+  const token = getToken();
+  if (!token) return null;
+
+  try {
+    const decoded = jwtDecode(token);
+    return decoded?.sub || null;
+  }
+  catch {
+    return null;
+  }
+}
+
 export function getToken() {
   const cookie = Cookies.get('profile');
   if (!cookie) return null;
