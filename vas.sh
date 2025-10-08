@@ -335,6 +335,9 @@ ensure_network() {
 ## --port=<host:container>       (optional)
 ## --env="KEY=VALUE ... KEY2=VAL" (optional)
 ## --cmd="<command to run inside container>" (optional)
+## --mount="source=...,target=..." (optional)
+## --volume_name=<docker volume name> (optional)
+## --volume_target=<container path> (optional)
 ##
 run_image() {
     test -n "$__name" || die "Module name required"
@@ -346,6 +349,14 @@ run_image() {
     echo "Running container: $container_name from image: $full_image"
     ensure_network
 
+    # Create volume if specified and missing
+    if [ -n "$__volume_name" ]; then
+        if ! docker volume ls --format '{{.Name}}' | grep -q "^${__volume_name}$"; then
+            echo "Creating Docker volume: ${__volume_name}"
+            docker volume create "${__volume_name}" >/dev/null
+        fi
+    fi
+
     # Stop & remove existing container if exists
     if docker ps -a --format '{{.Names}}' | grep -Eq "^${container_name}$"; then
         echo "Container already exists. Removing..."
@@ -354,9 +365,7 @@ run_image() {
 
     # Prepare port mapping
     port_arg=""
-    if [ -n "$__port" ]; then
-        port_arg="-p $__port"
-    fi
+    [ -n "$__port" ] && port_arg="-p $__port"
 
     # Prepare environment variables
     env_args=""
@@ -368,16 +377,19 @@ run_image() {
 
     # Prepare custom command
     cmd_arg=""
-    if [ -n "$__cmd" ]; then
-        cmd_arg="$__cmd"
-    fi
+    [ -n "$__cmd" ] && cmd_arg="$__cmd"
 
-    # Prepare mount host volume
+    # Prepare mounts
     mount_args=""
     if [ -n "$__mount" ]; then
         for mount_pair in $__mount; do
             mount_args="$mount_args -v $mount_pair"
         done
+    fi
+
+    # Add optional named volume if both name & target are specified
+    if [ -n "$__volume_name" ] && [ -n "$__volume_target" ]; then
+        mount_args="$mount_args -v ${__volume_name}:${__volume_target}"
     fi
 
     docker_cmd="docker run --init -d \
@@ -459,19 +471,24 @@ run_public_image() {
 }
 
 ## remove_image
-## Remove docker containers and images by name if they exist
+## Remove docker containers, images, and optional volume by name if they exist
 ## Matches container name soai_<module>
 ## Matches image: $DOCKER_REGISTRY/soai-<module>:<version>
 ##
 ## --name=<module name>
+## --volume_name=<docker volume name>   (optional, defaults to soai_<module>_data)
+## --remove_volume=<true|false>         (optional, default=false)
 ##
 remove_image() {
     test -n "$__name" || die "Module name required"
     image_name="soai-$__name"
     container_name="soai_$__name"
     version=$(get_version)
-
     full_image="$DOCKER_REGISTRY/$image_name:$version"
+
+    # Default values
+    volume_name="${__volume_name:-soai_${__name}_data}"
+    remove_volume="${__remove_volume:-false}"
 
     echo "Removing container and image for module: $__name"
     echo "Target container: $container_name"
@@ -485,12 +502,25 @@ remove_image() {
         echo "Container $container_name does not exist."
     fi
 
+    # Wait briefly to ensure container is fully stopped
+    sleep 1
+
     # Remove image if exists
     if docker images -q "$full_image" | grep -q .; then
         echo "Removing image: $full_image"
         docker rmi -f "$full_image" || echo "Failed to remove image: $full_image"
     else
         echo "Image $full_image does not exist."
+    fi
+
+    # Optionally remove volume
+    if [ "$remove_volume" = "true" ]; then
+        if docker volume ls --format '{{.Name}}' | grep -q "^${volume_name}$"; then
+            echo "Removing volume: ${volume_name}"
+            docker volume rm -f "${volume_name}" || echo "Failed to remove volume: ${volume_name}"
+        else
+            echo "Volume ${volume_name} does not exist."
+        fi
     fi
 }
 

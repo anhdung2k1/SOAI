@@ -41,6 +41,8 @@ COPY --from=builder /install /usr/local
 COPY --from=builder /app/app ./app
 COPY --from=builder /app/.env .env
 
+RUN chown -R ${USER_ID}:${USER_ID} /app
+
 # Metadata
 ARG COMMIT
 ARG APP_VERSION

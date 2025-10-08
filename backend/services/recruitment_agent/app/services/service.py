@@ -59,9 +59,7 @@ class RecruitmentService:
     ):
         logger.info("Uploading and processing CV file.")
         try:
-            cv_dir = "./cv_uploads"
-            os.makedirs(cv_dir, exist_ok=True)
-
+            cv_dir = UPLOAD_DIR
             original_path = os.path.join(cv_dir, file.filename)
             with open(original_path, "wb") as f:
                 shutil.copyfileobj(file.file, f)
@@ -789,7 +787,7 @@ class RecruitmentService:
 
         parsed_cv = json.loads(cv.parsed_cv) if cv.parsed_cv else {}
         filename = parsed_cv.get("cv_file_name") or f"{cv.candidate_name.replace(' ', '_')}.pdf"
-        file_path = os.path.join("./cv_uploads", filename)
+        file_path = os.path.join(UPLOAD_DIR, filename)
 
         if not os.path.exists(file_path):
             raise HTTPException(
@@ -808,7 +806,7 @@ class RecruitmentService:
         if not jd:
             raise HTTPException(status_code=404, detail="Job Description not found.")
 
-        output_dir = "/tmp/jd_previews"
+        output_dir = JD_PREVIEW_DIR
         os.makedirs(output_dir, exist_ok=True)
 
         filename = f"jd_{jd.id}_{jd.position.replace(' ', '_')}.pdf"
@@ -864,7 +862,7 @@ Hiring Manager: {jd.hiring_manager or ''}
         )
     
     def list_proof_images(self, cv_id: int) -> List[str]:
-        folder_path = os.path.join("cv_uploads", f"cv_{cv_id}", "proofs")
+        folder_path = os.path.join(UPLOAD_DIR, f"cv_{cv_id}", "proofs")
         if not os.path.exists(folder_path):
             logger.info(f"[list_proof_images] No proof images found for CV ID: {cv_id}")
             return []
@@ -877,8 +875,7 @@ Hiring Manager: {jd.hiring_manager or ''}
         return image_urls
     
     def upload_proof_images(self, cv_id: int, files: List[UploadFile]) -> CVUploadResponseSchema:
-        folder_path = os.path.join("cv_uploads", f"cv_{cv_id}", "proofs")
-        os.makedirs(folder_path, exist_ok=True)
+        folder_path = os.path.join(UPLOAD_DIR, f"cv_{cv_id}", "proofs")
         saved_files = []
         for file in files:
             if not file.filename.lower().endswith((".png", ".jpg", ".jpeg", ".webp")):

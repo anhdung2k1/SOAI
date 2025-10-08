@@ -38,8 +38,6 @@ spec:
       - name: {{ template "soai-recruitment.name" . }}-ephemeral-storage
         emptyDir: {}
       {{- end }}
-      - name: {{ template "soai-recruitment.name" . }}-jd-previews
-        emptyDir: {}
       - name: home-volume
         emptyDir: {}
       {{- if $g.security.tls.enabled }}

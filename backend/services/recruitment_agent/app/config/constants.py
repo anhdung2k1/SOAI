@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from pathlib import Path
 from enum import Enum
 
 load_dotenv()
@@ -23,6 +24,10 @@ SERVICE_ID = "recruitment-agent"
 LOG_VERSION = "1.0.0"
 # OTEL Configurations
 OTEL_ENDPOINT = os.getenv("OTEL_ENDPOINT", "otel-collector:4317") # gRPC endpoint
+# CV Upload Dir
+BASE_DIR = Path(__file__).resolve().parent.parent
+UPLOAD_DIR = f"{BASE_DIR}/cv_uploads"
+JD_PREVIEW_DIR = "/tmp/jd_previews"
 
 # DB Setting - MySQL
 DB_HOST = os.getenv("DB_HOST", "localhost")

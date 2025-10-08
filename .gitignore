@@ -23,7 +23,6 @@ backend/services/recruitment_agent/app/services/__pycache__
 backend/services/recruitment_agent/app/utils/__pycache__
 backend/services/recruitment_agent/tests/__pycache__/
 backend/services/recruitment_agent/app/metrics/__pycache__/
-backend/services/recruitment_agent/app/jd_previews/
 backend/services/recruitment_agent/app/celery_tasks/__pycache__
 backend/services/recruitment_agent/app/celery_tasks/__pycache__
 # log generated

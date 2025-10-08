@@ -164,7 +164,8 @@ run-recruitment: wait-mysql wait-authentication wait-genai
 	$(TOP_DIR)/vas.sh run_image \
 		--name=recruitment_agent \
 		--port=8003:8003 \
-		--mount="$(RECRUITMENT_DIR):/app" \
+		--volume_name=soai_recruitment_shared \
+		--volume_target=/app/app/cv_uploads \
 		--env="CONSUL_HOST=soai_consul:8500 \
 			GENAI_HOST=soai_gen_ai_provider:8004 \
 			SERVICE_NAME=soai_recruitment_agent \
@@ -187,7 +188,8 @@ run-recruitment-celery-worker:
 	$(TOP_DIR)/vas.sh run_image \
 		--name=recruitment_agent-celery-worker \
 		--name_override=recruitment_agent \
-		--mount="$(RECRUITMENT_DIR):/app" \
+		--volume_name=soai_recruitment_shared \
+		--volume_target=/app/app/cv_uploads \
 		--env="CONSUL_HOST=soai_consul:8500 \
 			GENAI_HOST=soai_gen_ai_provider:8004 \
 			SERVICE_NAME=soai_recruitment_agent \
@@ -313,27 +315,40 @@ remove:		remove-recruitment \
 			remove-recruitment-celery-worker \
 			remove-redis
 
+# Recruitment containers
 remove-recruitment:
-	@echo "Remove the Recruitment agent docker image"
-	$(TOP_DIR)/vas.sh remove_image --name=recruitment_agent
+	@echo "Remove the Recruitment agent container, image, and its shared volume"
+	$(TOP_DIR)/vas.sh remove_image \
+		--name=recruitment_agent \
+		--volume_name=soai_recruitment_shared \
+		--remove_volume=true
+
 remove-recruitment-celery-worker:
-	@echo "Remove the Recruitment celery docker image"
-	$(TOP_DIR)/vas.sh remove_image --name=recruitment_agent-celery-worker
+	@echo "Remove the Recruitment celery worker container"
+	$(TOP_DIR)/vas.sh remove_image \
+		--name=recruitment_agent-celery-worker
+
+# Other services (no volume cleanup needed)
 remove-authentication:
 	@echo "Remove the Authentication agent docker image"
 	$(TOP_DIR)/vas.sh remove_image --name=authentication
+
 remove-genai:
 	@echo "Remove the GenAI provider docker image"
 	$(TOP_DIR)/vas.sh remove_image --name=gen_ai_provider
+
 remove-web:
 	@echo "Remove the Web frontend docker image"
 	$(TOP_DIR)/vas.sh remove_image --name=web
+
 remove-consul:
 	@echo "Remove the Consul docker image"
 	$(TOP_DIR)/vas.sh remove_public_image --name=consul
+
 remove-mysql:
 	@echo "Remove the MySQL docker image"
 	$(TOP_DIR)/vas.sh remove_public_image --name=mysql
+
 remove-redis:
 	@echo "Remove the Redis docker image"
 	$(TOP_DIR)/vas.sh remove_public_image --name=redis

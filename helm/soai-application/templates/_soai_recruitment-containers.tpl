@@ -112,8 +112,6 @@
   - name: {{ template "soai-recruitment.name" $top }}-ephemeral-storage
   {{- end }}
     mountPath: /app/app/cv_uploads
-  - name: {{ template "soai-recruitment.name" $top }}-jd-previews
-    mountPath: /app/app/jd_previews
   - name: home-volume
     mountPath: /home/soai_user
   {{- if $g.security.tls.enabled }}

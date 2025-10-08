@@ -14,7 +14,6 @@ import models.cv_application
 import models.interview_schedule
 import models.interview_question
 from fastapi.staticfiles import StaticFiles
-from pathlib import Path
 # === OpenTelemetry setup ===
 from metrics.otel_setup import setup_otel
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
@@ -40,9 +39,6 @@ def metrics():
     return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
 
 # Mount static folder
-BASE_DIR = Path(__file__).resolve().parent
-UPLOAD_DIR = BASE_DIR / "cv_uploads"
-UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 logger.info(f"CV Upload directory initialized at: {UPLOAD_DIR}")
 app.mount(f"{API_PREFIX}/static", StaticFiles(directory=str(UPLOAD_DIR)), name="static")
 

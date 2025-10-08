@@ -31,6 +31,8 @@ RUN echo "${USER_ID}:x:${USER_ID}:${USER_ID}:soai-genai:/nonexistent:/bin/false"
 COPY --from=builder /install /usr/local
 COPY --from=builder /app/app ./app
 
+RUN chown -R ${USER_ID}:${GROUP_ID} /app
+
 # Metadata
 ARG COMMIT
 ARG APP_VERSION
