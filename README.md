@@ -41,6 +41,12 @@ To start all the components
 ```bash
 $ docker compose up -d
 ```
+
+To start only recruitment for develop
+```bash
+$ docker compose up -d recruitment
+```
+
 This will install dependencies and recruitment docker container start for you. This will run authentication for JWT verification and MySQL database for storing database.
 
 You must export the `OPENAI_API_KEY` under environment
