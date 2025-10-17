@@ -42,17 +42,33 @@ To start all the components
 $ docker compose up -d
 ```
 
-To start only recruitment for develop
-```bash
-$ docker compose up -d recruitment
-```
-
 This will install dependencies and recruitment docker container start for you. This will run authentication for JWT verification and MySQL database for storing database.
 
 You must export the `OPENAI_API_KEY` under environment
 ```bash
 $ export OPENAI_API_KEY=<your-api-key>
 ```
+
+In case you wish to develop ReactJS Frontend without Docker built. So you need to have a look on [constants.js](web/main-app/src/constants/constants.js). And uncomment two lines below
+
+```bash
+// This exports used for calling the nginx proxy after docker built
+// export const AUTH_BASE_URL = "/api/v1";
+// export const API_HOST = ""
+// If you want to run in the local environment without Docker,
+// you can uncomment the lines below and comment the above lines.
+export const AUTH_BASE_URL = "http://localhost:9090/api/v1";
+export const API_HOST = "http://localhost:8003"
+
+export const API_BASE_URL = `${API_HOST}/api/v1`;
+```
+
+And start the recruitment server only. This will only run neccessary dependencies (DB, redis) and server for authenticating and API server.
+
+```bash
+$ docker compose up -d recruitment
+```
+
 2. If you want to test APIs, run
 ```
 $ make test-recruitment
@@ -110,19 +126,17 @@ This will install SOAI helm chart to k8s cluster.
 6. The result looks like this after you done the installation
 ```bash
 $ k $NAME get po
-NAME                                                   READY   STATUS    RESTARTS   AGE
-clickhouse-0                                           1/1     Running   0          148m
-grafana-8d59bb64b-4k5ql                                1/1     Running   0          148m
-otel-collector-67c9d4f69b-sw8m6                        1/1     Running   0          148m
-prometheus-69f449d776-bhjms                            1/1     Running   0          148m
-redis-7b986b9f57-5cb99                                 1/1     Running   0          148m
-soai-application-authentication-5f8dc6b7c9-p496t       1/1     Running   0          148m
-soai-application-consul-85854666b4-2q5np               1/1     Running   0          148m
-soai-application-genai-974987fd4-v6hxt                 1/1     Running   0          148m
-soai-application-mysql-0                               1/1     Running   0          148m
-soai-application-recruitment-57bb645c9b-bkjn7          1/1     Running   0          148m
-soai-application-recruitment-worker-6bd8c98c45-xkcwd   1/1     Running   0          148m
-soai-application-web-5c9bbc956d-5v67f                  1/1     Running   0          148m
+NAME                                               READY   STATUS    RESTARTS   AGE
+clickhouse-0                                       1/1     Running   0          4m41s
+grafana-8d59bb64b-xxqd7                            1/1     Running   0          4m51s
+otel-collector-6c855f87b5-g5x5l                    1/1     Running   0          4m51s
+redis-7b986b9f57-m68vj                             1/1     Running   0          4m51s
+soai-application-authentication-645c7899f8-5wh5c   1/1     Running   0          4m51s
+soai-application-consul-5d57d7f649-psmgd           1/1     Running   0          4m51s
+soai-application-genai-b9475b9fd-nlvl6             1/1     Running   0          4m51s
+soai-application-mysql-0                           1/1     Running   0          4m43s
+soai-application-recruitment-7844644774-9nt2h      2/2     Running   0          4m50s
+soai-application-web-84ff858bbb-s58td              1/1     Running   0          4m50s
 ```
 
 ## Pushing the docker image to registry and release helm chart
