@@ -2,21 +2,25 @@ import classNames from 'classnames/bind';
 import styles from '../../assets/styles/admins/adminCVList.module.scss';
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { Col, Row, Badge, ReviewModal } from '../layouts';
-import { fetchCVsByPosition } from '../../shared/api/cvApi';
+import { fetchCVsByPosition, getCVPreviewUrl } from '../../shared/api/cvApi';
 import type { CandidateCV } from '../../shared/interfaces/adminInterface';
+import { FaPen, FaTrash } from 'react-icons/fa';
 
 const cx = classNames.bind(styles);
 
 type ColumnName = 'Candidate Name' | 'Position' | 'Status' | 'Email' | 'Score' | 'Action';
+type ModalType = 'CV_DETAILS' | 'CLOSE_MODAL' | null;
 
 interface AdminCVListProps {
     disableColumns?: ColumnName[];
 }
 
-interface JustificationModal {
-    candidate: CandidateCV | null;
-    openModal: boolean;
+interface SelectedCVModal {
+    candidate: CandidateCV;
+    modalType: ModalType;
 }
+
+const initSelectedCVValue: SelectedCVModal = { candidate: {} as CandidateCV, modalType: null };
 
 interface Filter {
     sortBy: 'ASCENDING' | 'DESCENDING';
@@ -52,9 +56,9 @@ const filterReducer = (state: Filter, action: Action): Filter => {
 };
 
 const AdminCVList = ({ disableColumns = [] }: AdminCVListProps) => {
-    const [filter, dispatch] = useReducer(filterReducer, initFilterValue);
     const [cvs, setCVs] = useState<CandidateCV[]>([]);
-    const [justificationModal, setJustificationModal] = useState<JustificationModal>({ candidate: null, openModal: false });
+    const [filter, dispatch] = useReducer(filterReducer, initFilterValue);
+    const [selectedCVModal, setSelectedCVModal] = useState<SelectedCVModal>(initSelectedCVValue);
 
     useEffect(() => {
         const fetchCVs = async (position: string = '') => {
@@ -80,6 +84,18 @@ const AdminCVList = ({ disableColumns = [] }: AdminCVListProps) => {
         });
         return filteredCVs;
     }, [filter, cvs]);
+
+    const handleOpenModal = (type: ModalType, cv: CandidateCV = {} as CandidateCV): void => {
+        if (type === 'CLOSE_MODAL') {
+            setSelectedCVModal(initSelectedCVValue);
+        } else {
+            if (Object.keys(cv).length !== 0) {
+                setSelectedCVModal({ candidate: cv, modalType: type });
+            } else {
+                console.error('Missing a candidate CV');
+            }
+        }
+    };
 
     return (
         <div className={cx('admin-cv-list')}>
@@ -146,33 +162,71 @@ const AdminCVList = ({ disableColumns = [] }: AdminCVListProps) => {
                                 {!disableColumns.includes('Email') && <td className={cx('cv-list-table__value')}>{cv.email}</td>}
                                 {!disableColumns.includes('Score') && (
                                     <td className={cx('cv-list-table__value')}>
-                                        <a onClick={() => setJustificationModal({ candidate: cv, openModal: true })}>{cv.matched_score}</a>
+                                        <a onClick={() => handleOpenModal('CV_DETAILS', cv)}>{cv.matched_score}</a>
                                     </td>
                                 )}
-                                {!disableColumns.includes('Action') && <td className={cx('cv-list-table__value')}>Action 1</td>}
+                                {!disableColumns.includes('Action') && (
+                                    <td className={cx('cv-list-table__value')}>
+                                        <div className={cx('cv-list-table__action')}>
+                                            <button className={cx('cv-list-table__action-btn')} onClick={() => console.log('status')} title="Edit">
+                                                <FaPen />
+                                            </button>
+                                            <button
+                                                className={cx('cv-list-table__action-btn', 'cv-list-table__action-btn--delete')}
+                                                onClick={() => console.log('status')}
+                                                title="Delete"
+                                            >
+                                                <FaTrash />
+                                            </button>
+                                        </div>
+                                    </td>
+                                )}
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
 
-            <ReviewModal open={justificationModal.openModal} title="CV Assessment" onClose={() => setJustificationModal({ candidate: null, openModal: false })}>
-                <div className={cx('admin-cv-modal-body')}>
-                    {justificationModal.candidate ? (
-                        justificationModal.candidate.justification.split('\n').map((line, idx) => (
-                            <span key={idx}>
-                                {line}
-                                <br />
-                            </span>
-                        ))
-                    ) : (
-                        <span className={cx('admin-cv-modal-body__missed-justification')}>No assessment available</span>
-                    )}
-                </div>
-                <div className={cx('admin-cv-modal-footer')}>
-                    <b>Name:</b> {justificationModal.candidate?.candidate_name} &nbsp;|&nbsp;
-                    <b>Position:</b> {justificationModal.candidate?.position}
-                </div>
+            <ReviewModal open={selectedCVModal.modalType === 'CV_DETAILS'} title="Candidate Details" onClose={() => handleOpenModal('CLOSE_MODAL')}>
+                {Object.keys(selectedCVModal.candidate).length !== 0 && (
+                    <>
+                        <div className={cx('cv-modal-header')}>
+                            <p className={cx('cv-modal-header__personal-data')}>
+                                <strong>Name:</strong> {selectedCVModal.candidate.candidate_name}
+                            </p>
+                            <p className={cx('cv-modal-header__personal-data')}>
+                                <strong>Email:</strong> {selectedCVModal.candidate.email}
+                            </p>
+                            <p className={cx('cv-modal-header__personal-data')}>
+                                <strong>Position:</strong> {selectedCVModal.candidate.position}
+                            </p>
+                            <p className={cx('cv-modal-header__personal-data')}>
+                                <strong>Score:</strong> {selectedCVModal.candidate.matched_score}
+                            </p>
+                        </div>
+                        <hr />
+                        <div className={cx('cv-modal-body')}>
+                            <h3>Reviewed by AI</h3>
+                            <div className={cx('cv-modal-body__assessment')}>
+                                {selectedCVModal.candidate.justification.split('\n').map((line, idx) => (
+                                    <span key={idx}>
+                                        {line}
+                                        <br />
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="admin-cv-preview__iframe-container" style={{ marginTop: '1rem' }}>
+                            <iframe
+                                src={getCVPreviewUrl(selectedCVModal.candidate.id)}
+                                title="CV Preview"
+                                width="100%"
+                                height="600px"
+                                style={{ border: '1px solid #ccc' }}
+                            />
+                        </div>
+                    </>
+                )}
             </ReviewModal>
         </div>
     );
