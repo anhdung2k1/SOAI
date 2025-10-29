@@ -80,19 +80,59 @@
     background: #f9fafb;
 }
 
-.admin-cv-modal-body {
+.cv-list-table__action {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+}
+
+.cv-list-table__action-btn {
+    padding: 8px;
+    cursor: pointer;
+    border: none;
+    color: $primary-color;
+    background-color: transparent;
+}
+
+.cv-list-table__action-btn.cv-list-table__action-btn--delete {
+    color: grey;
+
+    &:hover {
+        color: $error-color;
+    }
+}
+
+// CV modals
+.cv-modal-header {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.cv-modal-header__personal-data {
+    flex: 0 0 50%;
+    min-width: 50%;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.cv-modal-body,
+.cv-modal-body__assessment {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.cv-modal-body__assessment {
     padding: 12px 15px;
+    margin-top: 8px;
     border-radius: 6px;
-    background-color: #f6faff;
+    border: 1px solid #d7e3f1;
+    background-color: $background-white-color;
     white-space: pre-line;
 }
 
-.admin-cv-modal-body__missed-justification {
+.cv-modal-body__assessment-missed-justification {
     font-style: italic;
     color: #999;
-}
-
-.admin-cv-modal-footer {
-    margin-top: 14px;
-    color: #6c757d;
 }

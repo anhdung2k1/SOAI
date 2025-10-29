@@ -23,3 +23,7 @@ export const fetchCVsByPosition = async (position: string = ''): Promise<Candida
         return [];
     }
 };
+
+export const getCVPreviewUrl = (cvId: number): string => {
+    return `${API_BASE_URL}/recruitment/cvs/${cvId}/preview`;
+};

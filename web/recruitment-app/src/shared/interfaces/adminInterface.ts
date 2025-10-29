@@ -1,3 +1,5 @@
+export type Status = 'Accepted' | 'Rejected' | 'Pending';
+
 export interface CandidateCV {
     id: number;
     email: string;
@@ -5,7 +7,7 @@ export interface CandidateCV {
     datetime: string;
     candidate_name: string;
     position: string;
-    status: 'Accepted' | 'Rejected' | 'Pending';
+    status: Status;
     matched_score: number;
     justification: string;
 }
