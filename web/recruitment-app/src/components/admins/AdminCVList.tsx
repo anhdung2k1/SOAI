@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import styles from '../../assets/styles/admins/adminCVList.module.scss';
 import { useEffect, useMemo, useReducer, useState } from 'react';
-import { Col, Row, Badge } from '../layouts';
+import { Col, Row, Badge, ReviewModal } from '../layouts';
 import { fetchCVsByPosition } from '../../shared/api/cvApi';
 import type { CandidateCV } from '../../shared/interfaces/adminInterface';
 
@@ -156,39 +156,24 @@ const AdminCVList = ({ disableColumns = [] }: AdminCVListProps) => {
                 </table>
             </div>
 
-            {/* Justification Modal */}
-            {justificationModal.openModal && (
-                <div className={cx('admin-modal-overlay')} onClick={() => setJustificationModal({ candidate: null, openModal: false })}>
-                    <div className={cx('admin-modal-content')} onClick={(e) => e.stopPropagation()}>
-                        <div className={cx('admin-modal-content__header')}>
-                            <h3>CV Assessment</h3>
-                            <button
-                                className={cx('admin-modal-content__header-close-btn')}
-                                onClick={() => setJustificationModal({ candidate: null, openModal: false })}
-                            >
-                                ×
-                            </button>
-                        </div>
-
-                        <div className={cx('admin-cv-modal__justification')}>
-                            {justificationModal.candidate ? (
-                                justificationModal.candidate.justification.split('\n').map((line, idx) => (
-                                    <span key={idx}>
-                                        {line}
-                                        <br />
-                                    </span>
-                                ))
-                            ) : (
-                                <span className={cx('admin-cv-modal__justification-missing')}>No assessment available</span>
-                            )}
-                        </div>
-                        <div className={cx('admin-cv-modal__footer')}>
-                            <b>Name:</b> {justificationModal.candidate?.candidate_name} &nbsp;|&nbsp;
-                            <b>Position:</b> {justificationModal.candidate?.position}
-                        </div>
-                    </div>
+            <ReviewModal open={justificationModal.openModal} title="CV Assessment" onClose={() => setJustificationModal({ candidate: null, openModal: false })}>
+                <div className={cx('admin-cv-modal-body')}>
+                    {justificationModal.candidate ? (
+                        justificationModal.candidate.justification.split('\n').map((line, idx) => (
+                            <span key={idx}>
+                                {line}
+                                <br />
+                            </span>
+                        ))
+                    ) : (
+                        <span className={cx('admin-cv-modal-body__missed-justification')}>No assessment available</span>
+                    )}
                 </div>
-            )}
+                <div className={cx('admin-cv-modal-footer')}>
+                    <b>Name:</b> {justificationModal.candidate?.candidate_name} &nbsp;|&nbsp;
+                    <b>Position:</b> {justificationModal.candidate?.position}
+                </div>
+            </ReviewModal>
         </div>
     );
 };

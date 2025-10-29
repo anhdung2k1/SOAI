@@ -1,13 +1,13 @@
 import { API_BASE_URL } from '../constants/baseUrl';
 import { HTTP_ERROR_CODE } from '../constants/httpCode';
-import type { CadidateCV } from '../interfaces/adminInterface';
+import type { CandidateCV } from '../interfaces/adminInterface';
 import { getToken } from './authApi';
 
 const authHeaders = (): HeadersInit => ({
     Authorization: `Bearer ${getToken()}`,
 });
 
-export const fetchCVsByPosition = async (position: string = ''): Promise<CadidateCV[]> => {
+export const fetchCVsByPosition = async (position: string = ''): Promise<CandidateCV[]> => {
     const query = position ? `?position=${encodeURIComponent(position)}` : '';
     const url = `${API_BASE_URL}/recruitment/cvs/position${query}`;
 
