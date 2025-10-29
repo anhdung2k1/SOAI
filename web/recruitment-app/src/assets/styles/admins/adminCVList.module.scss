@@ -80,80 +80,19 @@
     background: #f9fafb;
 }
 
-/* Modal overlay */
-.admin-modal-overlay {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(2px);
-    z-index: 1000;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.admin-modal-content {
-    position: relative;
-    width: 80%;
-    max-width: 540px;
-    min-width: 300px;
-    max-height: 90vh;
-    padding: 2rem;
-    border-radius: 12px;
-    overflow-y: auto;
-    background-color: #fff;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 0.3s ease;
-}
-
-.admin-modal-content__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.admin-modal-content__header-close-btn {
-    padding: 6px;
-    border: none;
-    background: none;
-    font-size: 2.4rem;
-    color: #999;
-    cursor: pointer;
-
-    &:hover {
-        color: $error-color;
-    }
-}
-
-.admin-cv-modal__justification {
-    margin-top: 10px;
-    margin-bottom: 10px;
+.admin-cv-modal-body {
     padding: 12px 15px;
     border-radius: 6px;
     background-color: #f6faff;
     white-space: pre-line;
 }
 
-.admin-cv-modal__justification-missing {
+.admin-cv-modal-body__missed-justification {
     font-style: italic;
     color: #999;
 }
 
-.admin-cv-modal__footer {
-    margin-top: 10px;
+.admin-cv-modal-footer {
+    margin-top: 14px;
     color: #6c757d;
 }
