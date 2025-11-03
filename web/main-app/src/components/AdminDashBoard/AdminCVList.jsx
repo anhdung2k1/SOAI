@@ -94,7 +94,7 @@ const AdminCVList = ({ actionsEnabled = true }) => {
     setShowJustificationModal(true);
   };
 
-  const uniquePositions = [...new Set(cvs.map((cv) => cv.matched_position).filter(Boolean))];
+  const uniquePositions = [...new Set(cvs.map((cv) => cv.position).filter(Boolean))];
 
   const filteredCVs = cvs
     .filter((cv) => {
@@ -104,7 +104,7 @@ const AdminCVList = ({ actionsEnabled = true }) => {
         const meetsMinScore =
           minScore === "" || (cv.matched_score ?? 0) >= parseFloat(minScore);
         const matchesPosition =
-          !positionFilter || cv.matched_position === positionFilter;
+          !positionFilter || cv.position === positionFilter;
         return matchesName && meetsMinScore && matchesPosition;
       } catch (err) {
         return true;
@@ -177,7 +177,7 @@ const AdminCVList = ({ actionsEnabled = true }) => {
           {filteredCVs.map((cv) => (
             <tr key={cv.id}>
               <td>{cv.candidate_name}</td>
-              <td>{cv.matched_position}</td>
+              <td>{cv.position}</td>
               <td>
                 <span className={`status-badge status-${cv.status.toLowerCase()}`}>
                   {cv.status}
@@ -225,7 +225,7 @@ const AdminCVList = ({ actionsEnabled = true }) => {
             <h3>CV Details</h3>
             <p><strong>Name:</strong> {selectedCV.candidate_name}</p>
             <p><strong>Email:</strong> {selectedCV.email}</p>
-            <p><strong>Position:</strong> {selectedCV.matched_position}</p>
+            <p><strong>Position:</strong> {selectedCV.position}</p>
             <p><strong>Status:</strong> {
               selectedCV.status === "Accepted" ? "Accepted" :
               selectedCV.status === "Rejected" ? "Rejected" : "Pending"
@@ -299,8 +299,8 @@ const AdminCVList = ({ actionsEnabled = true }) => {
                 Position:
                 <input
                   type="text"
-                  value={editCV.matched_position}
-                  onChange={(e) => setEditCV({ ...editCV, matched_position: e.target.value })}
+                  value={editCV.position}
+                  onChange={(e) => setEditCV({ ...editCV, position: e.target.value })}
                 />
               </label>
               <label>
@@ -352,7 +352,7 @@ const AdminCVList = ({ actionsEnabled = true }) => {
             </div>
             <div style={{marginTop: 6, color: "#6c757d", fontSize: ".97em"}}>
               <b>Name:</b> {justificationCV?.candidate_name} &nbsp;|&nbsp;
-              <b>Position:</b> {justificationCV?.matched_position}
+              <b>Position:</b> {justificationCV?.position}
             </div>
           </div>
         </div>

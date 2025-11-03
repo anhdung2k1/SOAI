@@ -29,9 +29,11 @@ WORKDIR /app
 # We don't need the full LibreOffice suite, just the core components for document processing
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    libreoffice-core libreoffice-writer libreoffice-calc libreoffice-base-core \
-    libreoffice-common ure uno-libs-private fonts-dejavu \
-    libglib2.0-0 libsm6 libxext6 libxrender1 && \
+        libreoffice-core-nogui \
+        libreoffice-writer-nogui \
+        ure \
+        fonts-dejavu-core \
+        libglib2.0-0 libsm6 libxext6 libxrender1 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Create user with real home directory
