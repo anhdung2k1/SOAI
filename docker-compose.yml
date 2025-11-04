@@ -1,4 +1,6 @@
 services:
+
+  # Core Services
   genai:
     image: soai-gen_ai_provider:latest
     container_name: soai_gen_ai_provider
@@ -201,7 +203,73 @@ services:
     restart: always
     networks:
       - soai-net
+  
+  # Vector Database Services
+  minio:
+    image: minio/minio:RELEASE.2024-05-28T17-19-04Z
+    container_name: soai_minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /minio_data --address ":9000" --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    restart: always
+    networks:
+      - soai-net
 
+  etcd:
+    image: milvusdb/etcd:3.5.5-r2
+    container_name: soai_etcd
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_AUTO_COMPACTION_MODE=revision
+      - ETCD_AUTO_COMPACTION_RETENTION=1000
+      - ETCD_QUOTA_BACKEND_BYTES=4294967296
+      - ETCD_SNAPSHOT_COUNT=50000
+    healthcheck:
+      test: [ "CMD", "/opt/bitnami/scripts/etcd/healthcheck.sh" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    restart: always
+    networks:
+      - soai-net
+
+  milvus:
+    image: milvusdb/milvus:v2.4.4
+    container_name: soai_milvus
+    command: milvus run standalone
+    depends_on:
+      etcd:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    ports:
+      - "19530:19530"
+      - "9091:9091"
+    environment:
+      - ETCD_ENDPOINTS=etcd:2379
+      - MINIO_ADDRESS=minio:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin
+      - MINIO_USE_SSL=false
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9091/api/v1/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+    networks:
+      - soai-net
+
+  # Observability Services
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
     container_name: otel_collector
