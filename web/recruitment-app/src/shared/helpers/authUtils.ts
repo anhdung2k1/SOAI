@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
-import type { DecodedToken, Role } from '../interfaces/authInterface';
+import type { DecodedToken, Role } from '../types/authTypes';
 
 export const getToken = (): string | null => {
     const cookie = Cookies.get('profile');

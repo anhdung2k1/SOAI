@@ -3,8 +3,8 @@ import AuthPage from './pages/AuthPage';
 import AdminDashBoardPage from './pages/AdminDashBoardPage';
 import AdminCVListPage from './pages/AdminCVListPage';
 import { useEffect, useState } from 'react';
-import { getUserRole, isAuthenticated } from './shared/utils/authUtils';
-import type { Role } from './shared/interfaces/authInterface';
+import { getUserRole, isAuthenticated } from './shared/helpers/authUtils';
+import type { Role } from './shared/types/authTypes';
 import { ToastContainer } from 'react-toastify';
 
 const AppRoutes = () => {

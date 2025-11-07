@@ -5,8 +5,8 @@ import { jwtDecode } from 'jwt-decode';
 import React, { useEffect, useReducer, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiEye, FiEyeOff, FiMail, FiUser } from 'react-icons/fi';
-import { signin, signup } from '../shared/api/authApi';
-import type { SignInData, SignUpData, Role, DecodedToken } from '../shared/interfaces/authInterface';
+import { signin, signup } from '../shared/apis/authApis';
+import type { SignInData, SignUpData, Role, DecodedToken } from '../shared/types/authTypes';
 
 const cx = classNames.bind(styles);
 
