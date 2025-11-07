@@ -1,7 +1,7 @@
-import { API_BASE_URL } from '../constants/baseUrl';
-import { HTTP_ERROR_CODE } from '../constants/httpCode';
-import type { CandidateCV } from '../interfaces/adminInterface';
-import { getToken } from '../utils/authUtils';
+import { API_BASE_URL } from '../constants/baseUrls';
+import { HTTP_ERROR_CODE } from '../constants/httpCodes';
+import type { CandidateCV } from '../types/adminTypes';
+import { getToken } from '../helpers/authUtils';
 
 const authHeaders = (): HeadersInit => ({
     Authorization: `Bearer ${getToken()}`,

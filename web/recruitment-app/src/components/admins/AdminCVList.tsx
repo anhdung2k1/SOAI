@@ -5,8 +5,8 @@ import { toast } from 'react-toastify';
 import { FiTrash2 } from 'react-icons/fi';
 import { FaFilter, FaPen } from 'react-icons/fa';
 import { Col, Row, Badge, ReviewModal } from '../layouts';
-import { fetchCVsByPosition, getCVPreviewUrl, updateCV, deleteCV } from '../../shared/api/cvApi';
-import { STATUS, type CandidateCV, type Status } from '../../shared/interfaces/adminInterface';
+import { fetchCVsByPosition, getCVPreviewUrl, updateCV, deleteCV } from '../../shared/apis/cvApis';
+import { STATUS, type CandidateCV, type Status } from '../../shared/types/adminTypes';
 
 const cx = classNames.bind(styles);
 

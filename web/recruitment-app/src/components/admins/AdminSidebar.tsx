@@ -2,7 +2,7 @@ import classNames from 'classnames/bind';
 import styles from '../../assets/styles/admins/adminSidebar.module.scss';
 import SmartRecruitmentLogo from '../../assets/images/smart-recruitment-admin-logo.png';
 import { FiLogOut } from 'react-icons/fi';
-import { logout } from '../../shared/api/authApi';
+import { logout } from '../../shared/apis/authApis';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
