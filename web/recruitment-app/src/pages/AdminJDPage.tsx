@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { toast } from 'react-toastify';
 import { createJD, uploadJDFile } from '../shared/apis/jdApis';
 import type { JD } from '../shared/types/adminTypes';
-import AdminLayout from '../components/admins/AdminLayout';
+import AdminSidebarLayout from '../components/admins/AdminSidebarLayout';
 import AdminJDList from '../components/admins/AdminJDList';
 import classNames from 'classnames/bind';
 import frameStyles from '../assets/styles/admins/adminFrame.module.scss';
@@ -50,7 +50,7 @@ const AdminJDPage = () => {
     }
 
     return (
-        <AdminLayout>
+        <AdminSidebarLayout>
             <div className={cx('admin-jd-management')}>
                 <section className={cx('add-jd')}>
                     <input type="file" accept="application/json" id="jd-upload-input" onChange={handleUploadJSONFile} />
@@ -64,7 +64,7 @@ const AdminJDPage = () => {
             </div>
 
             {addCV ? <AdminJDForm onSubmit={handleAddJD} onCancel={() => setAddCV(false)} /> : <AdminJDList />}
-        </AdminLayout>
+        </AdminSidebarLayout>
     );
 };
 

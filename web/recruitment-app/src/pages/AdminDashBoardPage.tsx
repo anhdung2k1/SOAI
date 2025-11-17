@@ -3,7 +3,7 @@ import type { RootState } from '../services/redux/store';
 import { Col, Row } from '../components/layouts';
 import classNames from 'classnames/bind';
 import styles from '../assets/styles/admins/adminDashBoardPage.module.scss';
-import AdminLayout from '../components/admins/AdminLayout';
+import AdminSidebarLayout from '../components/admins/AdminSidebarLayout';
 import AdminStatisticCard from '../components/admins/AdminStatisticCard';
 import AdminCVList from '../components/admins/AdminCVList';
 import AdminJDList from '../components/admins/AdminJDList';
@@ -18,7 +18,7 @@ const AdminDashBoardPage = () => {
     const statistic = useSelector((state: RootState) => state.adminStatistic);
 
     return (
-        <AdminLayout>
+        <AdminSidebarLayout>
             <div className={cx('admin-dashboard')}>
                 <h1 className={cx('admin-dashboard__title')}>Welcome, Admin</h1>
                 <p className={cx('admin-dashboard__item', 'admin-dashboard__subtitle')}>Monitor all candidate applications and interview tasks here.</p>
@@ -47,7 +47,7 @@ const AdminDashBoardPage = () => {
                     <AdminJDList />
                 </div>
             </div>
-        </AdminLayout>
+        </AdminSidebarLayout>
     );
 };
 
