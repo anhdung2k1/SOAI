@@ -1,11 +1,11 @@
-import AdminSidebarLayout from '../components/admins/AdminSidebarLayout';
+import AdminLayout from '../components/admins/AdminLayout';
 import AdminCVList from '../components/admins/AdminCVList';
 
 const AdminCVPage = () => {
     return (
-        <AdminSidebarLayout>
+        <AdminLayout>
             <AdminCVList />
-        </AdminSidebarLayout>
+        </AdminLayout>
     );
 };
 

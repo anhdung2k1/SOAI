@@ -2,7 +2,7 @@ import React, { useEffect, useReducer, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { FiEye, FiEyeOff, FiMail, FiUser } from 'react-icons/fi';
-import { signin, signup } from '../shared/apis/authApis';
+import { signin, signup } from '../services/api/authApis';
 import { COOKIE_TOKEN_NAME } from '../shared/constants/browserStorages';
 import type { SignInData, SignUpData, Role, TokenDecoded } from '../shared/types/authTypes';
 import classNames from 'classnames/bind';

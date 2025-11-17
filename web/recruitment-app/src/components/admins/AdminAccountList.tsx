@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setNumberOfAccount } from '../../services/redux/adminSlices/adminStatisticSlice';
+import { setNumberOfAccount } from '../../services/redux/adminSlices/adminStatisticsSlice';
 import { HiUser } from 'react-icons/hi';
 import { MdAdminPanelSettings } from 'react-icons/md';
 import { FaFilter, FaUserCircle } from 'react-icons/fa';
 import { Badge, Button, Col, Row } from '../layouts';
-import { deleteAccount, getAccounts } from '../../shared/apis/authApis';
+import { deleteAccount, getAccounts } from '../../services/api/authApis';
 import { ROLES, type Role } from '../../shared/types/authTypes';
 import type { Account } from '../../shared/types/adminTypes';
 import classNames from 'classnames/bind';

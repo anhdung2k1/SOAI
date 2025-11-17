@@ -1,9 +1,9 @@
 export const PRIVATE_ADMIN_ROUTE = {
     dashboard: '/admin/dashboard',
-    user: '/admin/users',
-    candidateCV: '/admin/candidate/cvs',
-    candidateInterview: '/admin/candidate/interviews',
-    job: '/admin/dashboard/job/description',
+    cv: '/admin/candidate/cvs',
+    account: '/admin/accounts',
+    job: '/admin/dashboard/job/descriptions',
+    interview: '/admin/candidate/interviews',
 } as const;
 
 export const PUBLIC_ROUTE = {

@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useMemo, useReducer, useState } from 're
 import { toast } from 'react-toastify';
 import { FaFilter } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
-import { setNumberOfCV } from '../../services/redux/adminSlices/adminStatisticSlice';
+import { setNumberOfCV } from '../../services/redux/adminSlices/adminStatisticsSlice';
 import { Col, Row, Badge, Button, ReviewModal } from '../layouts';
-import { getCVByPosition, getCVPreviewUrl, updateCV, deleteCV } from '../../shared/apis/cvApis';
-import { STATUS, type CandidateCV, type Status } from '../../shared/types/adminTypes';
+import { getCVByPosition, getCVPreviewUrl, updateCV, deleteCV } from '../../services/api/cvApis';
+import { STATUS, type CV, type Status } from '../../shared/types/adminTypes';
 import classNames from 'classnames/bind';
 import styles from '../../assets/styles/admins/adminCVList.module.scss';
 import frameStyles from '../../assets/styles/admins/adminFrame.module.scss';
@@ -75,9 +75,9 @@ const filterReducer = (state: Filter, action: FilterAction): Filter => {
 };
 
 const AdminCVList = ({ disableColumns = [] }: AdminCVListProps) => {
-    const [cvs, setCVs] = useState<CandidateCV[]>([]);
-    const [editCV, setEditCV] = useState<CandidateCV | null>(null);
-    const [previewCV, setPreviewCV] = useState<CandidateCV | null>(null);
+    const [cvs, setCVs] = useState<CV[]>([]);
+    const [editCV, setEditCV] = useState<CV | null>(null);
+    const [previewCV, setPreviewCV] = useState<CV | null>(null);
     const [filter, dispatchFilter] = useReducer(filterReducer, initFilterValue);
     const dispatch = useDispatch();
 
@@ -159,7 +159,7 @@ const AdminCVList = ({ disableColumns = [] }: AdminCVListProps) => {
         }
     }, [cvs, editCV]);
 
-    const handleDeleteCV = async (cv: CandidateCV) => {
+    const handleDeleteCV = async (cv: CV) => {
         if (window.confirm(`Are you sure you want to delete the CV of ${cv.candidate_name}?`)) {
             await deleteCV(cv.id);
             fetchCVs();

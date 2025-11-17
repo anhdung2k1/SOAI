@@ -1,9 +1,9 @@
 import Cookies from 'js-cookie';
-import { AUTH_BASE_URL } from '../constants/baseUrls';
-import type { SignInData, SignUpData } from '../types/authTypes';
-import type { Account } from '../types/adminTypes';
-import { getToken } from '../helpers/authUtils';
-import { COOKIE_TOKEN_NAME } from '../constants/browserStorages';
+import { AUTH_BASE_URL } from '../../shared/constants/baseUrls';
+import type { SignInData, SignUpData } from '../../shared/types/authTypes';
+import type { Account } from '../../shared/types/adminTypes';
+import { getToken } from '../../shared/helpers/authUtils';
+import { COOKIE_TOKEN_NAME } from '../../shared/constants/browserStorages';
 
 export const signin = async (formData: SignInData) => {
     try {

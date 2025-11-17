@@ -1,36 +1,36 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-export interface AdminStatistic {
+export interface AdminStatistics {
     cvCount: number;
     jobCount: number;
     accountCount: number;
 }
 
-const initialState: AdminStatistic = {
+const initialState: AdminStatistics = {
     cvCount: 0,
     jobCount: 0,
     accountCount: 0,
 };
 
-export const adminStatSlice = createSlice({
-    name: 'admin-dashboard-statistic',
+export const adminStatisticsSlice = createSlice({
+    name: 'admin-dashboard-statistics',
     initialState,
     reducers: {
-        setNumberOfCV: (state, action: PayloadAction<number>): AdminStatistic => {
+        setNumberOfCV: (state, action: PayloadAction<number>): AdminStatistics => {
             return {
                 ...state,
                 cvCount: action.payload,
             };
         },
 
-        setNumberOfJob: (state, action: PayloadAction<number>): AdminStatistic => {
+        setNumberOfJob: (state, action: PayloadAction<number>): AdminStatistics => {
             return {
                 ...state,
                 jobCount: action.payload,
             };
         },
 
-        setNumberOfAccount: (state, action: PayloadAction<number>): AdminStatistic => {
+        setNumberOfAccount: (state, action: PayloadAction<number>): AdminStatistics => {
             return {
                 ...state,
                 accountCount: action.payload,
@@ -39,6 +39,6 @@ export const adminStatSlice = createSlice({
     },
 });
 
-export const { setNumberOfCV, setNumberOfJob, setNumberOfAccount } = adminStatSlice.actions;
+export const { setNumberOfCV, setNumberOfJob, setNumberOfAccount } = adminStatisticsSlice.actions;
 
-export default adminStatSlice.reducer;
+export default adminStatisticsSlice.reducer;

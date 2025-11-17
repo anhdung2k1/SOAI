@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import { setNumberOfJob } from '../../services/redux/adminSlices/adminStatisticSlice';
+import { setNumberOfJob } from '../../services/redux/adminSlices/adminStatisticsSlice';
 import { compareDateWithToday } from '../../shared/helpers/commonUntils';
-import { deleteJD, getJDByPosition, getJDPreviewUrl, updateJD } from '../../shared/apis/jdApis';
+import { deleteJD, getJDByPosition, getJDPreviewUrl, updateJD } from '../../services/api/jdApis';
 import { Button, Col, ReviewModal, Row } from '../layouts';
 import type { JD } from '../../shared/types/adminTypes';
 import classNames from 'classnames/bind';

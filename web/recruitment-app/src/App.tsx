@@ -29,8 +29,8 @@ const AppRoutes = () => {
             <Route path={PUBLIC_ROUTE.signup} element={<AuthPage isSignIn={false} />} />
 
             <Route path={PRIVATE_ADMIN_ROUTE.dashboard} element={isAuth && role === 'ADMIN' ? <AdminDashBoardPage /> : <Navigate to="/" replace />} />
-            <Route path={PRIVATE_ADMIN_ROUTE.candidateCV} element={isAuth && role === 'ADMIN' ? <AdminCVPage /> : <Navigate to="/" replace />} />
-            <Route path={PRIVATE_ADMIN_ROUTE.user} element={isAuth && role === 'ADMIN' ? <AdminAccountPage /> : <Navigate to="/" replace />} />
+            <Route path={PRIVATE_ADMIN_ROUTE.cv} element={isAuth && role === 'ADMIN' ? <AdminCVPage /> : <Navigate to="/" replace />} />
+            <Route path={PRIVATE_ADMIN_ROUTE.account} element={isAuth && role === 'ADMIN' ? <AdminAccountPage /> : <Navigate to="/" replace />} />
             <Route path={PRIVATE_ADMIN_ROUTE.job} element={isAuth && role === 'ADMIN' ? <AdminJDPage /> : <Navigate to="/" replace />} />
         </Routes>
     );

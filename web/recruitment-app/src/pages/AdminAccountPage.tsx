@@ -1,11 +1,11 @@
-import AdminSidebarLayout from '../components/admins/AdminSidebarLayout';
+import AdminLayout from '../components/admins/AdminLayout';
 import AdminUserList from '../components/admins/AdminAccountList';
 
 const AdminAccountPage = () => {
     return (
-        <AdminSidebarLayout>
+        <AdminLayout>
             <AdminUserList />
-        </AdminSidebarLayout>
+        </AdminLayout>
     );
 };
 
