@@ -1,12 +1,14 @@
+import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { setNumberOfJob } from '../../services/redux/adminSlices/adminStatisticSlice';
+import { compareDateWithToday } from '../../shared/helpers/commonUntils';
+import { deleteJD, getJDByPosition, getJDPreviewUrl, updateJD } from '../../shared/apis/jdApis';
+import { Button, Col, ReviewModal, Row } from '../layouts';
+import type { JD } from '../../shared/types/adminTypes';
 import classNames from 'classnames/bind';
 import styles from '../../assets/styles/admins/adminJDList.module.scss';
 import frameStyles from '../../assets/styles/admins/adminFrame.module.scss';
-import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import { compareDateWithToday } from '../../shared/helpers/commonUntils';
-import { deleteJD, getJDByPosition, getJDPreviewUrl, updateJD } from '../../shared/apis/jdApis';
-import type { JD } from '../../shared/types/adminTypes';
-import { Button, Col, ReviewModal, Row } from '../layouts';
-import { toast } from 'react-toastify';
 import AdminJDForm from './AdminJDForm';
 
 const cx = classNames.bind({ ...frameStyles, ...styles });
@@ -38,15 +40,20 @@ const AdminJDList = () => {
     const [editJD, setEditCV] = useState<JD | null>(null);
     const [previewJD, setPreviewJD] = useState<JD | null>(null);
     const [filter, dispatchFilter] = useReducer(filterReducer, initFilterValue);
+    const dispatch = useDispatch();
 
-    const fetchJDs = useCallback(async (position: string = ''): Promise<void> => {
-        try {
-            const data = await getJDByPosition(position);
-            setJds(data || []);
-        } catch (error) {
-            console.error('Failed to fetch job descriptions:', error);
-        }
-    }, []);
+    const fetchJDs = useCallback(
+        async (position: string = ''): Promise<void> => {
+            try {
+                const results = await getJDByPosition(position);
+                setJds(results);
+                dispatch(setNumberOfJob(results.length));
+            } catch (error) {
+                console.error('Failed to fetch job descriptions:', error);
+            }
+        },
+        [dispatch],
+    );
 
     useEffect(() => {
         fetchJDs();
