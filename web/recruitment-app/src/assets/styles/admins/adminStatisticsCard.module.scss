@@ -1,5 +1,3 @@
-@use '../variables' as *;
-
 .admin-statistic-card {
     flex: 1;
     padding: 20px;
@@ -24,18 +22,4 @@
 
 .admin-statistic-card__label {
     color: #6b7280;
-}
-
-.admin-statistic-card__indicator {
-    margin: 20px auto;
-    font-size: $font-small-size;
-    font-weight: 600;
-}
-
-.admin-statistic-card__indicator--up {
-    color: $success-color;
-}
-
-.admin-statistic-card__indicator--down {
-    color: $error-color;
 }

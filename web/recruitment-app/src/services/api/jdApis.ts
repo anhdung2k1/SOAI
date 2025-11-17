@@ -1,7 +1,7 @@
-import { API_BASE_URL } from '../constants/baseUrls';
-import { HTTP_ERROR_CODE } from '../constants/httpCodes';
-import { getToken } from '../helpers/authUtils';
-import type { JD } from '../types/adminTypes';
+import { API_BASE_URL } from '../../shared/constants/baseUrls';
+import { HTTP_ERROR_CODE } from '../../shared/constants/httpCodes';
+import { getToken } from '../../shared/helpers/authUtils';
+import type { JD } from '../../shared/types/adminTypes';
 
 /**
  * Helper for generating authorization headers.

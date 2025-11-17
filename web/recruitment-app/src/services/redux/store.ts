@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import adminStatisticReducer from './adminSlices/adminStatisticSlice';
+import adminStatisticsReducer from './adminSlices/adminStatisticsSlice';
 
 export const store = configureStore({
     reducer: {
-        adminStatistic: adminStatisticReducer,
+        adminStatistics: adminStatisticsReducer,
     },
 });
 

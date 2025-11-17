@@ -1,20 +1,20 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
-import { logout } from '../../shared/apis/authApis';
+import { logout } from '../../services/api/authApis';
 import { PRIVATE_ADMIN_ROUTE, PUBLIC_ROUTE } from '../../shared/constants/routes';
 import classNames from 'classnames/bind';
-import styles from '../../assets/styles/admins/adminSideBarLayout.module.scss';
+import styles from '../../assets/styles/admins/adminLayout.module.scss';
 import SmartRecruitmentLogo from '../../assets/images/smart-recruitment-admin-logo.png';
 
 const cx = classNames.bind(styles);
 
 const menu = [
     { label: 'Home', path: PRIVATE_ADMIN_ROUTE.dashboard },
-    { label: 'All CVs', path: PRIVATE_ADMIN_ROUTE.candidateCV },
-    { label: 'All Interviews', path: PRIVATE_ADMIN_ROUTE.candidateInterview },
+    { label: 'All CVs', path: PRIVATE_ADMIN_ROUTE.cv },
+    { label: 'All Interviews', path: PRIVATE_ADMIN_ROUTE.interview },
     { label: 'All Job Descriptions', path: PRIVATE_ADMIN_ROUTE.job },
-    { label: 'All Accounts', path: PRIVATE_ADMIN_ROUTE.user },
+    { label: 'All Accounts', path: PRIVATE_ADMIN_ROUTE.account },
 ];
 
 interface AdminLayoutProps {

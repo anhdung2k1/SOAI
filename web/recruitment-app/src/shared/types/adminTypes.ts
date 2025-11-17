@@ -3,7 +3,7 @@ import type { Role } from './authTypes';
 export const STATUS = ['Pending', 'Accepted', 'Rejected'] as const;
 export type Status = (typeof STATUS)[number];
 
-export interface CandidateCV {
+export interface CV {
     id: number;
     email: string;
     username: string;

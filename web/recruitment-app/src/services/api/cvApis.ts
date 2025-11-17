@@ -1,7 +1,7 @@
-import { API_BASE_URL } from '../constants/baseUrls';
-import { HTTP_ERROR_CODE } from '../constants/httpCodes';
-import type { CandidateCV } from '../types/adminTypes';
-import { getToken } from '../helpers/authUtils';
+import { API_BASE_URL } from '../../shared/constants/baseUrls';
+import { HTTP_ERROR_CODE } from '../../shared/constants/httpCodes';
+import { getToken } from '../../shared/helpers/authUtils';
+import type { CV } from '../../shared/types/adminTypes';
 
 /**
  * Helper for generating authorization headers.
@@ -16,7 +16,7 @@ const authHeaders = (): HeadersInit => ({
  * @param {string} position - (optional) Position to filter CVs by.
  * @returns {Promise<Array>} List of CVs.
  */
-export const getCVByPosition = async (position: string = ''): Promise<CandidateCV[]> => {
+export const getCVByPosition = async (position: string = ''): Promise<CV[]> => {
     const query = position ? `?position=${encodeURIComponent(position)}` : '';
     const url = `${API_BASE_URL}/recruitment/cvs/position${query}`;
 
@@ -38,7 +38,7 @@ export const getCVByPosition = async (position: string = ''): Promise<CandidateC
  * @param {Object} cv - The fields to update.
  * @returns {Promise<Object>} The updated CV info.
  */
-export const updateCV = async (cv: CandidateCV): Promise<{ message: string }> => {
+export const updateCV = async (cv: CV): Promise<{ message: string }> => {
     const url = `${API_BASE_URL}/recruitment/cvs/${cv.id}`;
     try {
         const response = await fetch(url, {
