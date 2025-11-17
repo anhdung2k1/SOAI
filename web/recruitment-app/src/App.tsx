@@ -1,13 +1,13 @@
+import { useEffect, useState } from 'react';
+import { ToastContainer } from 'react-toastify';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { getUserRole, isAuthenticated } from './shared/helpers/authUtils';
+import { PRIVATE_ADMIN_ROUTE, PUBLIC_ROUTE } from './shared/constants/routes';
+import type { Role } from './shared/types/authTypes';
 import AuthPage from './pages/AuthPage';
 import AdminDashBoardPage from './pages/AdminDashBoardPage';
 import AdminCVListPage from './pages/AdminCVListPage';
-import { useEffect, useState } from 'react';
-import { getUserRole, isAuthenticated } from './shared/helpers/authUtils';
-import type { Role } from './shared/types/authTypes';
-import { ToastContainer } from 'react-toastify';
 import AdminUserListPage from './pages/AdminUserListPage';
-import { PRIVATE_ADMIN_ROUTE, PUBLIC_ROUTE } from './shared/constants/routes';
 import AdminJDListPage from './pages/AdminJDListPage';
 
 const AppRoutes = () => {

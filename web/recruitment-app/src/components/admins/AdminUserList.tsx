@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import classNames from 'classnames/bind';
-import styles from '../../assets/styles/admins/adminUserList.module.scss';
-import frameStyles from '../../assets/styles/admins/adminFrame.module.scss';
+import { useDispatch } from 'react-redux';
+import { setNumberOfAccount } from '../../services/redux/adminSlices/adminStatisticSlice';
 import { HiUser } from 'react-icons/hi';
 import { MdAdminPanelSettings } from 'react-icons/md';
 import { FaFilter, FaUserCircle } from 'react-icons/fa';
@@ -9,6 +8,9 @@ import { Badge, Button, Col, Row } from '../layouts';
 import { deleteAccount, getAccounts } from '../../shared/apis/authApis';
 import { ROLES, type Role } from '../../shared/types/authTypes';
 import type { Account } from '../../shared/types/adminTypes';
+import classNames from 'classnames/bind';
+import styles from '../../assets/styles/admins/adminUserList.module.scss';
+import frameStyles from '../../assets/styles/admins/adminFrame.module.scss';
 
 const cx = classNames.bind({ ...frameStyles, ...styles });
 
@@ -50,25 +52,27 @@ const filterReducer = (state: Filter, action: FilterAction): Filter => {
 const AdminUserList = ({ disableColumns = [] }: AdminUserListProps) => {
     const [accounts, setAccounts] = useState<Account[]>([]);
     const [filter, dispatchFilter] = useReducer(filterReducer, initFilterValue);
+    const dispatch = useDispatch();
 
-    const fetchAllAccounts = useCallback(async () => {
+    const fetchAccounts = useCallback(async () => {
         try {
-            const result = await getAccounts();
-            setAccounts(result || []);
+            const results = await getAccounts();
+            setAccounts(results);
+            dispatch(setNumberOfAccount(results.length));
         } catch (err) {
             console.error('Failed to fetch accounts:', err);
         }
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
-        fetchAllAccounts();
-    }, [fetchAllAccounts]);
+        fetchAccounts();
+    }, [fetchAccounts]);
 
     const handleDeleteAccount = async (account: Account): Promise<void> => {
         if (window.confirm(`Are you sure you want to delete the account - ${account.userName}?`)) {
             try {
                 await deleteAccount(account.accId);
-                fetchAllAccounts();
+                fetchAccounts();
             } catch (err) {
                 console.error('Failed to delete account:', err);
             }

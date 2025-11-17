@@ -1,3 +1,5 @@
+import { useSelector } from 'react-redux';
+import type { RootState } from '../services/redux/store';
 import classNames from 'classnames/bind';
 import styles from '../assets/styles/admins/adminDashBoardPage.module.scss';
 import { Col, Row } from '../components/layouts';
@@ -13,6 +15,8 @@ import AdminJDList from '../components/admins/AdminJDList';
 const cx = classNames.bind(styles);
 
 const AdminDashBoardPage = () => {
+    const statistic = useSelector((state: RootState) => state.adminStatistic);
+
     return (
         <AdminLayout>
             <div className={cx('admin-dashboard')}>
@@ -21,13 +25,13 @@ const AdminDashBoardPage = () => {
 
                 <Row space={10} className={cx('admin-dashboard__item', 'admin-dashboard__stats')}>
                     <Col size={{ lg: 4, xl: 4 }} className={cx('admin-dashboard__stats-card')}>
-                        <AdminStatCard label="Total CVs" count={1} icon={cvIcon} />
+                        <AdminStatCard label="Total CVs" count={statistic.cvCount} icon={cvIcon} />
                     </Col>
                     <Col size={{ lg: 4, xl: 4 }} className={cx('admin-dashboard__stats-card')}>
-                        <AdminStatCard label="Total Users" count={2} icon={userIcon} />
+                        <AdminStatCard label="Total Users" count={statistic.accountCount} icon={userIcon} />
                     </Col>
                     <Col size={{ lg: 4, xl: 4 }} className={cx('admin-dashboard__stats-card')}>
-                        <AdminStatCard label="Job Descriptions" count={3} icon={jdIcon} />
+                        <AdminStatCard label="Job Descriptions" count={statistic.jobCount} icon={jdIcon} />
                     </Col>
                 </Row>
 

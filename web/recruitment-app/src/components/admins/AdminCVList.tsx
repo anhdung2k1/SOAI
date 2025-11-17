@@ -1,12 +1,14 @@
-import classNames from 'classnames/bind';
-import styles from '../../assets/styles/admins/adminCVList.module.scss';
-import frameStyles from '../../assets/styles/admins/adminFrame.module.scss';
 import React, { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { toast } from 'react-toastify';
 import { FaFilter } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import { setNumberOfCV } from '../../services/redux/adminSlices/adminStatisticSlice';
 import { Col, Row, Badge, Button, ReviewModal } from '../layouts';
 import { getCVByPosition, getCVPreviewUrl, updateCV, deleteCV } from '../../shared/apis/cvApis';
 import { STATUS, type CandidateCV, type Status } from '../../shared/types/adminTypes';
+import classNames from 'classnames/bind';
+import styles from '../../assets/styles/admins/adminCVList.module.scss';
+import frameStyles from '../../assets/styles/admins/adminFrame.module.scss';
 
 const cx = classNames.bind({ ...frameStyles, ...styles });
 
@@ -77,15 +79,20 @@ const AdminCVList = ({ disableColumns = [] }: AdminCVListProps) => {
     const [editCV, setEditCV] = useState<CandidateCV | null>(null);
     const [previewCV, setPreviewCV] = useState<CandidateCV | null>(null);
     const [filter, dispatchFilter] = useReducer(filterReducer, initFilterValue);
+    const dispatch = useDispatch();
 
-    const fetchCVs = useCallback(async (position: string = '') => {
-        try {
-            const data: typeof cvs = await getCVByPosition(position);
-            setCVs(data);
-        } catch (error) {
-            console.error('Failed to fetch candidate application:', error);
-        }
-    }, []);
+    const fetchCVs = useCallback(
+        async (position: string = '') => {
+            try {
+                const results: typeof cvs = await getCVByPosition(position);
+                setCVs(results);
+                dispatch(setNumberOfCV(results.length));
+            } catch (error) {
+                console.error('Failed to fetch candidate application:', error);
+            }
+        },
+        [dispatch],
+    );
 
     useEffect(() => {
         fetchCVs();
