@@ -1,5 +1,9 @@
 @use '../variables' as *;
 
+.admin-cv-list {
+    width: 100%;
+}
+
 .cv-list-action {
     display: flex;
     justify-content: left;

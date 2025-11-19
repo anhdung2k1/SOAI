@@ -182,7 +182,7 @@ const AdminCVList = ({ disableColumns = [] }: AdminCVListProps) => {
     }, [handleCancelEditCV]);
 
     return (
-        <>
+        <div className={cx('admin-cv-list')}>
             <div className={cx('admin-frame')}>
                 <div className={cx('admin-frame-header')}>
                     <h2 className={cx('admin-frame-header__title')}>CV Management</h2>
@@ -191,7 +191,7 @@ const AdminCVList = ({ disableColumns = [] }: AdminCVListProps) => {
 
                 <Row space={10} className={cx('admin-frame-filter')}>
                     {!disableColumns.includes('Candidate Name') && (
-                        <Col size={{ sm: 5, md: 3, lg: 3, xl: 3 }}>
+                        <Col size={{ sm: 5, md: 4, lg: 4, xl: 4 }}>
                             <input
                                 id="candidate-name"
                                 type="text"
@@ -202,7 +202,7 @@ const AdminCVList = ({ disableColumns = [] }: AdminCVListProps) => {
                         </Col>
                     )}
                     {!disableColumns.includes('Score') && (
-                        <Col size={{ sm: 5, md: 3, lg: 2, xl: 2 }}>
+                        <Col size={{ sm: 5, md: 3, lg: 3, xl: 3 }}>
                             <input
                                 id="candidate-score"
                                 type="number"
@@ -454,7 +454,7 @@ const AdminCVList = ({ disableColumns = [] }: AdminCVListProps) => {
                     </div>
                 )}
             </ReviewModal>
-        </>
+        </div>
     );
 };
 

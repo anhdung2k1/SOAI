@@ -98,7 +98,7 @@ const AdminAccountList = ({ disableColumns = [] }: AdminAccountListProps) => {
                 {!disableColumns.includes('User Info') && (
                     <Col size={{ sm: 5, md: 3, lg: 3, xl: 3 }}>
                         <input
-                            id="accounts"
+                            id="account-name"
                             type="text"
                             placeholder="Search by account name"
                             className={cx('admin-frame-filter__entry')}

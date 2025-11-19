@@ -5,10 +5,11 @@ import { getUserRole, isAuthenticated } from './shared/helpers/authUtils';
 import { PRIVATE_ADMIN_ROUTE, PUBLIC_ROUTE } from './shared/constants/routes';
 import type { Role } from './shared/types/authTypes';
 import AuthPage from './pages/AuthPage';
-import AdminDashBoardPage from './pages/AdminDashBoardPage';
 import AdminCVPage from './pages/AdminCVPage';
-import AdminAccountPage from './pages/AdminAccountPage';
 import AdminJDPage from './pages/AdminJDPage';
+import AdminAccountPage from './pages/AdminAccountPage';
+import AdminInterviewPage from './pages/AdminInterviewPage';
+import AdminDashBoardPage from './pages/AdminDashBoardPage';
 
 const AppRoutes = () => {
     const location = useLocation();
@@ -22,7 +23,7 @@ const AppRoutes = () => {
 
     return (
         <Routes>
-            {/* Navigte to <AdminDashBoardPage /> is used for testing */}
+            {/* Navigte to <AdminDashBoardPage /> is used for testing - will be removed later*/}
             <Route path="/" element={isAuth && role === 'USER' ? <AdminDashBoardPage /> : <Navigate to={PUBLIC_ROUTE.signin} replace />} />
 
             <Route path={PUBLIC_ROUTE.signin} element={<AuthPage isSignIn={true} />} />
@@ -30,8 +31,9 @@ const AppRoutes = () => {
 
             <Route path={PRIVATE_ADMIN_ROUTE.dashboard} element={isAuth && role === 'ADMIN' ? <AdminDashBoardPage /> : <Navigate to="/" replace />} />
             <Route path={PRIVATE_ADMIN_ROUTE.cv} element={isAuth && role === 'ADMIN' ? <AdminCVPage /> : <Navigate to="/" replace />} />
-            <Route path={PRIVATE_ADMIN_ROUTE.account} element={isAuth && role === 'ADMIN' ? <AdminAccountPage /> : <Navigate to="/" replace />} />
             <Route path={PRIVATE_ADMIN_ROUTE.job} element={isAuth && role === 'ADMIN' ? <AdminJDPage /> : <Navigate to="/" replace />} />
+            <Route path={PRIVATE_ADMIN_ROUTE.interview} element={isAuth && role === 'ADMIN' ? <AdminInterviewPage /> : <Navigate to="/" replace />} />
+            <Route path={PRIVATE_ADMIN_ROUTE.account} element={isAuth && role === 'ADMIN' ? <AdminAccountPage /> : <Navigate to="/" replace />} />
         </Routes>
     );
 };

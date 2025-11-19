@@ -1,0 +1,60 @@
+@use '../variables' as *;
+
+.interview {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.interview-col__title {
+    margin-bottom: 20px;
+    padding: 16px 10px;
+    border-radius: 8px;
+}
+
+.interview-col__title--pending {
+    border: 1px solid $warning-color;
+    background-color: #fffbf1fd;
+}
+
+.interview-col__title--accepted {
+    border: 1px solid $primary-color;
+    background-color: #f2f7ff;
+}
+
+.interview-col__title--result {
+    border: 1px solid $success-color;
+    background-color: #f2fffb;
+}
+
+.interview-col__card {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 16px 10px;
+    border-radius: 8px;
+    border: 1px solid #eff0f3;
+    background-color: $background-white-color;
+    box-shadow: 3px 3px 3px 2px rgb(219, 219, 219);
+    transition: box-shadow 0.3s ease-in-out;
+
+    &:hover {
+        box-shadow: 3px 3px 3px 3px rgb(185, 185, 185);
+    }
+}
+
+.interview-col__card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.interview-col__card-content {
+    margin-top: 10px;
+    margin-left: 2px;
+    padding-left: 10px;
+    border-left: 2px solid rgba(204, 204, 204, 0.6);
+}
+
+.interview-col__card-content-item {
+    font-style: italic;
+    margin-top: 10px;
+}

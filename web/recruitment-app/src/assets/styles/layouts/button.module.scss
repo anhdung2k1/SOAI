@@ -1,6 +1,9 @@
 @use '../variables' as *;
 
 .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 30px;
     height: 30px;
     outline: none;
@@ -36,5 +39,13 @@
 
     &:hover {
         color: #1f1e1e;
+    }
+}
+
+.btn-question {
+    color: rgb(50, 179, 202);
+
+    &:hover {
+        color: rgb(54, 157, 175);
     }
 }

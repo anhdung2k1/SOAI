@@ -44,3 +44,12 @@ export interface JD {
     company_description: string;
     additional_information: string;
 }
+
+export interface Interview {
+    id: number;
+    cv_application_id: number;
+    candidate_name: string;
+    interview_datetime: string;
+    interviewer_name: string;
+    status: Status;
+}
