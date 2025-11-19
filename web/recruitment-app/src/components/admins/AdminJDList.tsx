@@ -84,7 +84,7 @@ const AdminJDList = () => {
     };
 
     return (
-        <>
+        <div className={cx('admin-jd-list')}>
             <div className={cx('admin-frame')}>
                 <div className={cx('admin-frame-header')}>
                     <h2 className={cx('admin-frame-header__title')}>Job Management</h2>
@@ -200,7 +200,7 @@ const AdminJDList = () => {
                     </div>
                 )}
             </ReviewModal>
-        </>
+        </div>
     );
 };
 

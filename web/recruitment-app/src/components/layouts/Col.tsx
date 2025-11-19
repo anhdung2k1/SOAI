@@ -26,7 +26,7 @@ const Col = ({ children, className, size = { xs: 12, sm: 12, md: 12, lg: 12, xl:
         lg: size.lg ?? 12,
         xl: size.xl ?? 12,
     };
-    return <div className={cx('col', `xl-${sizes.xl}`, `lg-${sizes.lg}`, `md-${sizes.md}`, `sm-${sizes.sm}`, `xs-${sizes.xs}`, className)}>{children}</div>;
+    return <div className={cx(`xl-${sizes.xl}`, `lg-${sizes.lg}`, `md-${sizes.md}`, `sm-${sizes.sm}`, `xs-${sizes.xs}`, className)}>{children}</div>;
 };
 
 export default Col;

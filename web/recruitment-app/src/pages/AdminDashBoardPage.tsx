@@ -11,6 +11,7 @@ import AdminCVList from '../components/admins/AdminCVList';
 import AdminJDList from '../components/admins/AdminJDList';
 import AdminAccountList from '../components/admins/AdminAccountList';
 import AdminStatisticsCard from '../components/admins/AdminStatisticsCard';
+import AdminInterviewList from '../components/admins/AdminInterviewList';
 
 const cx = classNames.bind(styles);
 
@@ -36,15 +37,22 @@ const AdminDashBoardPage = () => {
                 </Row>
 
                 <div className={cx('admin-dashboard__item')}>
-                    <AdminCVList />
+                    <Row space={10}>
+                        <Col size={{ xl: 6 }}>
+                            <AdminCVList />
+                        </Col>
+                        <Col size={{ xl: 6 }}>
+                            <AdminJDList />
+                        </Col>
+                    </Row>
+                </div>
+
+                <div className={cx('admin-dashboard__item')}>
+                    <AdminInterviewList />
                 </div>
 
                 <div className={cx('admin-dashboard__item')}>
                     <AdminAccountList />
-                </div>
-
-                <div className={cx('admin-dashboard__item')}>
-                    <AdminJDList />
                 </div>
             </div>
         </AdminLayout>
