@@ -35,6 +35,7 @@
     background-color: $background-white-color;
     box-shadow: 3px 3px 3px 2px rgb(219, 219, 219);
     transition: box-shadow 0.3s ease-in-out;
+    cursor: pointer;
 
     &:hover {
         box-shadow: 3px 3px 3px 3px rgb(185, 185, 185);
@@ -57,4 +58,71 @@
 .interview-col__card-content-item {
     font-style: italic;
     margin-top: 10px;
+}
+
+// Show CV modals
+.scheduling-cv {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.scheduling-cv__personal-data {
+    flex: 0 0 50%;
+    min-width: 50%;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.scheduling-form__group {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.scheduling-form__group-entry {
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    background-color: transparent;
+}
+
+.scheduling-form__confirm {
+    display: inline-flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.scheduling-form__confirm input[type='checkbox'] {
+    margin-right: 10px;
+}
+
+.scheduling-form__submit-btn {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    border: none;
+    border: 1px solid $success-color;
+    color: $text-white-color;
+    background-color: $success-color;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: #059669;
+    }
+
+    &:active {
+        background-color: #08b880;
+    }
+}
+
+.scheduling-form__submit-btn.scheduling-form__submit-btn--disable {
+    color: grey;
+    background-color: $background-white-color;
+    border: 1px solid #dfdfdf;
+    cursor: not-allowed;
 }

@@ -53,3 +53,9 @@ export interface Interview {
     interviewer_name: string;
     status: Status;
 }
+
+export interface ScheduleInterview extends CV {
+    interviewer_name: string;
+    interview_datetime: string;
+    interview_location: string;
+}

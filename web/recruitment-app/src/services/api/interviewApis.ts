@@ -1,7 +1,7 @@
 import { API_BASE_URL } from '../../shared/constants/baseUrls';
 import { HTTP_ERROR_CODE } from '../../shared/constants/httpCodes';
 import { getToken } from '../../shared/helpers/authUtils';
-import type { Interview } from '../../shared/types/adminTypes';
+import type { CV, Interview, ScheduleInterview } from '../../shared/types/adminTypes';
 
 /**
  * Helper for generating authorization headers.
@@ -38,5 +38,56 @@ export const getInterviews = async (interviewDate: string = '', candidateName: s
     } catch (err) {
         console.error(`[DEBUG getInterviews] Failed to parse JSON: ${err}`);
         return [];
+    }
+};
+
+/**
+ * Get all approved CVs (admin).
+ * @param {string} [candidateName] - Optional candidate name filter.
+ * @returns {Promise<Array>} List of approved CVs.
+ * @description This fetches all CVs that have been approved by the admin.
+ * This is useful for displaying a list of candidates who have been approved for further recruitment steps.
+ */
+export const getApprovedCVs = async (candidateName = ''): Promise<CV[]> => {
+    const query = candidateName ? `?candidate_name=${encodeURIComponent(candidateName)}` : '';
+    const url = `${API_BASE_URL}/recruitment/cvs/approved${query}`;
+
+    try {
+        const response = await fetch(url, {
+            headers: authHeaders(),
+        });
+        if (!response.ok) {
+            const message = HTTP_ERROR_CODE[response.status] || 'An unexpected error occurred.';
+            throw new Error(message);
+        }
+        return await response.json();
+    } catch (err) {
+        console.error(`[DEBUG getApprovedCVs] Failed to parse JSON: ${err}`);
+        return [];
+    }
+};
+
+/**
+ * Schedule an interview (admin only).
+ * @param {Object} interviewData
+ * @returns {Promise<Object>}
+ */
+export const scheduleInterview = async (interviewData: ScheduleInterview): Promise<{ message: string }> => {
+    const url = `${API_BASE_URL}/recruitment/interviews/schedule`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: authHeaders(),
+            body: JSON.stringify(interviewData),
+        });
+        if (!response.ok) {
+            const message = HTTP_ERROR_CODE[response.status] || 'An unexpected error occurred.';
+            throw new Error(message);
+        }
+        return await response.json();
+    } catch (err) {
+        console.error(`[DEBUG scheduleInterview] Failed to parse JSON: ${err}`);
+        return { message: `Failed to schedule interview session: ${err}` };
     }
 };

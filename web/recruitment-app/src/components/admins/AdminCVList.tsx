@@ -133,10 +133,10 @@ const AdminCVList = ({ disableColumns = [] }: AdminCVListProps) => {
                         hideProgressBar: true,
                     });
                 } else {
-                    await updateCV(editCV);
+                    const response = await updateCV(editCV);
                     fetchCVs();
                     setEditCV(null);
-                    toast.success('Saved', {
+                    toast.success(response.message, {
                         position: 'top-center',
                         hideProgressBar: true,
                     });
