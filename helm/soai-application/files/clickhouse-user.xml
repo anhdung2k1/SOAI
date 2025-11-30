@@ -1,0 +1,12 @@
+<yandex>
+    <users>
+    <soai_user>
+        <password>soai_password</password>
+        <networks>
+        <ip>::/0</ip>
+        </networks>
+        <profile>default</profile>
+        <quota>default</quota>
+    </soai_user>
+    </users>
+</yandex>
