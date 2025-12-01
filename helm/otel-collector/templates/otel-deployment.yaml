@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "otel-collector.name" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {{- include "otel-collector.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "otel-collector.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: otel-collector-sa
+      initContainers:
+        - name: wait-for-clickhouse
+          image: busybox
+          command: ['sh', '-c', 'until nc -z clickhouse 9000; do echo waiting for clickhouse; sleep 2; done']
+      containers:
+        - name: otel-collector
+          image: {{ .Values.otel.image }}
+          args: ["--config=/etc/otel/config.yaml"]
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: K8S_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          ports:
+            - containerPort: 4317
+            - containerPort: 4318
+            - containerPort: 8888
+          {{- with .Values.otel.resources }}
+          resources: {{ toYaml . | nindent 16 }}
+          {{- end }}
+          volumeMounts:
+            - name: config
+              mountPath: /etc/otel/config.yaml
+              subPath: otel-collector-config.yaml
+      volumes:
+        - name: config
+          configMap:
+            name: otel-collector-configmap

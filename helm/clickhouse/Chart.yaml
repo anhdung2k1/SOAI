@@ -1,0 +1,6 @@
+apiVersion: v2
+name: clickhouse
+description: Clickhouse - open-source columnar database management system for online analytical processing.
+type: application
+version: 1.0.0
+appVersion: "1.16.0"

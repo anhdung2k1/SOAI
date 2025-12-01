@@ -168,3 +168,17 @@ spec:
     port: {{ .Values.server.mysqlServer.port }}
   selector:
     app: {{ template "soai-mysql.name" . }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations: {{- include "soai-application.annotations" . | nindent 4 }}
+  labels: {{- include "soai-redis.labels" . | nindent 4 }}
+  name: redis
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ template "soai-redis.name" . }}
+  ports:
+    - name: http
+      port: {{ .Values.server.redis.port }}

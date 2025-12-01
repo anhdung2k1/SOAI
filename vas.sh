@@ -243,44 +243,65 @@ build_helm() {
     test -n "$__release" && export RELEASE=$__release
     test -n "$__user" || __user=$USER
 
-    local version=$(get_version)
+    local version
+    version=$(get_version)
 
     destination="${VAS_GIT}/build/helm-build"
-    rm -rf $destination && mkdir $destination
+    rm -rf "$destination" && mkdir -p "$destination"
+
     chart="${VAS_GIT}/helm/soai-application/Chart.yaml"
-    soai_chart_name=$(basename $(dirname $chart))
-    
+    soai_chart_name=$(basename "$(dirname "$chart")")
+
     source_tmp="${VAS_GIT}/build/.helm_temp_ws"
+
+    ##
+    ## Copy ENTIRE helm workspace
+    ##
+    rm -rf "$source_tmp" && mkdir -p "$source_tmp"
+    cp -r "${VAS_GIT}/helm/"* "$source_tmp/"
+
     source="$source_tmp/$soai_chart_name"
-    rm -rf $source_tmp && mkdir $source_tmp
-    if [ ! -d $source ]; then
-        cp -r ${VAS_GIT}/helm/$soai_chart_name $source
-    fi 
 
     mkdir -p "$destination/$soai_chart_name"
 
-    # Update Chart.yaml version
-    sed -i -e "s|^version: .*|version: ${version}|" $source/Chart.yaml \
+    ##
+    ## Update Chart.yaml version
+    ##
+    sed -i -e "s|^version: .*|version: ${version}|" "$source/Chart.yaml" \
         || die "[FAILED] Unable to change version: ${version} in $source/Chart.yaml"
 
-    # Update soai-product-info.yaml with version
-    sed -i -e "s|%%VERSION%%|${version}|" $source/soai-product-info.yaml \
+    ##
+    ## Update soai-product-info.yaml
+    ##
+    sed -i -e "s|%%VERSION%%|${version}|" "$source/soai-product-info.yaml" \
         || die "[FAILED] Unable to change version: ${version} in $source/soai-product-info.yaml"
 
-    # Update soai-product-info.yaml with Docker registry
-    sed -i -e "s|%%REGISTRY%%|${DOCKER_REGISTRY}|" $source/soai-product-info.yaml \
+    sed -i -e "s|%%REGISTRY%%|${DOCKER_REGISTRY}|" "$source/soai-product-info.yaml" \
         || die "[FAILED] Unable to change %%REGISTRY%% to ${DOCKER_REGISTRY} in $source/soai-product-info.yaml"
-    
-    helm package $source \
+
+    ##
+    ## Update dependencies (now all subcharts EXIST)
+    ##
+    helm dependency update "$source" \
+        || die "Failed to update helm chart dependencies"
+
+    ls -l "$source/charts"
+
+    ##
+    ## Package chart
+    ##
+    helm package "$source" \
         --dependency-update \
-        --destination $destination/$soai_chart_name \
-        --version $version \
-    || die "Failed to package helm chart"
+        --destination "$destination/$soai_chart_name" \
+        --version "$version" \
+        || die "Failed to package helm chart"
 
     soai_chart_path="$destination/$soai_chart_name/$soai_chart_name-$version.tgz"
 
-    #Untar the ck chart
-    tar -xvf $soai_chart_path -C "$(dirname $soai_chart_path)"
+    ##
+    ## Extract packaged chart
+    ##
+    tar -xvf "$soai_chart_path" -C "$(dirname "$soai_chart_path")"
 
     create_helm_md5sum
 }

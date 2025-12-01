@@ -29,7 +29,7 @@
 {{- include "soai-application.resources" (index $top.Values "resources" "genai") | indent 2 }}
   env:
   - name: OTEL_ENDPOINT
-    value: {{ printf "otel-collector:%s" ($top.Values.otel.grpcPort | toString) }}
+    value: "otel-collector:4317"
   - name: POD_NAME
     valueFrom:
       fieldRef:

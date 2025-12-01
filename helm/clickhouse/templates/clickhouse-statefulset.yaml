@@ -1,24 +1,25 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: clickhouse
+  name: {{ template "clickhouse.name" . }}
 spec:
-  serviceName: "clickhouse"
+  serviceName: {{ template "clickhouse.name"  . }}
   replicas: 1
   selector:
-    matchLabels:
-      app: clickhouse
+    matchLabels: {{- include "clickhouse.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      labels:
-        app: clickhouse
+      labels: {{- include "clickhouse.labels" . | nindent 8 }}
     spec:
       containers:
         - name: clickhouse
-          image: clickhouse/clickhouse-server:latest
+          image: {{ .Values.clickhouse.image }}
           ports:
-            - containerPort: {{ .Values.clickhouse.httpPort }}
-            - containerPort: {{ .Values.clickhouse.tcpPort }}
+            - containerPort: 8123
+            - containerPort: 9000
+          {{- with .Values.clickhouse.resources }}
+          resources: {{ toYaml . | nindent 16 }}
+          {{- end }}
           volumeMounts:
             - name: data
               mountPath: /var/lib/clickhouse
@@ -28,7 +29,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: soai-monitor-configmap
+            name: clickhouse-configmap
   volumeClaimTemplates:
     - metadata:
         name: data
@@ -36,4 +37,4 @@ spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:
-            storage: {{ .Values.clickhouse.storage }}
+            storage: {{ .Values.clickhouse.persistentVolume.size }}

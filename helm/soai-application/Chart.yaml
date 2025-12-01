@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: v2
 name: soai-application
 version: 2.0.0-0
 appVersion: 2.1.0
@@ -6,3 +6,29 @@ description: A Helm chart for the SOAI AI Agent Application
 maintainers:
   - name: Anh Dung
     email: Dung.Tran@endava.com
+
+dependencies:
+  - name: otel-collector
+    version: ">0.0.0-0"
+    repository: "file://../otel-collector"
+    tags:
+      - otel
+    condition: global.otel.enabled
+  - name: grafana
+    version: ">0.0.0-0"
+    repository: "file://../grafana"
+    tags:
+      - grafana
+    condition: global.grafana.enabled
+  - name: clickhouse
+    version: ">0.0.0-0"
+    repository: "file://../clickhouse"
+    tags:
+      - clickHouse
+    condition: global.clickHouse.enabled
+  - name: prometheus
+    version: ">0.0.0-0"
+    repository: "file://../prometheus"
+    tags:
+      - prometheus
+    condition: global.prometheus.enabled
