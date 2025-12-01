@@ -18,7 +18,7 @@ spec:
         {{- $annotations := list $defaultAnn -}}
         {{- include "soai-application.mergeAnnotations" (dict "location" (.Template.Name) "sources" $annotations) | trim | nindent 8 }}
       labels:
-        {{- include "soai-redis.selectorLabels" . | nindent 8 }}
+        {{- include "soai-redis.labels" . | nindent 8 }}
     spec:
     {{- if include "soai-application.pullSecrets" . }}
       imagePullSecrets:

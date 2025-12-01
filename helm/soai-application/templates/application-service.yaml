@@ -178,7 +178,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: redis
+    app: {{ template "soai-redis.name" . }}
   ports:
     - name: http
       port: {{ .Values.server.redis.port }}
