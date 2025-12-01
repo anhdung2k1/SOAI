@@ -65,9 +65,8 @@ Usage: {{ template "otel-collector.configJobs" (list . "pod" "https") }}
   {{- $kind = "service" }}
 {{- end }}
 - job_name: k8s-{{ $role }}-15s-{{ $scheme }}
-{{- if $root.Values.otel.prometheus.scrapeConfigs.fallbackScrapeProtocol }}
-  fallback_scrape_protocol: PrometheusText0.0.4
-{{- end }}
+  scrape_interval: 15s
+  scrape_timeout: 10s
   scheme: {{ $scheme }}
   tls_config:
     insecure_skip_verify: true
@@ -87,11 +86,11 @@ Usage: {{ template "otel-collector.configJobs" (list . "pod" "https") }}
       regex: '^{{ $role }}$'
     - source_labels:
         - __meta_kubernetes_{{ $kind }}_annotation_prometheus_io_port
-      action: keepequal
+      action: keep
     {{- if eq $role "service" }}
-      target_labels: __meta_kubernetes_service_port_number
+      target_label: __meta_kubernetes_service_port_number
     {{- else }}
-      target_labels: __meta_kubernetes_pod_container_port_number
+      target_label: __meta_kubernetes_pod_container_port_number
     {{- end }}
     - source_labels:
         - __address__
@@ -133,8 +132,8 @@ Usage: {{ template "otel-collector.configJobs" (list . "pod" "https") }}
 {{- if ne $role "service" }}
     - source_labels:
         - __meta_kubernetes_pod_name
-        action: replace
-        target_label: pod_name
+      action: replace
+      target_label: pod_name
     - source_labels:
         - __meta_kubernetes_pod_phase
       regex: Pending|Succeeded|Failed|Completed
