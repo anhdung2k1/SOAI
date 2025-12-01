@@ -1,4 +1,8 @@
-#global:
+global:
+  otel:
+    enabled: true
+  clickHouse:
+    enabled: true
 # security:
 #   tls:
 #     enabled: true
@@ -37,6 +41,10 @@ server:
     name: mysql-server
     replicaCount: 1
     port: "3306"
+  redis:
+    name: redis
+    replicaCount: 1
+    port: "6379"
 
   probes:
     readiness:
@@ -65,7 +73,7 @@ server:
   recruitment:
     name: recruitment
     replicaCount: 1
-    logLevel: DEBUG
+    logLevel: INFO
     serviceType: ClusterIP
     httpPort: "8003"
     httpsPort: "8433"
@@ -77,7 +85,7 @@ server:
   genai:
     name: genai
     replicaCount: 1
-    logLevel: DEBUG
+    logLevel: INFO
     serviceType: ClusterIP
     httpPort: "8004"
     httpsPort: "8434"
@@ -227,22 +235,3 @@ openai:
 
 issuer:
   ipAddress: []
-
-# Observability configuration
-grafana:
-  adminUser: admin
-  adminPassword: admin
-  port: 3000
-
-otel:
-  grpcPort: 4317
-  httpPort: 4318
-  metricsPort: 8888
-
-clickhouse:
-  httpPort: 8123
-  tcpPort: 9000
-  storage: 1Gi
-
-redis:
-  port: 6379

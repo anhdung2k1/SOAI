@@ -1,0 +1,14 @@
+clickhouse:
+  image: "clickhouse/clickhouse-server:latest"
+  compression:
+    method: "zstd"
+  persistentVolume:
+    enabled: true
+    size: 4Gi
+  resource:
+    requests:
+      cpu: "500m"
+      memory: "2Gi"
+    limits:
+      cpu: "2"
+      memory: "4Gi"

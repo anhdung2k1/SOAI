@@ -1,19 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis
+  name: {{ template "soai-redis.name" . }}
+  labels: {{- include "soai-redis.labels" . | nindent 4 }}
+  annotations: {{- include "soai-application.annotations" . | nindent 4 }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.server.redis.replicaCount}}
+  strategy:
+{{ toYaml .Values.updateStrategy | nindent 4 }}
   selector:
     matchLabels:
-      app: redis
+      {{- include "soai-redis.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      annotations:
+        {{- $defaultAnn := include "soai-application.annotations" . | fromYaml -}}
+        {{- $annotations := list $defaultAnn -}}
+        {{- include "soai-application.mergeAnnotations" (dict "location" (.Template.Name) "sources" $annotations) | trim | nindent 8 }}
       labels:
-        app: redis
+        {{- include "soai-redis.labels" . | nindent 8 }}
     spec:
+    {{- if include "soai-application.pullSecrets" . }}
+      imagePullSecrets:
+        - name: {{ template "soai-application.pullSecrets" . }}
+    {{- end }}
       containers:
         - name: redis
           image: redis:7
           ports:
-            - containerPort: {{ .Values.redis.port }}
+            - containerPort: {{ .Values.server.redis.port }}

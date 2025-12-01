@@ -38,6 +38,14 @@ Expand the name of the mysql chart
 {{- end -}}
 
 {{/*
+Expand the name of the mysql chart
+*/}}
+{{- define "soai-redis.name" -}}
+{{- $name := (include "soai-application.name" .) -}}
+{{- printf "%s-redis" $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
 Expand the name of the authentication chart
 */}}
 {{- define "soai-authentication.name" -}}
@@ -91,6 +99,16 @@ Selector labels for mysql.
 {{- define "soai-mysql.selectorLabels" -}}
 component: {{ .Values.server.mysqlServer.name | quote }}
 app: {{ template "soai-mysql.name" . }}
+release: {{ .Release.Name | quote }}
+app.kubernetes.io/instance: {{ .Release.Name | quote }}
+{{- end }}
+
+{{/*
+Selector labels for redis.
+*/}}
+{{- define "soai-redis.selectorLabels" -}}
+component: {{ .Values.server.redis.name | quote }}
+app: {{ template "soai-redis.name" . }}
 release: {{ .Release.Name | quote }}
 app.kubernetes.io/instance: {{ .Release.Name | quote }}
 {{- end }}
@@ -252,6 +270,19 @@ Merged labels for common mysql
     {{- $g := fromJson (include "soai-application.global" .) -}}
     {{- $selector := (include "soai-mysql.selectorLabels" .) | fromYaml -}}
     {{- $name := (include "soai-mysql.name" .) }}
+    {{- $static := include "soai-application.static-labels" (list . $name) | fromYaml -}}
+    {{- $global := $g.label -}}
+    {{- $service := .Values.labels -}}
+    {{- include "soai-application.mergeLabels" (dict "location" .Template.Name "sources" (list $selector $static $global $service)) | trim }}
+{{- end -}}
+
+{{/*
+Merged labels for common redis
+*/}}
+{{- define "soai-redis.labels" -}}
+    {{- $g := fromJson (include "soai-application.global" .) -}}
+    {{- $selector := (include "soai-redis.selectorLabels" .) | fromYaml -}}
+    {{- $name := (include "soai-redis.name" .) }}
     {{- $static := include "soai-application.static-labels" (list . $name) | fromYaml -}}
     {{- $global := $g.label -}}
     {{- $service := .Values.labels -}}
@@ -654,5 +685,54 @@ Define FQDN for Cert-Manager certificates
   - {{ $service }}.{{ $namespace }}
   - {{ $service }}.{{ $namespace }}.svc
   - {{ $service }}.{{ $namespace }}.svc.cluster.local
+{{- end -}}
+{{- end -}}
+
+{{/*
+Define metrics annotations
+*/}}
+{{- define "soai-application.metrics.annotations" }}
+{{- $root := index . 0 -}}
+{{- $metricPath := index . 1 -}}
+{{- $metricPort := index . 2 -}}
+prometheus.io/scrape-role: "pod"
+prometheus.io/path: {{ $metricPath | quote }}
+prometheus.io/port: {{ $metricPort | quote }}
+prometheus.io/scrape-interval: "15s"
+{{- end }}
+
+{{/*
+Get the metrics port for auth deployment
+*/}}
+{{- define "soai-authentication.metrics.port" -}}
+{{- $g := fromJson (include "soai-application.global" .) -}}
+{{- if $g.security.tls.enabled -}}
+{{- print .Values.server.authentication.httpsPort -}}
+{{- else -}}
+{{- print .Values.server.authentication.httpPort -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get the metrics port for server deployment
+*/}}
+{{- define "soai-recruitment.metrics.port" -}}
+{{- $g := fromJson (include "soai-application.global" .) -}}
+{{- if $g.security.tls.enabled -}}
+{{- print .Values.server.recruitment.httpsPort -}}
+{{- else -}}
+{{- print .Values.server.recruitment.httpPort -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Get the metrics port for genai deployment
+*/}}
+{{- define "soai-genai.metrics.port" -}}
+{{- $g := fromJson (include "soai-application.global" .) -}}
+{{- if $g.security.tls.enabled -}}
+{{- print .Values.server.genai.httpsPort -}}
+{{- else -}}
+{{- print .Values.server.genai.httpPort -}}
 {{- end -}}
 {{- end -}}

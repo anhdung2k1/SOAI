@@ -1,10 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: soai-monitor-configmap
+  name: otel-collector-configmap
 data:
   otel-collector-config.yaml: |
-    {{- $g := fromJson (include "soai-application.global" . ) }}
     receivers:
       otlp:
         protocols:
@@ -22,56 +21,28 @@ data:
           filesystem: {}
           network: {}
           load: {}
-
+{{- if .Values.otel.prometheus.enabled }}
       prometheus:
         config:
           scrape_configs:
             - job_name: 'otel-collector'
-              scrape_interval: 10s
+              scrape_interval: 15s
               static_configs:
                 - targets: ['0.0.0.0:8888']
-            - job_name: 'soai_services'
-              scheme: {{ ternary "https" "http" $g.security.tls.enabled | quote }}
-              tls_config:
-                insecure_skip_verify: true
-              metrics_path: /metrics
-              static_configs:
-                - targets:
-                    - {{ printf "%s.%s.svc:%s" (include "soai-genai.name" .) .Release.Namespace (ternary .Values.server.genai.httpsPort .Values.server.genai.httpPort $g.security.tls.enabled) | quote }}
-                    - {{ printf "%s.%s.svc:%s" (include "soai-recruitment.name" .) .Release.Namespace (ternary .Values.server.recruitment.httpsPort .Values.server.recruitment.httpPort $g.security.tls.enabled) | quote }}
-              relabel_configs:
-                - source_labels: [__address__]
-                  regex: '(.*):.*'
-                  target_label: instance
-                  replacement: '$1'
-                - source_labels: [__address__]
-                  target_label: service
-                  regex: 'genai:.*'
-                  replacement: 'gen_ai_provider'
-                - source_labels: [__address__]
-                  target_label: service
-                  regex: 'recruitment:.*'
-                  replacement: 'recruitment_agent'
-
-            - job_name: 'authentication_service'
-              scheme: {{ ternary "https" "http" $g.security.tls.enabled | quote }}
-              tls_config:
-                insecure_skip_verify: true
-              metrics_path: /actuator/prometheus
-              static_configs:
-                - targets:
-                    - {{ printf "%s.%s.svc:%s" (include "soai-authentication.name" . ) .Release.Namespace (ternary .Values.server.authentication.httpsPort .Values.server.authentication.httpPort $g.security.tls.enabled) | quote }}
-              relabel_configs:
-                - source_labels: [__address__]
-                  regex: '(.*):.*'
-                  target_label: instance
-                  replacement: '$1'
-                - source_labels: [__address__]
-                  target_label: service
-                  regex: 'authentication:.*'
-                  replacement: 'authentication_service'
-
+          {{- if .Values.otel.prometheus.scrapeConfigs.jobs.pod.enabled }}
+            {{- include "otel-collector.configJobs" (list . "pod") | nindent 12 }}
+          {{- end }}
+          {{- if .Values.otel.prometheus.scrapeConfigs.jobs.service.enabled }}
+            {{- include "otel-collector.configJobs" (list . "service") | nindent 12 }}
+          {{- end }}
+          {{- if .Values.otel.prometheus.scrapeConfigs.jobs.endpoint.enabled }}
+            {{- include "otel-collector.configJobs" (list . "endpoints") | nindent 12 }}
+          {{- end }}
+{{- end }}
     exporters:
+      debug:
+        verbosity: normal
+{{- if .Values.otel.clickHouse.enabled }}
       clickhouse:
         endpoint: tcp://clickhouse:9000
         username: soai_user
@@ -87,13 +58,12 @@ data:
           initial_interval: 5s
           max_interval: 30s
           max_elapsed_time: 300s
-
+{{- end }}
     processors:
       memory_limiter:
         check_interval: 1s
         limit_mib: 1000
         spike_limit_mib: 200
-
       k8sattributes:
         auth_type: serviceAccount
         filter:
@@ -122,17 +92,14 @@ data:
                 name: k8s.pod.uid
           - sources:
               - from: connection
-
       resource:
         attributes:
           - action: insert
             from_attribute: k8s.pod.uid
             key: service.instance.id
-
       batch:
         send_batch_size: 10000
         timeout: 10s
-
       transform:
         error_mode: ignore
         metric_statements:
@@ -142,7 +109,6 @@ data:
               - set(attributes["namespace"], resource.attributes["k8s.namespace.name"])
               - set(attributes["container"], resource.attributes["k8s.container.name"])
               - set(attributes["pod"], resource.attributes["k8s.pod.name"])
-
       transform/logs:
         error_mode: ignore
         log_statements:
@@ -159,7 +125,6 @@ data:
               - delete_key(resource.attributes, "k8s.namespace.name")
               - delete_key(resource.attributes, "k8s.container.name")
               - delete_key(resource.attributes, "k8s.pod.name")
-
     service:
       telemetry:
         metrics:
@@ -168,37 +133,24 @@ data:
                 exporter:
                   prometheus:
                     host: 0.0.0.0
-                    port: {{ .Values.otel.metricsPort }}
+                    port: 8888
         logs:
           encoding: json
-
       pipelines:
         metrics/primary:
-          receivers: [otlp, hostmetrics, prometheus]
+          receivers:
+            - otlp
+            - hostmetrics
+            {{- if .Values.otel.prometheus.enabled }}
+            - prometheus
+            {{- end }}
           processors: [memory_limiter, k8sattributes, resource, transform, batch]
-          exporters: [clickhouse]
-
+          exporters: [{{ include "otel-collector.exporter" . }}]
         traces:
           receivers: [otlp]
           processors: [k8sattributes, batch]
-          exporters: [clickhouse]
-
+          exporters: [{{ include "otel-collector.exporter" . }}]
         logs:
           receivers: [otlp]
           processors: [k8sattributes, transform/logs, batch]
-          exporters: [clickhouse]
-
-
-  otel-user.xml: |
-    <yandex>
-      <users>
-        <soai_user>
-          <password>soai_password</password>
-          <networks>
-            <ip>::/0</ip>
-          </networks>
-          <profile>default</profile>
-          <quota>default</quota>
-        </soai_user>
-      </users>
-    </yandex>
+          exporters: [{{ include "otel-collector.exporter" . }}]

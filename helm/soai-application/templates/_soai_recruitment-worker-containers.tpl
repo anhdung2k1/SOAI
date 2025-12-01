@@ -16,7 +16,7 @@
         - ALL
   env:
   - name: OTEL_ENDPOINT
-    value: {{ printf "otel-collector:%s" ($top.Values.otel.grpcPort | toString) }}
+    value: "otel-collector:4317"
   - name: POD_NAME
     valueFrom:
       fieldRef:
@@ -60,11 +60,11 @@
   - name: REDIS_HOST
     value: redis
   - name: REDIS_PORT
-    value: {{ $top.Values.redis.port | quote }}
+    value: {{ $top.Values.server.redis.port | quote }}
   - name: CELERY_BROKER_URL
-    value: {{ printf "redis://redis:%s/0" (toString $top.Values.redis.port) | quote }}
+    value: {{ printf "redis://redis:%s/0" (toString $top.Values.server.redis.port) | quote }}
   - name: CELERY_RESULT_BACKEND
-    value: {{ printf "redis://redis:%s/0" (toString $top.Values.redis.port) | quote }}
+    value: {{ printf "redis://redis:%s/0" (toString $top.Values.server.redis.port) | quote }}
   - name: CELERY_TASK_TIME_LIMIT
     value: "600"
   - name: CELERY_TASK_SOFT_TIME_LIMIT
