@@ -59,3 +59,7 @@ export interface ScheduleInterview extends CV {
     interview_datetime: string;
     interview_location: string;
 }
+
+export interface InterviewSession extends Interview {
+    interview_comment: string;
+}

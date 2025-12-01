@@ -48,6 +48,68 @@
     align-items: center;
 }
 
+.card-header-popup {
+    position: relative;
+}
+
+.card-header-popup__icon {
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        right: 0px;
+        width: 60px;
+        height: 20px;
+        background-color: transparent;
+    }
+}
+
+.card-header-popup__icon:hover ~ .card-header-popup__selection {
+    display: block;
+}
+
+.card-header-popup__selection {
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 4px;
+    z-index: 2;
+    width: 160px;
+    border-radius: 8px;
+    border: 1px solid rgb(214, 214, 214);
+    background-color: white;
+    overflow: hidden;
+
+    &:hover {
+        display: block;
+    }
+}
+
+.card-header-popup__selection-option {
+    padding: 6px 8px;
+    &:hover {
+        background-color: $background-white-color;
+    }
+}
+
+.card-header-popup__selection-option-icon {
+    margin-right: 6px;
+}
+
+.card-header-popup__selection-option-icon.card-header-popup__selection-option-icon--edit {
+    color: $primary-color;
+}
+
+.card-header-popup__selection-option-icon.card-header-popup__selection-option-icon--question {
+    color: $warning-color;
+}
+
+.card-header-popup__selection-option-icon.card-header-popup__selection-option-icon--assessment {
+    color: $success-color;
+}
+
 .interview-col__card-content {
     margin-top: 10px;
     margin-left: 2px;
@@ -60,25 +122,31 @@
     margin-top: 10px;
 }
 
-// Show CV modals
-.scheduling-cv {
+// Scheduling interview session modal
+.common-info {
     display: flex;
     flex-wrap: wrap;
 }
 
-.scheduling-cv__personal-data {
+.common-info__personal-data {
     flex: 0 0 50%;
     min-width: 50%;
     margin-top: 8px;
     margin-bottom: 8px;
 }
 
-.scheduling-form__group {
+.form__group {
     margin-top: 10px;
     margin-bottom: 20px;
 }
 
-.scheduling-form__group-entry {
+.form__group-label {
+    display: inline-block;
+    margin-bottom: 6px;
+    color: #868686;
+}
+
+.form__group-entry {
     width: 100%;
     padding: 10px;
     outline: none;
@@ -87,18 +155,18 @@
     background-color: transparent;
 }
 
-.scheduling-form__confirm {
+.form__confirm {
     display: inline-flex;
     justify-content: center;
     margin-bottom: 20px;
     cursor: pointer;
 }
 
-.scheduling-form__confirm input[type='checkbox'] {
+.form__confirm input[type='checkbox'] {
     margin-right: 10px;
 }
 
-.scheduling-form__submit-btn {
+.form__submit-btn {
     width: 100%;
     padding: 12px 16px;
     border-radius: 8px;
@@ -120,7 +188,7 @@
     }
 }
 
-.scheduling-form__submit-btn.scheduling-form__submit-btn--disable {
+.form__submit-btn.form__submit-btn--disable {
     color: grey;
     background-color: $background-white-color;
     border: 1px solid #dfdfdf;
