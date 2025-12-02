@@ -54,7 +54,7 @@ export interface Interview {
     status: Status;
 }
 
-export interface ScheduleInterview extends CV {
+export interface InterviewSchedule extends CV {
     interviewer_name: string;
     interview_datetime: string;
     interview_location: string;
@@ -67,9 +67,9 @@ export interface InterviewSession extends Interview {
 export interface InterviewQuestion {
     id: number;
     cv_application_id: number;
-    answer: string;
+    original_question: string;
     edited_question: string | null;
     is_edited: boolean;
-    original_question: string;
+    answer: string;
     source: string;
 }

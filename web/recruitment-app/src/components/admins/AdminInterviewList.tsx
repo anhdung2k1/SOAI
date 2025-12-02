@@ -3,16 +3,31 @@ import { toast } from 'react-toastify';
 import { FiMoreVertical } from 'react-icons/fi';
 import { FaCommentDots, FaPen, FaQuestionCircle, FaRegEdit } from 'react-icons/fa';
 import { getApprovedCVs, getInterviews, scheduleInterview, generateInterviewQuestions, getAvailableInterviewQuestions } from '../../services/api/interviewApis';
-import { Button, Col, ReviewModal, Row } from '../layouts';
+import { Button, ReviewModal, Spinner, Row, Col } from '../layouts';
 import { STATUS } from '../../shared/types/adminTypes';
-import type { CV, Interview, InterviewQuestion, InterviewSession, ScheduleInterview, Status } from '../../shared/types/adminTypes';
+import type { CV, Interview, InterviewQuestion, InterviewSession, InterviewSchedule, Status } from '../../shared/types/adminTypes';
 import classNames from 'classnames/bind';
-import styles from '../../assets/styles/admins/adminInterviewList.module.scss';
 import frameStyles from '../../assets/styles/admins/adminFrame.module.scss';
+import styles from '../../assets/styles/admins/adminInterviewList.module.scss';
 import dataEmpty from '../../assets/images/data-empty.png';
-import Spinner from '../layouts/Spinner';
 
 const cx = classNames.bind({ ...frameStyles, ...styles });
+
+interface InterviewScheduleModal {
+    formData: InterviewSchedule;
+    formConfirm: boolean;
+}
+
+interface InterviewSessionModal {
+    formData: InterviewSession;
+    formConfirm: boolean;
+}
+
+interface InterviewQuestionModal {
+    interviewSession: Interview;
+    interviewQuestions: InterviewQuestion[];
+    isGenerating: boolean;
+}
 
 interface Filter {
     candidateName: string;
@@ -33,31 +48,15 @@ const filterReducer = (state: Filter, action: FilterAction): Filter => {
     }
 };
 
-interface ScheduleInterviewForm {
-    formData: ScheduleInterview;
-    formConfirm: boolean;
-}
-
-interface InterviewSessionForm {
-    formData: InterviewSession;
-    formConfirm: boolean;
-}
-
-interface Question {
-    interviewSession: Interview;
-    interviewQuestions?: InterviewQuestion[];
-    loading: boolean;
-}
-
 const AdminInterviewList = () => {
-    const [interviews, setInterviews] = useState<Interview[]>([]);
     const [approvedCVs, setApprovedCVs] = useState<CV[]>([]);
+    const [interviews, setInterviews] = useState<Interview[]>([]);
     const [filter, dispatchFilter] = useReducer(filterReducer, initFilterValue);
 
-    // States of Modals
-    const [schedule, setSchedule] = useState<ScheduleInterviewForm | null>(null);
-    const [session, setSession] = useState<InterviewSessionForm | null>(null);
-    const [questions, setQuestions] = useState<Question | null>(null);
+    // States of modals
+    const [schedule, setSchedule] = useState<InterviewScheduleModal | null>(null);
+    const [session, setSession] = useState<InterviewSessionModal | null>(null);
+    const [questions, setQuestions] = useState<InterviewQuestionModal | null>(null);
 
     const fetchApprovedCVsAndInterviews = useCallback(() => {
         const fetchApprovedCVs = async () => {
@@ -99,7 +98,7 @@ const AdminInterviewList = () => {
         return filteredApprovedCVs;
     }, [approvedCVs, filter.candidateName, filteredInterviews]);
 
-    const openScheduleModal = (cv: CV) => {
+    const openScheduleModal = (cv: CV): void => {
         setSchedule({
             formData: { ...cv, interviewer_name: '', interview_datetime: '', interview_location: '' },
             formConfirm: false,
@@ -118,7 +117,7 @@ const AdminInterviewList = () => {
         }
     }, [schedule]);
 
-    const handleScheduleInterview = useCallback(
+    const handleInterviewSchedule = useCallback(
         async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
             e.preventDefault();
             if (schedule) {
@@ -134,7 +133,7 @@ const AdminInterviewList = () => {
         [fetchApprovedCVsAndInterviews, schedule],
     );
 
-    const openSessionModal = (session: Interview) => {
+    const openSessionModal = (session: Interview): void => {
         setSession({
             formData: { ...session, interview_comment: '' },
             formConfirm: false,
@@ -153,44 +152,45 @@ const AdminInterviewList = () => {
         }
     }, [session]);
 
-    const handleInterviewResult = useCallback(async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    const handleInterviewSession = useCallback(async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         setSession(null);
-        toast.success('[Testing] Updated interview session result successfully!', {
+        toast.success('[Testing] Succeed to updated the result of interview session.', {
             position: 'top-center',
             hideProgressBar: true,
         });
     }, []);
 
     const openInterviewQuestionModal = async (interviewSession: Interview): Promise<void> => {
-        setQuestions({ interviewQuestions: [], interviewSession: interviewSession, loading: true });
+        setQuestions({ interviewQuestions: [], interviewSession: interviewSession, isGenerating: true });
         let questions = await getAvailableInterviewQuestions(interviewSession.cv_application_id);
         if (questions.length === 0) {
             questions = await generateInterviewQuestions(interviewSession.cv_application_id);
         }
-        setQuestions({ interviewQuestions: questions, interviewSession: interviewSession, loading: false });
+        setQuestions({ interviewQuestions: questions, interviewSession: interviewSession, isGenerating: false });
     };
 
-    const closeQuestionModal = () => {
-        if (questions) {
-            if (questions.loading) {
-                toast.warning('Cannot close dialog while generating interview question.', {
-                    position: 'top-center',
-                    hideProgressBar: true,
-                });
-            } else {
-                setQuestions(null);
-            }
+    const closeInterviewQuestionModal = useCallback((): void => {
+        if (questions?.isGenerating) {
+            toast.warning('Closing the dialog is disabled during interview question generation.', {
+                position: 'top-center',
+                hideProgressBar: true,
+            });
+        } else {
+            setQuestions(null);
         }
-    };
+    }, [questions?.isGenerating]);
 
     const regenerateInterviewQuestions = async () => {
         if (questions?.interviewSession) {
-            if (!questions.interviewQuestions || window.confirm('Do you want to regenerate questions?')) {
-                setQuestions({ ...questions, loading: true });
+            if (!questions.interviewQuestions || window.confirm('Do you want to regenerate interview questions?')) {
+                setQuestions({ ...questions, isGenerating: true });
                 const response = await generateInterviewQuestions(questions.interviewSession.cv_application_id);
-                setQuestions({ ...questions, interviewQuestions: response, loading: false });
-                toast.success('Questions are generated successfully.');
+                setQuestions({ ...questions, interviewQuestions: response, isGenerating: false });
+                toast.success('Questions are generated successfully.', {
+                    position: 'top-center',
+                    hideProgressBar: true,
+                });
             }
         }
     };
@@ -294,6 +294,7 @@ const AdminInterviewList = () => {
                                                 </section>
                                             </div>
 
+                                            {/* TODO: Replace the missed information */}
                                             <div className={cx('interview-col__card-content')}>
                                                 <p className={cx('interview-col__card-content-item')}>
                                                     <strong>Position:</strong> React Web Developer (Frontend)
@@ -305,7 +306,7 @@ const AdminInterviewList = () => {
                                                     <strong>Venue:</strong> Online - MS Teams
                                                 </p>
                                                 <p className={cx('interview-col__card-content-item')}>
-                                                    <strong>Time:</strong> {new Date(interview.interview_datetime).toLocaleString()}
+                                                    <strong>Datetime:</strong> {new Date(interview.interview_datetime).toLocaleString()}
                                                 </p>
                                             </div>
                                         </div>
@@ -338,7 +339,7 @@ const AdminInterviewList = () => {
                                 </p>
                             </div>
                             <hr style={{ margin: '20px 0 30px' }} />
-                            <form onSubmit={handleScheduleInterview}>
+                            <form onSubmit={handleInterviewSchedule}>
                                 <Row space={10} className={cx('form__group')}>
                                     <Col size={{ md: 6, lg: 7, xl: 6 }}>
                                         <input
@@ -437,7 +438,7 @@ const AdminInterviewList = () => {
                                 </p>
                             </div>
                             <hr style={{ margin: '20px 0 30px' }} />
-                            <form onSubmit={handleInterviewResult}>
+                            <form onSubmit={handleInterviewSession}>
                                 <div className={cx('form__group')}>
                                     <label htmlFor="result-of-interview" className={cx('form__group-label')}>
                                         Result of Interview
@@ -489,7 +490,7 @@ const AdminInterviewList = () => {
                 </ReviewModal>
 
                 {/* Interview questions - Upcoming Interviews column */}
-                <ReviewModal title={`Available Questions`} open={!!questions} onClose={closeQuestionModal}>
+                <ReviewModal title={`Interview Questions`} open={!!questions} onClose={closeInterviewQuestionModal}>
                     {questions && (
                         <>
                             <div className={cx('common-info')}>
@@ -509,7 +510,7 @@ const AdminInterviewList = () => {
                             </div>
                             <hr style={{ margin: '20px 0 30px' }} />
 
-                            {questions?.loading ? (
+                            {questions.isGenerating ? (
                                 <Spinner label="Generating interview questions, please wait for some times!" />
                             ) : (
                                 <div>
@@ -524,17 +525,16 @@ const AdminInterviewList = () => {
                                         </div>
                                     ) : (
                                         questions.interviewQuestions?.map((question, index) => (
-                                            <div key={question.id} className={cx('question')}>
-                                                <p className={cx('question__item', 'question__item--ask')}>
+                                            <section key={question.id} className={cx('question')}>
+                                                <strong className={cx('question__item', 'question__item--ask')}>
                                                     <FaQuestionCircle className={cx('question__icon', 'question__icon--ask')} />
-                                                    <strong>
-                                                        Question {index + 1}: {question.original_question}
-                                                    </strong>
-                                                </p>
+                                                    Question {index + 1}: {question.original_question}
+                                                </strong>
                                                 <p className={cx('question__item')}>
-                                                    <FaCommentDots className={cx('question__icon', 'question__icon--answer')} /> {question.answer}
+                                                    <FaCommentDots className={cx('question__icon', 'question__icon--answer')} />
+                                                    {question.answer}
                                                 </p>
-                                            </div>
+                                            </section>
                                         ))
                                     )}
                                 </div>
