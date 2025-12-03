@@ -1,7 +1,7 @@
 import { API_BASE_URL } from '../../shared/constants/baseUrls';
 import { HTTP_ERROR_CODE } from '../../shared/constants/httpCodes';
 import { getToken } from '../../shared/helpers/authUtils';
-import type { CV, Interview, InterviewQuestion, ScheduleInterview } from '../../shared/types/adminTypes';
+import type { CV, Interview, InterviewQuestion, InterviewSchedule, InterviewSession } from '../../shared/types/adminTypes';
 
 /**
  * Helper for generating authorization headers.
@@ -71,7 +71,7 @@ export const getApprovedCVs = async (candidateName = ''): Promise<CV[]> => {
  * @param {Object} interviewData
  * @returns {Promise<Object>}
  */
-export const scheduleInterview = async (interviewData: ScheduleInterview): Promise<{ message: string }> => {
+export const scheduleInterview = async (interviewData: InterviewSchedule): Promise<{ message: string }> => {
     const url = `${API_BASE_URL}/recruitment/interviews/schedule`;
     try {
         const response = await fetch(url, {
@@ -91,8 +91,31 @@ export const scheduleInterview = async (interviewData: ScheduleInterview): Promi
 };
 
 /**
+ * Delete an interview by ID (admin only).
+ * @param {number} interviewId - Interview session ID
+ * @returns {Promise<Object>}
+ */
+export const deleteInterview = async (interviewId: number): Promise<{ message: string }> => {
+    const url = `${API_BASE_URL}/recruitment/interviews/${interviewId}`;
+    try {
+        const response = await fetch(url, {
+            method: 'DELETE',
+            headers: authHeaders(false),
+        });
+        if (!response.ok) {
+            const message = HTTP_ERROR_CODE[response.status] || 'An unexpected error occurred.';
+            throw new Error(message);
+        }
+        return await response.json();
+    } catch (err) {
+        console.error(`[DEBUG deleteInterview] Failed to parse JSON: ${err}`);
+        return { message: `Failed to delete interview session: ${err}` };
+    }
+};
+
+/**
  * Generate interview questions for a CV (admin only).
- * @param {number|string} cvId
+ * @param {number} cvId
  * @returns {Promise<Array>}
  */
 export const generateInterviewQuestions = async (cvId: number): Promise<InterviewQuestion[]> => {
@@ -115,7 +138,7 @@ export const generateInterviewQuestions = async (cvId: number): Promise<Intervie
 
 /**
  * Get available interview questions for a CV (admin only).
- * @param {number|string} cvId
+ * @param {number} cvId
  * @returns {Promise<Array>}
  */
 export const getAvailableInterviewQuestions = async (cvId: number): Promise<InterviewQuestion[]> => {
@@ -130,5 +153,56 @@ export const getAvailableInterviewQuestions = async (cvId: number): Promise<Inte
     } catch (err) {
         console.error(`[DEBUG getAvailableInterviewQuestions] Failed to parse JSON: ${err}`);
         return [];
+    }
+};
+
+/**
+ * Cancel interview (candidate).
+ * @param {number} interviewId - Interview session id
+ * @returns {Promise<Object>}
+ */
+export const cancelInterview = async (interviewId: number): Promise<{ message: string }> => {
+    const url = `${API_BASE_URL}/recruitment/interviews/${interviewId}/cancel`;
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: authHeaders(false),
+        });
+        if (!response.ok) {
+            const message = HTTP_ERROR_CODE[response.status] || 'An unexpected error occurred.';
+            throw new Error(message);
+        }
+        return await response.json();
+    } catch (err) {
+        console.error(`[DEBUG cancelInterview] Failed to parse JSON: ${err}`);
+        return { message: `Failed to cancel interview session or reject candidate CV: ${err}` };
+    }
+};
+
+/**
+ * Accept interview (candidate).
+ * @param {Object} acceptData - Interview sesion data
+ * @returns {Promise<Object>}
+ */
+export const acceptInterview = async (acceptData: InterviewSession): Promise<{ message: string }> => {
+    const url = `${API_BASE_URL}/recruitment/interviews/accept`;
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: authHeaders(),
+            body: JSON.stringify({
+                candidate_name: acceptData.candidate_name,
+                interview_datetime: acceptData.interview_datetime,
+                candidate_id: acceptData.id,
+            }),
+        });
+        if (!response.ok) {
+            const message = HTTP_ERROR_CODE[response.status] || 'An unexpected error occurred.';
+            throw new Error(message);
+        }
+        return await response.json();
+    } catch (err) {
+        console.error(`[DEBUG acceptInterview] Failed to parse JSON: ${err}`);
+        return { message: `Failed to accept candidate CV: ${err}` };
     }
 };

@@ -1,8 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { toast } from 'react-toastify';
-import { FiMoreVertical } from 'react-icons/fi';
-import { FaCommentDots, FaPen, FaQuestionCircle, FaRegEdit } from 'react-icons/fa';
-import { getApprovedCVs, getInterviews, scheduleInterview, generateInterviewQuestions, getAvailableInterviewQuestions } from '../../services/api/interviewApis';
+import { FiMoreVertical, FiTrash2 } from 'react-icons/fi';
+import { FaCalendarAlt, FaCommentDots, FaPen, FaQuestionCircle, FaRegEdit } from 'react-icons/fa';
+import {
+    getApprovedCVs,
+    getInterviews,
+    scheduleInterview,
+    generateInterviewQuestions,
+    getAvailableInterviewQuestions,
+    acceptInterview,
+    cancelInterview,
+    deleteInterview,
+} from '../../services/api/interviewApis';
 import { Button, ReviewModal, Spinner, Row, Col } from '../layouts';
 import { STATUS } from '../../shared/types/adminTypes';
 import type { CV, Interview, InterviewQuestion, InterviewSession, InterviewSchedule, Status } from '../../shared/types/adminTypes';
@@ -86,12 +95,14 @@ const AdminInterviewList = () => {
     }, [fetchApprovedCVsAndInterviews]);
 
     const filteredInterviews = useMemo<typeof interviews>(() => {
-        const filteredInterviews = interviews.filter((interview) => interview.candidate_name.toLowerCase().includes(filter.candidateName.toLowerCase()));
+        let filteredInterviews = interviews.filter((interview) => interview.candidate_name.toLowerCase().includes(filter.candidateName.toLowerCase()));
+        // Sort by interview datetime
+        filteredInterviews = filteredInterviews.sort((a, b) => new Date(a.interview_datetime).getTime() - new Date(b.interview_datetime).getTime());
         return filteredInterviews;
     }, [filter.candidateName, interviews]);
 
     const filteredApprovedCVs = useMemo<typeof approvedCVs>(() => {
-        const scheduledCVs = filteredInterviews.map((cv) => cv.id);
+        const scheduledCVs = filteredInterviews.map((cv) => cv.cv_application_id);
         const filteredApprovedCVs = approvedCVs.filter(
             (cv) => cv.candidate_name.toLowerCase().includes(filter.candidateName.toLowerCase()) && !scheduledCVs.includes(cv.id),
         );
@@ -152,14 +163,25 @@ const AdminInterviewList = () => {
         }
     }, [session]);
 
-    const handleInterviewSession = useCallback(async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
-        e.preventDefault();
-        setSession(null);
-        toast.success('[Testing] Succeed to updated the result of interview session.', {
-            position: 'top-center',
-            hideProgressBar: true,
-        });
-    }, []);
+    const handleInterviewSession = useCallback(
+        async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+            e.preventDefault();
+            let response = { message: 'Please update the status—processing cannot continue while it remains Pending.' };
+            if (session?.formData.status === 'Accepted') {
+                response = await acceptInterview(session.formData);
+            } else if (session?.formData.status === 'Rejected') {
+                response = await cancelInterview(session.formData.id);
+            }
+            fetchApprovedCVsAndInterviews();
+            setSession(null);
+            // TODO: Separate between toast.success and toast.error
+            toast.success(response.message, {
+                position: 'top-center',
+                hideProgressBar: true,
+            });
+        },
+        [fetchApprovedCVsAndInterviews, session?.formData],
+    );
 
     const openInterviewQuestionModal = async (interviewSession: Interview): Promise<void> => {
         setQuestions({ interviewQuestions: [], interviewSession: interviewSession, isGenerating: true });
@@ -195,6 +217,18 @@ const AdminInterviewList = () => {
         }
     };
 
+    const deleteInterviewCard = async (interviewCard: Interview) => {
+        if (window.confirm(`Are you sure to delete the interview session of ${interviewCard.candidate_name}?`)) {
+            const response = await deleteInterview(interviewCard.id);
+            fetchApprovedCVsAndInterviews();
+            // TODO: Separate between toast.success and toast.error
+            toast.success(response.message, {
+                position: 'top-center',
+                hideProgressBar: true,
+            });
+        }
+    };
+
     return (
         <>
             <div className={cx('admin-frame')}>
@@ -221,8 +255,29 @@ const AdminInterviewList = () => {
 
                         <section className={cx('interview-col__section')}>
                             {filteredApprovedCVs.map((cv) => (
-                                <div key={cv.id} className={cx('interview-col__card')} onClick={() => openScheduleModal(cv)}>
-                                    <h3>{cv.candidate_name.toUpperCase()}</h3>
+                                <div key={cv.id} className={cx('interview-col__card')}>
+                                    <div className={cx('interview-col__card-header')}>
+                                        <h3>{cv.candidate_name.toUpperCase()}</h3>
+
+                                        <section className={cx('card-header-popup')}>
+                                            <div className={cx('card-header-popup__icon')}>
+                                                <FiMoreVertical size={18} />
+                                            </div>
+
+                                            <div className={cx('card-header-popup__selection')}>
+                                                <p className={cx('card-header-popup__selection-option')} onClick={() => openScheduleModal(cv)}>
+                                                    <FaCalendarAlt
+                                                        size={12}
+                                                        className={cx(
+                                                            'card-header-popup__selection-option-icon',
+                                                            'card-header-popup__selection-option-icon--schedule',
+                                                        )}
+                                                    />
+                                                    Schedule session
+                                                </p>
+                                            </div>
+                                        </section>
+                                    </div>
 
                                     <div className={cx('interview-col__card-content')}>
                                         <p className={cx('interview-col__card-content-item')}>
@@ -317,6 +372,60 @@ const AdminInterviewList = () => {
 
                     <Col size={{ md: 4, lg: 4, xl: 4 }} className={cx('interview-col')}>
                         <h3 className={cx('interview-col__title', 'interview-col__title--result')}>Result of Interviews</h3>
+
+                        <section className={cx('interview-col__section')}>
+                            {filteredInterviews.map(
+                                (interview) =>
+                                    interview.status !== 'Pending' && (
+                                        <div key={interview.id} className={cx('interview-col__card')}>
+                                            <div className={cx('interview-col__card-header')}>
+                                                <h3>
+                                                    {interview.status === 'Accepted' && <span title="Passed">⭐ ⭐</span>}{' '}
+                                                    {interview.candidate_name.toUpperCase()}
+                                                </h3>
+
+                                                <section className={cx('card-header-popup')}>
+                                                    <div className={cx('card-header-popup__icon')}>
+                                                        <FiMoreVertical size={18} />
+                                                    </div>
+
+                                                    <div className={cx('card-header-popup__selection')}>
+                                                        <p className={cx('card-header-popup__selection-option')} onClick={() => deleteInterviewCard(interview)}>
+                                                            <FiTrash2
+                                                                size={12}
+                                                                className={cx(
+                                                                    'card-header-popup__selection-option-icon',
+                                                                    'card-header-popup__selection-option-icon--delete',
+                                                                )}
+                                                            />
+                                                            Delete candidate
+                                                        </p>
+                                                    </div>
+                                                </section>
+                                            </div>
+
+                                            {/* TODO: Replace the missed information */}
+                                            <div className={cx('interview-col__card-content')}>
+                                                <p className={cx('interview-col__card-content-item')}>
+                                                    <strong>Position:</strong> React Web Developer (Frontend)
+                                                </p>
+                                                <p className={cx('interview-col__card-content-item')}>
+                                                    <strong>Interviewer:</strong> {interview.interviewer_name}
+                                                </p>
+                                                <p className={cx('interview-col__card-content-item')}>
+                                                    <strong>Venue:</strong> Online - MS Teams
+                                                </p>
+                                                <p className={cx('interview-col__card-content-item')}>
+                                                    <strong>Datetime:</strong> {new Date(interview.interview_datetime).toLocaleString()}
+                                                </p>
+                                                <p className={cx('interview-col__card-content-item')}>
+                                                    <strong>Status:</strong> {interview.status}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    ),
+                            )}
+                        </section>
                     </Col>
                 </Row>
 

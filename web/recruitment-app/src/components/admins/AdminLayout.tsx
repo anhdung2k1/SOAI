@@ -9,7 +9,7 @@ import SmartRecruitmentLogo from '../../assets/images/smart-recruitment-admin-lo
 
 const cx = classNames.bind(styles);
 
-const menu = [
+const navMenu = [
     { label: 'Home', path: PRIVATE_ADMIN_ROUTE.dashboard },
     { label: 'All CVs', path: PRIVATE_ADMIN_ROUTE.cv },
     { label: 'All Interviews', path: PRIVATE_ADMIN_ROUTE.interview },
@@ -35,16 +35,16 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                 <h2 className={cx('sidebar__header')}>Smart Recruitment</h2>
 
                 <section className={cx('sidebar__nav')}>
-                    {menu.map((item) => (
+                    {navMenu.map((nav) => (
                         <NavLink
-                            key={item.label}
-                            to={`${item.path}`}
-                            end={item.label === 'Home'}
+                            key={nav.label}
+                            to={`${nav.path}`}
+                            end={nav.label === 'Home'}
                             className={({ isActive }) => {
                                 return cx('sidebar__nav-link', { 'sidebar__nav-link--active': isActive });
                             }}
                         >
-                            {item.label}
+                            {nav.label}
                         </NavLink>
                     ))}
                 </section>

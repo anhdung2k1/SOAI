@@ -98,6 +98,10 @@
     margin-right: 6px;
 }
 
+.card-header-popup__selection-option-icon--schedule {
+    color: $primary-color;
+}
+
 .card-header-popup__selection-option-icon.card-header-popup__selection-option-icon--edit {
     color: $primary-color;
 }
@@ -108,6 +112,10 @@
 
 .card-header-popup__selection-option-icon.card-header-popup__selection-option-icon--assessment {
     color: $success-color;
+}
+
+.card-header-popup__selection-option-icon.card-header-popup__selection-option-icon--delete {
+    color: $error-color;
 }
 
 .interview-col__card-content {
