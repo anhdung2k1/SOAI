@@ -181,7 +181,7 @@ const AdminAccountList = ({ disableColumns = [] }: AdminAccountListProps) => {
                             )}
                             {!disableColumns.includes('Action') && (
                                 <td className={cx('admin-table__column-value')}>
-                                    <Button type="delete" onClick={() => handleDeleteAccount(account)} />
+                                    <Button type="delete" onClick={() => handleDeleteAccount(account)} disabled={account.role === 'ADMIN'} />
                                 </td>
                             )}
                         </tr>

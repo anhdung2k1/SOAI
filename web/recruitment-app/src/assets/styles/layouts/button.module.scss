@@ -18,6 +18,11 @@
     }
 }
 
+.btn-disabled {
+    color: rgb(192, 192, 192) !important;
+    cursor: not-allowed;
+}
+
 .btn-edit {
     color: $primary-color;
 

@@ -9,6 +9,7 @@ interface ButtonProps {
     type: 'edit' | 'delete' | 'download' | 'question' | 'menu';
     onClick: () => void;
     title?: string;
+    disabled?: boolean;
 }
 
 const TYPE = {
@@ -19,11 +20,11 @@ const TYPE = {
     menu: <FiMoreVertical size={18} />,
 };
 
-const Button = ({ type, onClick, title }: ButtonProps) => {
+const Button = ({ type, onClick, title, disabled = false }: ButtonProps) => {
     const icon = TYPE[type];
 
     return (
-        <button className={cx('btn', `btn-${type}`)} onClick={onClick} title={title}>
+        <button className={cx('btn', `btn-${type}`, { 'btn-disabled': disabled })} onClick={onClick} title={title} disabled={disabled}>
             {icon}
         </button>
     );
