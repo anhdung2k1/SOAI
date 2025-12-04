@@ -80,7 +80,7 @@ services:
       dockerfile: ./Dockerfile
     stdin_open: true
     ports:
-      - "8082:8080"
+      - "8080:8080"
     restart: always
     networks:
       - soai-net
