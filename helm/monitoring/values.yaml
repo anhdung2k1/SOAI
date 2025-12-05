@@ -1,0 +1,108 @@
+# Monitoring Stack Configuration
+
+replicaCount: 1
+
+global:
+  namespace: monitoring
+
+# Prometheus Configuration
+prometheus:
+  enabled: true
+  image:
+    repository: prom/prometheus
+    tag: latest
+    pullPolicy: IfNotPresent
+  
+  service:
+    type: LoadBalancer
+    port: 9090
+  
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
+  
+  persistence:
+    enabled: true
+    storageClass: "standard"
+    size: 10Gi
+  
+  scrapeInterval: 15s
+  evaluationInterval: 15s
+
+# Grafana Configuration
+grafana:
+  enabled: true
+  image:
+    repository: grafana/grafana
+    tag: latest
+    pullPolicy: IfNotPresent
+  
+  service:
+    type: LoadBalancer
+    port: 3000
+  
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "250m"
+  
+  persistence:
+    enabled: true
+    storageClass: "standard"
+    size: 5Gi
+  
+  adminUser: admin
+  adminPassword: admin@123
+  
+  environment:
+    GF_AUTH_ANONYMOUS_ENABLED: "false"
+    GF_SECURITY_ADMIN_USER: admin
+    GF_SECURITY_ADMIN_PASSWORD: admin@123
+
+# Node Exporter Configuration
+nodeExporter:
+  enabled: true
+  image:
+    repository: prom/node-exporter
+    tag: latest
+    pullPolicy: IfNotPresent
+  
+  service:
+    type: ClusterIP
+    port: 9100
+
+# AlertManager Configuration
+alertmanager:
+  enabled: true
+  image:
+    repository: prom/alertmanager
+    tag: latest
+    pullPolicy: IfNotPresent
+  
+  service:
+    type: ClusterIP
+    port: 9093
+  
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "200m"
+
+# Service Account
+serviceAccount:
+  create: true
+  name: "monitoring-sa"
+
+# RBAC
+rbac:
+  create: true

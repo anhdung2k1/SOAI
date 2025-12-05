@@ -1,0 +1,13 @@
+apiVersion: v2
+name: monitoring
+description: Complete Grafana + Prometheus monitoring stack with auto-provisioned dashboards
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - grafana
+  - prometheus
+  - monitoring
+maintainers:
+  - name: SOAI Team
+    email: support@example.com
