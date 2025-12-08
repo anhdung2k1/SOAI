@@ -14,6 +14,7 @@ import {
 } from '../../services/api/interviewApi';
 import { Button, ReviewModal, Spinner, Row, Col } from '../layouts';
 import { STATUS } from '../../shared/types/adminTypes';
+import { initInterviewFilterValue, interviewFilterReducer } from '../../services/reducer/filterReducer/interviewFilter';
 import type { CV, Interview, InterviewQuestion, InterviewSession, InterviewSchedule, Status } from '../../shared/types/adminTypes';
 import classNames from 'classnames/bind';
 import frameStyles from '../../assets/styles/admins/adminFrame.module.scss';
@@ -38,29 +39,10 @@ interface InterviewQuestionModal {
     isGenerating: boolean;
 }
 
-interface Filter {
-    candidateName: string;
-}
-
-const initFilterValue: Filter = {
-    candidateName: '',
-};
-
-type FilterAction = { type: 'CANDIDATE_NAME'; payload: string };
-
-const filterReducer = (state: Filter, action: FilterAction): Filter => {
-    switch (action.type) {
-        case 'CANDIDATE_NAME':
-            return { ...state, candidateName: action.payload };
-        default:
-            return state;
-    }
-};
-
 const AdminInterviewList = () => {
     const [approvedCVs, setApprovedCVs] = useState<CV[]>([]);
     const [interviews, setInterviews] = useState<Interview[]>([]);
-    const [filter, dispatchFilter] = useReducer(filterReducer, initFilterValue);
+    const [filter, dispatchFilter] = useReducer(interviewFilterReducer, initInterviewFilterValue);
 
     // States of modals
     const [schedule, setSchedule] = useState<InterviewScheduleModal | null>(null);

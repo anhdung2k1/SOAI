@@ -4,7 +4,8 @@ import { jwtDecode } from 'jwt-decode';
 import { FiEye, FiEyeOff, FiMail, FiUser } from 'react-icons/fi';
 import { signin, signup } from '../services/api/authApi';
 import { COOKIE_TOKEN_NAME } from '../shared/constants/browserStorages';
-import type { SigninData, SignupData, Role, TokenDecoded } from '../shared/types/authTypes';
+import { authFormReducer, initAuthFormValue } from '../services/reducer/formReducer/authForm';
+import type { SigninData, SignupData, TokenDecoded } from '../shared/types/authTypes';
 import classNames from 'classnames/bind';
 import styles from '../assets/styles/auths/authPage.module.scss';
 import Cookies from 'js-cookie';
@@ -21,88 +22,8 @@ interface AuthProps {
     isSignin: boolean;
 }
 
-interface FormValues extends SignupData {
-    confirmPassword: string;
-    rememberMe: boolean;
-    showPassword: boolean;
-    showConfirmPassword: boolean;
-    error: string;
-}
-
-type ActionReducer =
-    | { type: 'RESET' }
-    | { type: 'ROLE'; payload: Role }
-    | { type: 'USER_NAME' | 'PASSWORD' | 'CONFIRM_PASSWORD' | 'EMAIL' | 'ERROR'; payload: string }
-    | { type: 'REMEMBER_ME' | 'SHOW_PASSWORD' | 'SHOW_CONFIRM_PASSWORD'; payload: boolean };
-
-const initFormValue: FormValues = {
-    userName: '',
-    password: '',
-    confirmPassword: '',
-    email: '',
-    role: 'USER',
-    rememberMe: false,
-    showPassword: false,
-    showConfirmPassword: false,
-    error: '',
-};
-
-const reducer = (state: FormValues, action: ActionReducer): FormValues => {
-    switch (action.type) {
-        case 'USER_NAME':
-            return {
-                ...state,
-                userName: action.payload,
-            };
-        case 'PASSWORD':
-            return {
-                ...state,
-                password: action.payload,
-            };
-        case 'CONFIRM_PASSWORD':
-            return {
-                ...state,
-                confirmPassword: action.payload,
-            };
-        case 'EMAIL':
-            return {
-                ...state,
-                email: action.payload,
-            };
-        case 'ROLE':
-            return {
-                ...state,
-                role: action.payload,
-            };
-        case 'REMEMBER_ME':
-            return {
-                ...state,
-                rememberMe: action.payload,
-            };
-        case 'SHOW_PASSWORD':
-            return {
-                ...state,
-                showPassword: action.payload,
-            };
-        case 'SHOW_CONFIRM_PASSWORD':
-            return {
-                ...state,
-                showConfirmPassword: action.payload,
-            };
-        case 'ERROR':
-            return {
-                ...state,
-                error: action.payload,
-            };
-        case 'RESET':
-            return initFormValue;
-        default:
-            return state;
-    }
-};
-
 const AuthPage = ({ isSignin = false }: AuthProps) => {
-    const [formValue, dispatch] = useReducer(reducer, initFormValue);
+    const [formValue, dispatch] = useReducer(authFormReducer, initAuthFormValue);
     const [loading, setLoading] = useState<boolean>(true);
     const navigate = useNavigate();
 

@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { FaFilter } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { setNumberOfCV } from '../../services/redux/adminSlices/adminStatisticsSlice';
+import { initCVFilterValue, cvFilterReducer } from '../../services/reducer/filterReducer/cvFilter';
 import { Col, Row, Badge, Button, ReviewModal } from '../layouts';
 import { getCVs, updateCV, deleteCV, getCVPreviewUrl } from '../../services/api/cvApi';
 import { STATUS, type CV, type Status } from '../../shared/types/adminTypes';
@@ -18,67 +19,11 @@ interface AdminCVListProps {
     disableColumns?: ColumnName[];
 }
 
-interface Filter {
-    sortBy: 'ASCENDING' | 'DESCENDING';
-    candidateName: string;
-    positions: string[];
-    status: Status[];
-    minimumScore: number;
-}
-
-const initFilterValue: Filter = {
-    sortBy: 'DESCENDING',
-    candidateName: '',
-    positions: [],
-    status: [...STATUS],
-    minimumScore: 0,
-};
-
-type FilterAction =
-    | { type: 'SORT_BY'; payload: 'ASCENDING' | 'DESCENDING' }
-    | { type: 'CANDIDATE_NAME'; payload: string }
-    | { type: 'POSITION'; payload: string | string[] }
-    | { type: 'MINIMUM_SCORE'; payload: number }
-    | { type: 'STATUS'; payload: Status };
-
-const filterReducer = (state: Filter, action: FilterAction): Filter => {
-    switch (action.type) {
-        case 'SORT_BY':
-            return { ...state, sortBy: action.payload };
-        case 'CANDIDATE_NAME':
-            return { ...state, candidateName: action.payload };
-        case 'POSITION':
-            // Support loading a position list at the first time
-            if (Array.isArray(action.payload)) {
-                return {
-                    ...state,
-                    positions: [...action.payload],
-                };
-            }
-            // Sub or add a position at the next times
-            return {
-                ...state,
-                positions: state.positions.includes(action.payload)
-                    ? state.positions.filter((pos) => pos !== action.payload)
-                    : [...state.positions, action.payload],
-            };
-        case 'STATUS':
-            return {
-                ...state,
-                status: state.status.includes(action.payload) ? state.status.filter((status) => status !== action.payload) : [...state.status, action.payload],
-            };
-        case 'MINIMUM_SCORE':
-            return { ...state, minimumScore: action.payload };
-        default:
-            return state;
-    }
-};
-
 const AdminCVList = ({ disableColumns = [] }: AdminCVListProps) => {
     const [cvs, setCVs] = useState<CV[]>([]);
     const [editCV, setEditCV] = useState<CV | null>(null);
     const [previewCV, setPreviewCV] = useState<CV | null>(null);
-    const [filter, dispatchFilter] = useReducer(filterReducer, initFilterValue);
+    const [filter, dispatchFilter] = useReducer(cvFilterReducer, initCVFilterValue);
     const dispatch = useDispatch();
 
     const fetchCVs = useCallback(

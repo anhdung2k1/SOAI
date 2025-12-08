@@ -6,7 +6,8 @@ import { MdAdminPanelSettings } from 'react-icons/md';
 import { FaFilter, FaUserCircle } from 'react-icons/fa';
 import { Badge, Button, Col, Row } from '../layouts';
 import { getAccounts, deleteAccount } from '../../services/api/authApi';
-import { ROLES, type Role } from '../../shared/types/authTypes';
+import { initAccountFilterValue, accountFilterReducer } from '../../services/reducer/filterReducer/accountFilter';
+import { ROLES } from '../../shared/types/authTypes';
 import type { Account } from '../../shared/types/adminTypes';
 import classNames from 'classnames/bind';
 import styles from '../../assets/styles/admins/adminAccountList.module.scss';
@@ -20,38 +21,9 @@ interface AdminAccountListProps {
     disableColumns?: ColumnName[];
 }
 
-interface Filter {
-    userName: string;
-    roles: Role[];
-}
-
-const initFilterValue: Filter = {
-    userName: '',
-    roles: [...ROLES],
-};
-
-type FilterAction = { type: 'USERNAME'; payload: string } | { type: 'ROLE'; payload: Role };
-
-const filterReducer = (state: Filter, action: FilterAction): Filter => {
-    switch (action.type) {
-        case 'USERNAME':
-            return {
-                ...state,
-                userName: action.payload,
-            };
-        case 'ROLE':
-            return {
-                ...state,
-                roles: state.roles.includes(action.payload) ? state.roles.filter((role) => role !== action.payload) : [...state.roles, action.payload],
-            };
-        default:
-            return state;
-    }
-};
-
 const AdminAccountList = ({ disableColumns = [] }: AdminAccountListProps) => {
     const [accounts, setAccounts] = useState<Account[]>([]);
-    const [filter, dispatchFilter] = useReducer(filterReducer, initFilterValue);
+    const [filter, dispatchFilter] = useReducer(accountFilterReducer, initAccountFilterValue);
     const dispatch = useDispatch();
 
     const fetchAccounts = useCallback(async () => {

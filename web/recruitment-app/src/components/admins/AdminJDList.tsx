@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { setNumberOfJob } from '../../services/redux/adminSlices/adminStatisticsSlice';
 import { isFutureDate } from '../../shared/helpers/commonUntils';
+import { initJDFilterValue, jdFilterReducer } from '../../services/reducer/filterReducer/jdFilter';
 import { getJDs, updateJD, deleteJD, getJDPreviewUrl } from '../../services/api/jdApi';
 import { Button, Col, ReviewModal, Row } from '../layouts';
 import type { JD } from '../../shared/types/adminTypes';
@@ -13,33 +14,11 @@ import AdminJDForm from './AdminJDForm';
 
 const cx = classNames.bind({ ...frameStyles, ...styles });
 
-interface Filter {
-    jd_title: string;
-}
-
-type FilterAction = { type: 'JD_TITLE'; payload: string };
-
-const initFilterValue: Filter = {
-    jd_title: '',
-};
-
-const filterReducer = (state: Filter, action: FilterAction): Filter => {
-    switch (action.type) {
-        case 'JD_TITLE':
-            return {
-                ...state,
-                jd_title: action.payload,
-            };
-        default:
-            return state;
-    }
-};
-
 const AdminJDList = () => {
     const [jds, setJds] = useState<JD[]>([]);
     const [editJD, setEditCV] = useState<JD | null>(null);
     const [previewJD, setPreviewJD] = useState<JD | null>(null);
-    const [filter, dispatchFilter] = useReducer(filterReducer, initFilterValue);
+    const [filter, dispatchFilter] = useReducer(jdFilterReducer, initJDFilterValue);
     const dispatch = useDispatch();
 
     const fetchJDs = useCallback(

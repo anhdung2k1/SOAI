@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react';
 import { toast } from 'react-toastify';
 import { Col, Row } from '../layouts';
+import { initJDFormValue, jdFormReducer } from '../../services/reducer/formReducer/jdForm';
 import type { JD } from '../../shared/types/adminTypes';
 import classNames from 'classnames/bind';
 import styles from '../../assets/styles/admins/adminJDForm.module.scss';
@@ -8,113 +9,13 @@ import styles from '../../assets/styles/admins/adminJDForm.module.scss';
 const cx = classNames.bind(styles);
 
 interface AdminJDFormProps {
-    jd?: JD; // Passing JD data to AdminJDForm for editing.
+    jd?: JD; // Passing JD data to AdminJDForm for editing if any.
     onSubmit: (jd: JD) => void;
     onCancel: () => void;
 }
 
-// TODO: Add initital properties & set values to avoid the uncontrolled input issue
-const initEditJDValue: JD = {} as JD;
-
-type EditJDFormAction =
-    | {
-          type:
-              | 'JOB_DESCRIPTION'
-              | 'LEVEL'
-              | 'POSISION'
-              | 'LOCATION'
-              | 'RECRUITER'
-              | 'REFERAL_CODE'
-              | 'DATE_TIME'
-              | 'HIRING_MANAGER'
-              | 'COMPANY_DESCRIPTION'
-              | 'QUALIFICATIONS'
-              | 'RESPONSIBILITIES'
-              | 'SKILLS_REQUIRED';
-          payload: string;
-      }
-    | { type: 'EXPERIENCE_REQUIRED'; payload: number }
-    | { type: 'SET_EDIT_JD'; payload: JD }
-    | { type: 'RESET_EDIT' };
-
-const editJDReducer = (state: JD, action: EditJDFormAction): JD => {
-    switch (action.type) {
-        case 'JOB_DESCRIPTION':
-            return {
-                ...state,
-                job_description: action.payload,
-            };
-        case 'LEVEL':
-            return {
-                ...state,
-                level: action.payload,
-            };
-        case 'POSISION':
-            return {
-                ...state,
-                position: action.payload,
-            };
-        case 'LOCATION':
-            return {
-                ...state,
-                location: action.payload,
-            };
-        case 'RECRUITER':
-            return {
-                ...state,
-                recruiter: action.payload,
-            };
-        case 'REFERAL_CODE':
-            return {
-                ...state,
-                referral_code: action.payload,
-            };
-        case 'DATE_TIME':
-            return {
-                ...state,
-                datetime: action.payload,
-            };
-        case 'HIRING_MANAGER':
-            return {
-                ...state,
-                hiring_manager: action.payload,
-            };
-        case 'COMPANY_DESCRIPTION':
-            return {
-                ...state,
-                company_description: action.payload,
-            };
-        case 'EXPERIENCE_REQUIRED':
-            return {
-                ...state,
-                experience_required: action.payload,
-            };
-        case 'QUALIFICATIONS':
-            return {
-                ...state,
-                qualifications: action.payload.split('\n'),
-            };
-        case 'RESPONSIBILITIES':
-            return {
-                ...state,
-                responsibilities: action.payload.split('\n'),
-            };
-        case 'SKILLS_REQUIRED':
-            return {
-                ...state,
-                skills_required: action.payload.split('\n'),
-            };
-        case 'SET_EDIT_JD':
-            return JSON.parse(JSON.stringify(action.payload));
-        case 'RESET_EDIT':
-            return {} as JD;
-        default:
-            return state;
-    }
-};
-
-const AdminJDForm = ({ jd = initEditJDValue, onSubmit, onCancel }: AdminJDFormProps) => {
-    const [editJD, dispatchEditJD] = useReducer(editJDReducer, JSON.parse(JSON.stringify(jd)));
+const AdminJDForm = ({ jd = initJDFormValue, onSubmit, onCancel }: AdminJDFormProps) => {
+    const [editJD, dispatchEditJD] = useReducer(jdFormReducer, JSON.parse(JSON.stringify(jd)));
 
     const handleSubmitEditJD = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
@@ -149,7 +50,7 @@ const AdminJDForm = ({ jd = initEditJDValue, onSubmit, onCancel }: AdminJDFormPr
                             type="text"
                             required
                             value={editJD.position}
-                            onChange={(e) => dispatchEditJD({ type: 'POSISION', payload: e.target.value })}
+                            onChange={(e) => dispatchEditJD({ type: 'POSITION', payload: e.target.value })}
                             className={cx('form-group__entry')}
                         />
                     </div>
@@ -231,7 +132,7 @@ const AdminJDForm = ({ jd = initEditJDValue, onSubmit, onCancel }: AdminJDFormPr
                             id="referal-code"
                             type="text"
                             value={editJD.referral_code}
-                            onChange={(e) => dispatchEditJD({ type: 'REFERAL_CODE', payload: e.target.value })}
+                            onChange={(e) => dispatchEditJD({ type: 'REFERRAL_CODE', payload: e.target.value })}
                             className={cx('form-group__entry')}
                         />
                     </div>
