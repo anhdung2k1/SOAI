@@ -190,6 +190,10 @@ soai-application-recruitment-7844644774-9nt2h      2/2     Running   0          
 soai-application-web-84ff858bbb-s58td              1/1     Running   0          4m50s
 ```
 
+# Login to Grafana
+Username: admin
+Password: admin@123
+
 ## Pushing the docker image to registry and release helm chart
 ### Prepare
 1. To release the docker images and helm chart. Check out `vas.sh` and `Makefile` script.
