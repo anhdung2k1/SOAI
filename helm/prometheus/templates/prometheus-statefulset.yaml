@@ -1,69 +1,58 @@
+{{- if .Values.prometheus.enabled }}
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: {{ template "prometheus.name" . }}
+  labels:
+    app: prometheus
 spec:
-  serviceName: {{ template "prometheus.name" . }}
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "prometheus.selectorLabels" . | nindent 6 }}
+      app: prometheus
   template:
     metadata:
       labels:
+        app: prometheus
         {{- include "prometheus.labels" . | nindent 8 }}
     spec:
-      securityContext:
-        runAsUser: 65534
-        runAsGroup: 65534
-        fsGroup: 65534
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ default (printf "%s-sa" (include "prometheus.name" .)) .Values.serviceAccount.name }}
+      {{- end }}
       containers:
-        - name: prometheus
-          image: {{ .Values.prometheus.image }}
-          imagePullPolicy: IfNotPresent
-          args:
-            - "--config.file=/etc/prometheus/prometheus.yml"
-            - "--storage.tsdb.path=/prometheus"
-            - "--web.enable-lifecycle"
-            # Enable receiving remote_write from OTel Collector
-            - "--web.enable-remote-write-receiver"
-            - "--web.enable-otlp-receiver"
-            - "--enable-feature=otlp-write-receiver"
-          ports:
-            - name: http
-              containerPort: 9090
-          {{- with .Values.prometheus.resources }}
-          resources:
-            {{ toYaml . | nindent 12 }}
-          {{- end }}
-
-          livenessProbe:
-            httpGet:
-              path: /-/healthy
-              port: http
-            initialDelaySeconds: 10
-            periodSeconds: 15
-          readinessProbe:
-            httpGet:
-              path: /-/ready
-              port: http
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          volumeMounts:
-            - name: config
-              mountPath: /etc/prometheus
-            - name: data
-              mountPath: /prometheus
-      volumes:
-        - name: config
-          configMap:
-            name: prometheus-tsdb-configmap
-  volumeClaimTemplates:
-    - metadata:
-        name: data
-      spec:
-        accessModes:
-          - ReadWriteOnce
+      - name: prometheus
+        image: "{{ .Values.prometheus.image.repository }}:{{ .Values.prometheus.image.tag }}"
+        imagePullPolicy: {{ .Values.prometheus.image.pullPolicy }}
+        ports:
+        - containerPort: 9090
+          name: web
         resources:
           requests:
-            storage: {{ .Values.prometheus.persistentVolume.size }}
+            memory: "{{ .Values.prometheus.resources.requests.memory }}"
+            cpu: "{{ .Values.prometheus.resources.requests.cpu }}"
+          limits:
+            memory: "{{ .Values.prometheus.resources.limits.memory }}"
+            cpu: "{{ .Values.prometheus.resources.limits.cpu }}"
+        volumeMounts:
+        - name: prometheus-config
+          mountPath: /etc/prometheus
+        - name: alert-rules
+          mountPath: /etc/prometheus/rules
+        - name: prometheus-storage
+          mountPath: /prometheus
+        args:
+          - '--config.file=/etc/prometheus/prometheus.yml'
+          - '--storage.tsdb.path=/prometheus'
+          - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+          - '--web.console.templates=/usr/share/prometheus/consoles'
+      volumes:
+      - name: prometheus-config
+        configMap:
+          name: prometheus-config
+      - name: alert-rules
+        configMap:
+          name: prometheus-alert-rules
+      - name: prometheus-storage
+        persistentVolumeClaim:
+          claimName: prometheus-pvc
+{{- end }}
