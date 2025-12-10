@@ -1,4 +1,5 @@
 import uuid
+import os
 import logging
 import qdrant_client
 from qdrant_client.http.models import Distance, VectorParams, PointStruct
@@ -13,7 +14,9 @@ class QdrantDB:
 
     def __init__(self, collection_name: str = DEFAULT_COLLECTION_NAME):
         self.collection_name = collection_name
-        self.client, self.collection_info = self.get_or_create_qdrant_collection()
+        self.client, self.collection_info = self.get_or_create_qdrant_collection(
+            collection_name=collection_name
+        )
 
     def retrieve(self, limit=100, offset=0):
         """Retrieves stored documents with manual pagination."""
@@ -99,7 +102,7 @@ class QdrantDB:
     def get_or_create_qdrant_collection(
         qdrant_host="qdrant",
         qdrant_port=6333,
-        vector_dimension=768,
+        vector_dimension=3072,
         collection_name=DEFAULT_COLLECTION_NAME,
     ):
         """Gets or creates a Qdrant collection."""
@@ -108,7 +111,7 @@ class QdrantDB:
             client = qdrant_client.QdrantClient(qdrant_host, port=qdrant_port)
 
             if not client.collection_exists(collection_name):
-                logger.info(f"Creating new Qdrant collection: {collection_name}")
+                logger.error(f"Creating new Qdrant collection: {collection_name}")
                 client.create_collection(
                     collection_name=collection_name,
                     vectors_config=VectorParams(

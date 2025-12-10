@@ -1,17 +1,18 @@
 from fastapi import HTTPException, Query
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
-
+from config.log_config import LoggingConfig, AppLogger
 router = APIRouter()
 from services.knowledge_base_service import KnowledgeBaseService
 from models.response_models import QueryRequest, AddDocumentRequest, StandardResponse
 from config.constants import *
 
-
+logger = AppLogger(__name__)
 @router.post("/documents/add/")
 async def add_document(
     request: AddDocumentRequest,
 ):
+    logger.debug("Adding document to knowledge base")
     result = KnowledgeBaseService.add(
         texts=request.texts,
         collection_name=request.collection_name,
@@ -22,7 +23,7 @@ async def add_document(
             content=StandardResponse(
                 status="error", message=MESSAGE_ADD_DOCUMENT_FAILED
             ).dict(),
-            status_code=404,
+            status_code=400,
         )
     return JSONResponse(
         content=StandardResponse(

@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 DEFAULT_COLLECTION_NAME = "knowledge_base"
-DEFAULT_EMBEDDING_MODEL = "hkunlp/instructor-large"
+DEFAULT_EMBEDDING_MODEL = "text-embedding-3-large"
 
 MESSAGE_ADD_DOCUMENT_SUCCESS = "Document added successfully"
 MESSAGE_ADD_DOCUMENT_FAILED = "Failed to add document"
